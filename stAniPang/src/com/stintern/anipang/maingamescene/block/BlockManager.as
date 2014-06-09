@@ -19,9 +19,11 @@ package com.stintern.anipang.maingamescene.block
         
         private var _blockArray:Vector.<Vector.<Block>>;
         
-        private var _quadBatch:QuadBatch;
-        private var _textureAtlas:TextureAtlas;
+        private var _spriteContainer:Sprite;
+        
         private var _blockPool:BlockPool;
+        
+        private var _drawManager:BlockDrawManager;
         
         private var _locateBlockAlgorithm:LocateBlockAlgorithm;
         
@@ -44,17 +46,6 @@ package com.stintern.anipang.maingamescene.block
         
         public function init(layer:Sprite):void
         {
-            // 블럭들을 그릴 배치 객체 생성
-            _quadBatch = new QuadBatch();
-            layer.addChild(_quadBatch);
-            
-            // TextureAtlas 생성
-            var bitmap:Bitmap = AssetLoader.instance.getTextureBitmap( Resources.PATH_IMAGE_BLOCK_SPRITE_SHEET );
-            _textureAtlas = new TextureAtlas(
-                Texture.fromBitmap( bitmap ), 
-                AssetLoader.instance.loadXML( Resources.PATH_XML_BLOCK_SPRITE_SHEET )
-            );
-            
             // 블럭을 저장할 풀 생성
             _blockPool = new BlockPool();
             
@@ -62,6 +53,9 @@ package com.stintern.anipang.maingamescene.block
             _locateBlockAlgorithm = new LocateBlockAlgorithm();
             
             _blockArray = new Vector.<Vector.<Block>>();
+            
+            _drawManager = new BlockDrawManager();
+            layer.addChild(_drawManager);
             
         }
 
@@ -76,11 +70,20 @@ package com.stintern.anipang.maingamescene.block
                 for(var j:uint = 0; j<colCount; ++j)
                 {
                     board[i][j] = getTypeOfBlock(board, i, j);
-                    colVector.push( BlockManager.instance.createBlock(board[i][j]) );
+                    
+                    var block:Block = createBlock(board[i][j]);
+                    if(block != null)
+                    {
+                        block.image.x = i*60;
+                        block.image.y = j*60;
+                    }
+                    
+                    colVector.push(  block );
                 }
                 _blockArray.push( colVector );
             }
             
+            _drawManager.drawBlocks(_blockArray);
         }
         
         private function getTypeOfBlock(board:Vector.<Vector.<uint>>, row:uint, col:uint):uint
@@ -117,9 +120,8 @@ package com.stintern.anipang.maingamescene.block
                 return block;
             }
             
-            var texture:Texture = getTextureByType(Resources.BLOCK_TYPE_ANI);
             block  = new Block();
-            block.init(type, texture);
+            block.init(type, _drawManager.getTextureByType(type));
             
             if( autoRegister)
             {
@@ -132,7 +134,7 @@ package com.stintern.anipang.maingamescene.block
         
         public function registerBlock(block:Block):void
         {
-            _quadBatch.addImage(block.image);
+            _drawManager.addBlock(block.image);
         }
         
         public function removeBlock(block:Block):void
@@ -140,16 +142,5 @@ package com.stintern.anipang.maingamescene.block
             _blockPool.push(block);
         }
         
-        private function getTextureByType(type:uint):Texture
-        {
-            switch(type)
-            {
-                case Resources.BLOCK_TYPE_ANI:
-                    return _textureAtlas.getTexture("ani");
-                    
-                default:
-                    return null;
-            }
-        }
     }
 }

@@ -53,6 +53,8 @@ package com.stintern.anipang.utils
         
         public static var SCREEN_WIDTH:uint = 768;
         public static var SCREEN_HEIGHT:uint = 1024; 
+        
+        public static var LEFT_RIGHT_PADDING:uint = 20; 
 
     }
 }

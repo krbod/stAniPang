@@ -1,6 +1,5 @@
 package com.stintern.anipang.maingamescene
 {
-    import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.utils.AssetLoader;
     import com.stintern.anipang.utils.LevelLoader;
     import com.stintern.anipang.utils.Resources;
@@ -31,6 +30,12 @@ package com.stintern.anipang.maingamescene
             return _instance;
         }
                 
+        
+        public function getCurrentLevel():uint
+        {
+            return 1;   //TEST
+        }
+        
         public function loadStageInfo(level:uint):StageInfo
         {
             if( _levelLoader == null )
@@ -52,6 +57,7 @@ package com.stintern.anipang.maingamescene
         {
             _currentStageLevel = level;
         }
+
         
     }
 }

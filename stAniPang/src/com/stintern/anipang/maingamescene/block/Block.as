@@ -1,6 +1,9 @@
 package com.stintern.anipang.maingamescene.block
 {
     import starling.display.Image;
+    import starling.events.Touch;
+    import starling.events.TouchEvent;
+    import starling.events.TouchPhase;
     import starling.textures.Texture;
     
     public class Block
@@ -10,6 +13,30 @@ package com.stintern.anipang.maingamescene.block
         
         public function Block()
         {
+        }
+        
+        public function setTouchEnable():void
+        {
+            _image.addEventListener(TouchEvent.TOUCH, onTouch);
+        }
+        
+        private function onTouch(event:TouchEvent):void
+        {
+            var touch:Touch = event.getTouch(_image);
+            if(touch)
+            {
+                switch(touch.phase)
+                {
+                    case TouchPhase.BEGAN : 
+                        break;
+                    
+                    case TouchPhase.MOVED : 
+                        break;
+                    
+                    case TouchPhase.ENDED :
+                        break;
+                }
+            }
         }
         
         internal function init(type:uint, texture:Texture):void
@@ -42,12 +69,11 @@ package com.stintern.anipang.maingamescene.block
         
         public function get visible():Boolean
         {
-            return _image.visible;
+            return _image.isVisible;
         }
         public function set visible(visible:Boolean):void
         {
-            _image.visible = visible;
+            _image.isVisible = visible;
         }
-        
     }
 }

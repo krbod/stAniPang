@@ -1,7 +1,5 @@
 package com.stintern.anipang.maingamescene
 {
-    
-
     public class StageInfo
     {
         private var _boardArray:Vector.<Vector.<uint>> = null;

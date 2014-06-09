@@ -1,5 +1,6 @@
 package com.stintern.anipang.maingamescene.layer
 {
+    import com.stintern.anipang.maingamescene.LevelManager;
     import com.stintern.anipang.maingamescene.block.Block;
     import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.board.GameBoard;
@@ -26,22 +27,31 @@ package com.stintern.anipang.maingamescene.layer
             // 게임 보드를 초기화 
             _gameBoard = new GameBoard;
             
+            // 블럭들을 출력할 수 있도록 초기화
+            BlockManager.instance.init(this);
             
             loadStage();
         }
         
+        /**
+         * 새로운 스테이지를 불러와 레이어에 출력합니다. 
+         */
         public function loadStage():void
         {
-            _gameBoard.initBoard(1);
+            // 현재 스테이지 레벨을 읽음
+            var stageLevel:uint = LevelManager.instance.getCurrentLevel();
             
-            BlockManager.instance.init(this);
-            var block:Block = BlockManager.instance.createBlock(0);
+            // 스테이지 레벨에 맞도록 게임 보드를 초기화
+            _gameBoard.initBoard(stageLevel);
             
+            // 블럭들을 배치
+            BlockManager.instance.createBlocks( _gameBoard.boardArray );
         }
         
         public function resetStage():void
         {
             _gameBoard.dispose();
         }
+        
     }
 }
