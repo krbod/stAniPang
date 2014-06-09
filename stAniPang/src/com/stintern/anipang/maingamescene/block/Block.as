@@ -11,6 +11,8 @@ package com.stintern.anipang.maingamescene.block
         private var _type:uint;
         private var _image:Image;
         
+		private var _isTouch:Boolean;
+		
         public function Block()
         {
         }
@@ -28,12 +30,15 @@ package com.stintern.anipang.maingamescene.block
                 switch(touch.phase)
                 {
                     case TouchPhase.BEGAN : 
+						_isTouch = true;
                         break;
                     
                     case TouchPhase.MOVED : 
+						
                         break;
                     
                     case TouchPhase.ENDED :
+						_isTouch = true;
                         break;
                 }
             }

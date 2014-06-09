@@ -1,15 +1,9 @@
 package com.stintern.anipang.maingamescene.block
 {
     import com.stintern.anipang.maingamescene.board.GameBoard;
-    import com.stintern.anipang.utils.AssetLoader;
     import com.stintern.anipang.utils.Resources;
     
-    import flash.display.Bitmap;
-    
-    import starling.display.QuadBatch;
     import starling.display.Sprite;
-    import starling.textures.Texture;
-    import starling.textures.TextureAtlas;
 
     public class BlockManager
     {
@@ -23,7 +17,7 @@ package com.stintern.anipang.maingamescene.block
         
         private var _blockPool:BlockPool;
         
-        private var _drawManager:BlockDrawManager;
+        private var _drawManager:BlockPainter;
         
         private var _locateBlockAlgorithm:LocateBlockAlgorithm;
         
@@ -54,7 +48,7 @@ package com.stintern.anipang.maingamescene.block
             
             _blockArray = new Vector.<Vector.<Block>>();
             
-            _drawManager = new BlockDrawManager();
+            _drawManager = new BlockPainter();
             layer.addChild(_drawManager);
             
         }

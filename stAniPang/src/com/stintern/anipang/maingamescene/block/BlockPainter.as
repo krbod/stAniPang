@@ -12,12 +12,12 @@ package com.stintern.anipang.maingamescene.block
     import starling.textures.Texture;
     import starling.textures.TextureAtlas;
 
-    public class BlockDrawManager extends Sprite
+    public class BlockPainter extends Sprite
     {
         private var _container:Sprite;
         private var _textureAtlas:TextureAtlas;
         
-        public function BlockDrawManager()
+        public function BlockPainter()
         {
             _container = new Sprite();
             addChild(_container);
