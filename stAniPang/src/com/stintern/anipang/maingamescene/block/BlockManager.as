@@ -1,5 +1,6 @@
 package com.stintern.anipang.maingamescene.block
 {
+    import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.AssetLoader;
     import com.stintern.anipang.utils.Resources;
     
@@ -16,9 +17,13 @@ package com.stintern.anipang.maingamescene.block
         private static var _instance:BlockManager;
         private static var _creatingSingleton:Boolean = false;
         
+        private var _blockArray:Vector.<Vector.<Block>>;
+        
         private var _quadBatch:QuadBatch;
         private var _textureAtlas:TextureAtlas;
         private var _blockPool:BlockPool;
+        
+        private var _locateBlockAlgorithm:LocateBlockAlgorithm;
         
         public function BlockManager()
         {
@@ -52,8 +57,46 @@ package com.stintern.anipang.maingamescene.block
             
             // 블럭을 저장할 풀 생성
             _blockPool = new BlockPool();
+            
+            // 블럭 배치 알고리즘 생성기 
+            _locateBlockAlgorithm = new LocateBlockAlgorithm();
+            
+            _blockArray = new Vector.<Vector.<Block>>();
+            
         }
 
+        public function createBlocks(board:Vector.<Vector.<uint>>):void
+        {
+            var rowCount:uint = Resources.BOARD_ROW_COUNT;
+            var colCount:uint = Resources.BOARD_ROW_COUNT;
+            
+            for(var i:uint = 0; i<rowCount; ++i)
+            {
+                var colVector:Vector.<Block> = new Vector.<Block>();
+                for(var j:uint = 0; j<colCount; ++j)
+                {
+                    board[i][j] = getTypeOfBlock(board, i, j);
+                    colVector.push( BlockManager.instance.createBlock(board[i][j]) );
+                }
+                _blockArray.push( colVector );
+            }
+            
+        }
+        
+        private function getTypeOfBlock(board:Vector.<Vector.<uint>>, row:uint, col:uint):uint
+        {
+            var blockType:uint;
+            switch(board[row][col])
+            {
+                case GameBoard.TYPE_OF_BLOCK_EMPTY:
+                    return GameBoard.TYPE_OF_BLOCK_EMPTY;
+                    
+                case GameBoard.TYPE_OF_BLOCK_NONE:
+                    return _locateBlockAlgorithm.makeNewType(board, row, col);
+            }
+            
+            return blockType;
+        }
         
         /**
          * 새로운 블럭을 생성합니다.  
@@ -61,8 +104,12 @@ package com.stintern.anipang.maingamescene.block
          * @param autoRegister 블럭 매니저에 등록하여 바로 화면에 출력할 지 여부
          * @return 생성한 블럭
          */
-        public function createBlock(type:uint, autoRegister:Boolean = true):Block
+        private function createBlock(type:uint, autoRegister:Boolean = true):Block
         {
+            //투명 블럭등 동물 블럭이 아닌 경우
+            if( type > Resources.BLOCK_TYPE_END )
+                return null;
+            
             // 풀에 블럭이 있으면 새로 만들지 않음.
             var block:Block = _blockPool.getBlock(type);
             if( block != null )

@@ -43,12 +43,16 @@ package com.stintern.anipang.utils
         public static var BLOCK_TYPE_PANG:uint = 6;
         public static var BLOCK_TYPE_MONGYI:uint = 7;
         public static var BLOCK_TYPE_END:uint = 7;
+        public static var BLOCK_TYPE_COUNT:uint = BLOCK_TYPE_END + 1;
         
 
         /** Game Enviroment */
 
         public static var BOARD_ROW_COUNT:uint = 8;
         public static var BOARD_COL_COUNT:uint = 8;
+        
+        public static var SCREEN_WIDTH:uint = 768;
+        public static var SCREEN_HEIGHT:uint = 1024; 
 
     }
 }
