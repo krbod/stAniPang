@@ -1,4 +1,4 @@
-package com.stintern.anipang.start
+package com.stintern.anipang.startscene
 {
     import starling.display.Quad;
     import starling.display.Sprite;
