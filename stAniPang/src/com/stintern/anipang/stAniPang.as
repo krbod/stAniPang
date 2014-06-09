@@ -1,6 +1,6 @@
 package com.stintern.anipang
 {
-    import com.stintern.anipang.mainmenu.MainMenu;
+    import com.stintern.anipang.maingamescene.layer.MainGameScene;
     
     import flash.display.Sprite;
     import flash.display.StageAlign;
@@ -19,7 +19,7 @@ package com.stintern.anipang
             stage.scaleMode = StageScaleMode.NO_SCALE;
             
             // create our Starling instance
-            mStarling = new Starling(MainMenu, stage);
+            mStarling = new Starling(MainGameScene, stage);
             
             // set anti-aliasing (higher the better quality but slower performance)
             mStarling.antiAliasing = 1;
