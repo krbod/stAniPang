@@ -1,10 +1,6 @@
 package com.stintern.anipang.utils
 {
     import com.stintern.anipang.maingamescene.StageInfo;
-    
-    import flash.filesystem.File;
-    import flash.filesystem.FileMode;
-    import flash.filesystem.FileStream;
 
     public class LevelLoader
     {
@@ -15,33 +11,7 @@ package com.stintern.anipang.utils
         public function loadXMLAt(level:uint):StageInfo
         {
             var filePath:String = Resources.PATH_LEVEL_XML + level.toString() + ".xml";
-            return getStageInfo( loadXML(filePath) );
-        }
-        
-        public function loadXML(path:String):XML
-        {
-            var file:File = findFile(path);
-            var fileStream:FileStream = new FileStream();
-            fileStream.open(file, FileMode.READ);
-            
-            var xmlNode:XML = new XML(fileStream.readUTFBytes(fileStream.bytesAvailable));
-            return xmlNode;
-        }
-        
-        /**
-         * 디바이스 내부 저장소를 확인하여 File 객체를 리턴합니다. 
-         */
-        private function findFile(path:String):File
-        {
-            var file:File = File.applicationDirectory.resolvePath(path);
-            if( file.exists )
-                return file;
-            
-            file = File.applicationStorageDirectory.resolvePath(path);
-            if( file.exists )
-                return file;
-            
-            return null;
+            return getStageInfo( AssetLoader.instance.loadXML(filePath) );
         }
         
         public function getStageInfo(xml:XML):StageInfo

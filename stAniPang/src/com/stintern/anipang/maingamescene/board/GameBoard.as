@@ -13,7 +13,7 @@ package com.stintern.anipang.maingamescene.board
         
         public function dispose():void
         {
-            
+            _stageInfo.dispose();
         }
         
         /**
@@ -24,6 +24,8 @@ package com.stintern.anipang.maingamescene.board
             // 레벨에 맞는 보드 정보를 불러옵니다.
             var levelLoader:LevelLoader = new LevelLoader();
             _stageInfo = levelLoader.loadXMLAt(1);
+            
+            
         }
     }
 }

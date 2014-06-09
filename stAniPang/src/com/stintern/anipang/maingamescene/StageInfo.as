@@ -1,5 +1,7 @@
 package com.stintern.anipang.maingamescene
 {
+    
+
     public class StageInfo
     {
         private var _boardArray:Vector.<Vector.<uint>> = null;
@@ -9,6 +11,15 @@ package com.stintern.anipang.maingamescene
         
         public function StageInfo()
         {
+        }
+        
+        public function dispose():void
+        {
+            while(_boardArray.length )
+            {
+                _boardArray[0] = null;
+                _boardArray.splice(0, 1);
+            }
         }
         
         public function get boardArray():Vector.<Vector.<uint>> 

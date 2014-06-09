@@ -1,5 +1,7 @@
 package com.stintern.anipang.maingamescene.layer
 {
+    import com.stintern.anipang.maingamescene.block.Block;
+    import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
     
@@ -31,6 +33,15 @@ package com.stintern.anipang.maingamescene.layer
         public function loadStage():void
         {
             _gameBoard.initBoard(1);
+            
+            BlockManager.instance.init(this);
+            var block:Block = BlockManager.instance.createBlock(0);
+            
+        }
+        
+        public function resetStage():void
+        {
+            _gameBoard.dispose();
         }
     }
 }

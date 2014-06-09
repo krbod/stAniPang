@@ -1,0 +1,16 @@
+<atlas>
+<atlasItem name="ari.png" x="0" y="0" width="64" height="64" />
+<atlasItem name="arrow.png" x="0" y="66" width="64" height="64" />
+<atlasItem name="mongyi.png" x="0" y="132" width="64" height="64" />
+<atlasItem name="micky.png" x="66" y="0" width="64" height="64" />
+<atlasItem name="pinky.png" x="66" y="66" width="64" height="64" />
+<atlasItem name="ice_arrow.png" x="66" y="132" width="64" height="64" />
+<atlasItem name="lucy.png" x="132" y="0" width="64" height="64" />
+<atlasItem name="ani.png" x="132" y="66" width="64" height="64" />
+<atlasItem name="box.png" x="132" y="132" width="64" height="64" />
+<atlasItem name="heart.png" x="198" y="0" width="64" height="64" />
+<atlasItem name="pang.png" x="198" y="66" width="64" height="64" />
+<atlasItem name="ani_heart.png" x="198" y="132" width="64" height="64" />
+<atlasItem name="blue.png" x="264" y="0" width="64" height="64" />
+<atlasItem name="empty.png" x="330" y="0" width="64" height="64" />
+</atlas>

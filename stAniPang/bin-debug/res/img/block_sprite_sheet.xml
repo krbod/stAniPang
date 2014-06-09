@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="block_sprite_sheet.png">
+
+<SubTexture name="ari" x="0" y="0" width="64" height="64" />
+<SubTexture name="arrow" x="0" y="66" width="64" height="64" />
+<SubTexture name="mongyi" x="0" y="132" width="64" height="64" />
+<SubTexture name="micky" x="66" y="0" width="64" height="64" />
+<SubTexture name="pinky" x="66" y="66" width="64" height="64" />
+<SubTexture name="ice_arrow" x="66" y="132" width="64" height="64" />
+<SubTexture name="lucy" x="132" y="0" width="64" height="64" />
+<SubTexture name="ani" x="132" y="66" width="64" height="64" />
+<SubTexture name="box" x="132" y="132" width="64" height="64" />
+<SubTexture name="heart" x="198" y="0" width="64" height="64" />
+<SubTexture name="pang" x="198" y="66" width="64" height="64" />
+<SubTexture name="ani_heart" x="198" y="132" width="64" height="64" />
+<SubTexture name="blue" x="264" y="0" width="64" height="64" />
+<SubTexture name="empty" x="330" y="0" width="64" height="64" />
+</TextureAtlas>
