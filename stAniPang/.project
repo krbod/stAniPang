@@ -24,14 +24,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>[source path] bin</name>
-			<type>2</type>
-			<location>C:/Users/이종민/Adobe Flash Builder 4.7/stAniPang/bin</location>
-		</link>
-		<link>
 			<name>[source path] src</name>
 			<type>2</type>
-			<location>D:/Projects/Starling-Framework/starling/src</location>
+			<location>E:/Sundaytoz/git/Starling-Framework/starling/src</location>
 		</link>
 	</linkedResources>
 </projectDescription>
