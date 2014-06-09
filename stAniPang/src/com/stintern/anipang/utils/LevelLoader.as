@@ -8,12 +8,6 @@ package com.stintern.anipang.utils
         {
         }
         
-        public function loadXMLAt(level:uint):StageInfo
-        {
-            var filePath:String = Resources.PATH_LEVEL_XML + level.toString() + ".xml";
-            return getStageInfo( AssetLoader.instance.loadXML(filePath) );
-        }
-        
         public function getStageInfo(xml:XML):StageInfo
         {
             var stageInfo:StageInfo = new StageInfo();
