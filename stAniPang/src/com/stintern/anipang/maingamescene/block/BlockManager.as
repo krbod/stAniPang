@@ -3,7 +3,12 @@ package com.stintern.anipang.maingamescene.block
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
     
+    import starling.display.DisplayObject;
+    import starling.display.Image;
     import starling.display.Sprite;
+    import starling.events.Touch;
+    import starling.events.TouchEvent;
+    import starling.events.TouchPhase;
 
     public class BlockManager
     {
@@ -12,15 +17,13 @@ package com.stintern.anipang.maingamescene.block
         private static var _creatingSingleton:Boolean = false;
         
         private var _blockArray:Vector.<Vector.<Block>>;
-        
         private var _spriteContainer:Sprite;
         
         private var _blockPool:BlockPool;
-        
         private var _drawManager:BlockPainter;
         
         private var _locateBlockAlgorithm:LocateBlockAlgorithm;
-        
+		
         public function BlockManager()
         {
             if (!_creatingSingleton){
@@ -65,11 +68,14 @@ package com.stintern.anipang.maingamescene.block
                 {
                     board[i][j] = getTypeOfBlock(board, i, j);
                     
-                    var block:Block = createBlock(board[i][j]);
-                    if(block != null)
+                    var block:Block = createBlock(board[i][j]);	//보드가 빈공간이면  null을 반환
+                    if(block != null)	
                     {
                         block.image.x = i*60;
                         block.image.y = j*60;
+						
+						block.row = i;
+						block.col = j;
                     }
                     
                     colVector.push(  block );

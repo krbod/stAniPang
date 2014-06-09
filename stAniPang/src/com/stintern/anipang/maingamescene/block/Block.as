@@ -1,5 +1,6 @@
 package com.stintern.anipang.maingamescene.block
 {
+    import starling.display.DisplayObject;
     import starling.display.Image;
     import starling.events.Touch;
     import starling.events.TouchEvent;
@@ -10,38 +11,14 @@ package com.stintern.anipang.maingamescene.block
     {
         private var _type:uint;
         private var _image:Image;
-        
+		
+		private var _row:uint, _col:uint;
+		
 		private var _isTouch:Boolean;
+		private var _distanceX:int, _distanceY:int;
 		
         public function Block()
         {
-        }
-        
-        public function setTouchEnable():void
-        {
-            _image.addEventListener(TouchEvent.TOUCH, onTouch);
-        }
-        
-        private function onTouch(event:TouchEvent):void
-        {
-            var touch:Touch = event.getTouch(_image);
-            if(touch)
-            {
-                switch(touch.phase)
-                {
-                    case TouchPhase.BEGAN : 
-						_isTouch = true;
-                        break;
-                    
-                    case TouchPhase.MOVED : 
-						
-                        break;
-                    
-                    case TouchPhase.ENDED :
-						_isTouch = true;
-                        break;
-                }
-            }
         }
         
         internal function init(type:uint, texture:Texture):void
@@ -49,10 +26,57 @@ package com.stintern.anipang.maingamescene.block
             if( _image == null )
             {                
                 _image = new Image(texture);
+				_image.addEventListener(TouchEvent.TOUCH, onTouch);
             }
             
             _type = type;
         }
+		
+		private function onTouch(event:TouchEvent):void
+		{
+			var touch:Touch = event.getTouch(event.target as DisplayObject);
+			if(touch)
+			{
+				switch(touch.phase)
+				{
+					case TouchPhase.BEGAN :
+						_isTouch = true;
+						_distanceX = 0;
+						_distanceY = 0;
+						break;
+					
+					case TouchPhase.MOVED : 
+						if(_isTouch)
+						{
+							_distanceX += touch.globalX - touch.previousGlobalX;
+							_distanceY += touch.globalY - touch.previousGlobalY;
+							
+							if( _distanceX < (event.target as DisplayObject).width * -1 )
+							{
+								//moveLeft(event.target as Image);
+							}
+							else if( _distanceX > (event.target as DisplayObject).width )
+							{
+								//moveRight();
+							}
+							
+							if( _distanceY < (event.target as DisplayObject).height * -1 )
+							{
+								//moveUp();
+							}
+							else if( _distanceY > (event.target as DisplayObject).height )
+							{
+								//moveDown();
+							}
+						}
+						break;
+					
+					case TouchPhase.ENDED :
+						_isTouch = true;
+						break;
+				}
+			}
+		}
         
         public function get type():uint
         {
@@ -71,6 +95,24 @@ package com.stintern.anipang.maingamescene.block
         {
             _image = image;
         }
+		
+		public function get row():uint
+		{
+			return _row;
+		}
+		public function set row(row:uint):void
+		{
+			_row = row;
+		}
+		
+		public function get col():uint
+		{
+			return _col;
+		}
+		public function set col(col:uint):void
+		{
+			_col = col;
+		}
         
         public function get visible():Boolean
         {
