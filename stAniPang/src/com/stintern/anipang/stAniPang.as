@@ -19,9 +19,9 @@ package com.stintern.anipang
         {
             stage.align = StageAlign.TOP_LEFT;
             stage.scaleMode = StageScaleMode.NO_SCALE;
-            
+			
             // create our Starling instance
-            var viewPort:Rectangle = new Rectangle(0, 0, Resources.SCREEN_WIDTH, Resources.SCREEN_HEIGHT);
+            var viewPort:Rectangle = new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight);
             mStarling = new Starling(MainGameScene, stage, viewPort);
             
             // set anti-aliasing (higher the better quality but slower performance)

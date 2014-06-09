@@ -46,27 +46,21 @@ package com.stintern.anipang.maingamescene.block
                     if(blocks[i][j] == null)
                         continue;
                     
-                    var pos:Point = getBlockPosition(i, j, colCount);
+                    var pos:Point = getBlockPosition(i, j, blocks[i][j].image.texture);
                     blocks[i][j].image.x = pos.x;
                     blocks[i][j].image.y = pos.y;
-                    
-                    blocks[i][j].setTouchEnable();
                 }
             }
             
             _container.flatten();
         }
         
-        private function getBlockPosition(row:uint, col:uint, colCount:uint):Point
+        private function getBlockPosition(row:uint, col:uint, texture:Texture):Point
         {
-            var blockSize:Number = (Starling.current.stage.stageWidth - Resources.LEFT_RIGHT_PADDING) / colCount;
-            
-            trace(Starling.current.stage.stageHeight);
-            
-            return new Point(
-                col * blockSize + Resources.LEFT_RIGHT_PADDING*0.5,
-                blockSize * row + 200
-            );
+			return new Point(
+				col * texture.width + Starling.current.stage.stageWidth  * 0.5 - texture.width * 4,
+				texture.height * row + 200
+			);
         }
         
         public function getTextureByType(type:uint):Texture
