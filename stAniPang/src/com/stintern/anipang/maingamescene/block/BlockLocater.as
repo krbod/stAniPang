@@ -2,13 +2,13 @@ package com.stintern.anipang.maingamescene.block
 {
     import com.stintern.anipang.utils.Resources;
 
-    public class LocateBlockAlgorithm
+    public class BlockLocater
     {
         private var _board:Vector.<Vector.<uint>>;
         private var _row:uint;
         private var _col:uint;
         
-        public function LocateBlockAlgorithm()
+        public function BlockLocater()
         {
         }
         
