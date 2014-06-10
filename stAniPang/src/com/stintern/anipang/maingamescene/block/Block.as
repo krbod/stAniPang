@@ -124,11 +124,11 @@ package com.stintern.anipang.maingamescene.block
         
         public function get visible():Boolean
         {
-            return _image.isVisible;
+            return _image.visible;
         }
         public function set visible(visible:Boolean):void
         {
-            _image.isVisible = visible;
+            _image.visible = visible;
         }
         
         public function get width():uint

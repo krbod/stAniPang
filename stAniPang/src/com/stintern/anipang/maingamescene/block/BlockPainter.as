@@ -64,7 +64,7 @@ package com.stintern.anipang.maingamescene.block
         {
 			return new Point(
 				col * texture.width + Starling.current.stage.stageWidth  * 0.5 - texture.width * 4,
-				texture.height * row + 200
+				texture.height * row + Resources.PADDING_TOP
 			);
         }
         

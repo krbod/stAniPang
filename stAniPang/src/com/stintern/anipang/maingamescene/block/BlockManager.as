@@ -70,6 +70,7 @@ package com.stintern.anipang.maingamescene.block
             var rowCount:uint = _blockArray.length;
             var boardArray:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
             
+			// 블럭들을 아래로 낙하시킴
             for(var i:uint=0; i<rowCount; ++i)
             {
                 var colCount:uint = _blockArray[i].length;
@@ -91,7 +92,53 @@ package com.stintern.anipang.maingamescene.block
                     
                 }
             }
+			
+			// 1행에 있던 블럭들이 내려간 자리로 새로운 블럭을 생성
+			fillWithNewBlocks();
         }
+		
+		private function fillWithNewBlocks():void
+		{
+			var boardArray:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
+			var colCount:uint = boardArray[0].length;
+			for(var i:uint=0; i<colCount; ++i)
+			{
+				if( boardArray[0][i] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
+				{
+					var block:Block = createBlock( uint(Math.random() * Resources.BLOCK_TYPE_COUNT) );	
+					block.row = 0;
+					block.col = i;
+					
+					block.image.x = i * block.image.texture.width + Starling.current.stage.stageWidth  * 0.5 - block.image.texture.width * 4;
+					block.image.y = block.image.texture.height * -1 + Resources.PADDING_TOP;
+					
+					boardArray[0][i] = block.type;
+
+					var tween:Tween = new Tween(block.image, 0.2);
+					tween.moveTo(block.image.x, block.image.y + block.image.texture.width);
+					Starling.juggler.add(tween);
+					
+					tween.onStart = onStartMove;
+					tween.onComplete = onCompleteMove;
+					
+					function onStartMove():void
+					{
+						block.isMoving = true;
+						
+						_blockArray[block.row][block.col] = block;
+						_blockPainter.turnOnFlatten(false);
+					}
+					function onCompleteMove():void
+					{
+						block.isMoving = false;
+						
+						_blockPainter.turnOnFlatten(true);
+						tween = null;
+					}
+					
+				}
+			}
+		}
         
         /**
          * 블럭을 아래로 낙하시킵니다. 
@@ -154,9 +201,6 @@ package com.stintern.anipang.maingamescene.block
                     var block:Block = createBlock(board[i][j]);	//보드가 빈공간이면  null을 반환
                     if(block != null)	
                     {
-                        block.image.x = i*60;
-                        block.image.y = j*60;
-						
 						block.row = i;
 						block.col = j;
                     }
