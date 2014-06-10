@@ -16,12 +16,14 @@ package com.stintern.anipang.maingamescene.block
 		
 		private var _isTouch:Boolean;
 		private var _distanceX:int, _distanceY:int;
-		
+        
+        private var _callbackMove:Function;
+        
         public function Block()
         {
         }
         
-        internal function init(type:uint, texture:Texture):void
+        internal function init(type:uint, texture:Texture, callback:Function):void
         {
             if( _image == null )
             {                
@@ -30,6 +32,7 @@ package com.stintern.anipang.maingamescene.block
             }
             
             _type = type;
+            _callbackMove = callback;
         }
 		
 		private function onTouch(event:TouchEvent):void
@@ -51,28 +54,32 @@ package com.stintern.anipang.maingamescene.block
 							_distanceX += touch.globalX - touch.previousGlobalX;
 							_distanceY += touch.globalY - touch.previousGlobalY;
 							
-							if( _distanceX < (event.target as DisplayObject).width * -1 )
+							if( _distanceX < (event.target as DisplayObject).width * -0.5 )
 							{
-								//moveLeft(event.target as Image);
+                                _callbackMove(_row, _col, _row, _col - 1);
+                                _isTouch = false;
 							}
-							else if( _distanceX > (event.target as DisplayObject).width )
+							else if( _distanceX > (event.target as DisplayObject).width * 0.5 )
 							{
-								//moveRight();
+                                _callbackMove(_row, _col, _row, _col + 1);
+                                _isTouch = false;
 							}
 							
-							if( _distanceY < (event.target as DisplayObject).height * -1 )
+							if( _distanceY < (event.target as DisplayObject).height * -0.5 )
 							{
-								//moveUp();
+                                _callbackMove(_row, _col, _row - 1, _col );
+                                _isTouch = false;
 							}
-							else if( _distanceY > (event.target as DisplayObject).height )
+							else if( _distanceY > (event.target as DisplayObject).height * 0.5)
 							{
-								//moveDown();
+                                _callbackMove(_row, _col, _row + 1, _col);
+                                _isTouch = false;
 							}
 						}
 						break;
 					
 					case TouchPhase.ENDED :
-						_isTouch = true;
+						_isTouch = false;
 						break;
 				}
 			}
@@ -116,11 +123,16 @@ package com.stintern.anipang.maingamescene.block
         
         public function get visible():Boolean
         {
-            return _image.visible;
+            return _image.isVisible;
         }
         public function set visible(visible:Boolean):void
         {
-            _image.visible = visible;
+            _image.isVisible = visible;
+        }
+        
+        public function get width():uint
+        {
+            return _image.texture.width;
         }
     }
 }

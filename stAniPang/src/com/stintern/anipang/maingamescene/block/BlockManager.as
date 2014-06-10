@@ -3,12 +3,10 @@ package com.stintern.anipang.maingamescene.block
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
     
-    import starling.display.DisplayObject;
+    import starling.animation.Tween;
+    import starling.core.Starling;
     import starling.display.Image;
     import starling.display.Sprite;
-    import starling.events.Touch;
-    import starling.events.TouchEvent;
-    import starling.events.TouchPhase;
 
     public class BlockManager
     {
@@ -16,14 +14,13 @@ package com.stintern.anipang.maingamescene.block
         private static var _instance:BlockManager;
         private static var _creatingSingleton:Boolean = false;
         
-        private var _blockArray:Vector.<Vector.<Block>>;
-        private var _spriteContainer:Sprite;
+        private var _blockPool:BlockPool;               // 제거된 블럭들을 저장하는 풀
+        private var _blockLocater:BlockLocater;     // 블럭을 배치하는 역할
+        private var _blockArray:Vector.<Vector.<Block>>;    // 생성된 블럭들이 저장되어 있는 벡터
         
-        private var _blockPool:BlockPool;
-        private var _drawManager:BlockPainter;
-        
-        private var _locateBlockAlgorithm:LocateBlockAlgorithm;
-		
+        private var _blockPainter:BlockPainter;         // 블럭들을 그리는 객체
+        private var _isBlockExchaning:Boolean = false;
+
         public function BlockManager()
         {
             if (!_creatingSingleton){
@@ -43,21 +40,28 @@ package com.stintern.anipang.maingamescene.block
         
         public function init(layer:Sprite):void
         {
-            // 블럭을 저장할 풀 생성
+            // 제거한 블럭을 저장할 풀 생성
             _blockPool = new BlockPool();
             
             // 블럭 배치 알고리즘 생성기 
-            _locateBlockAlgorithm = new LocateBlockAlgorithm();
+            _blockLocater = new BlockLocater();
             
+            // 생성한 블럭들을 저장할 벡터 생성
             _blockArray = new Vector.<Vector.<Block>>();
             
-            _drawManager = new BlockPainter();
-            layer.addChild(_drawManager);
+            // 블럭을 그리는 Painter 객체 생성
+            _blockPainter = new BlockPainter();
+            layer.addChild(_blockPainter);
             
         }
 
-        public function createBlocks(board:Vector.<Vector.<uint>>):void
+        /**
+         * 로드한 보드의 정보를 바탕으로 새로운 블럭들을 배치합니다. 
+         * @param board 보드 정보가 들어있는 2차원 벡터
+         */
+        public function createBlocks():void
         {
+            var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray; 
             var rowCount:uint = Resources.BOARD_ROW_COUNT;
             var colCount:uint = Resources.BOARD_ROW_COUNT;
             
@@ -83,7 +87,8 @@ package com.stintern.anipang.maingamescene.block
                 _blockArray.push( colVector );
             }
             
-            _drawManager.drawBlocks(_blockArray);
+            // 생성한 블럭들을 그림
+            _blockPainter.drawBlocks(_blockArray);
         }
         
         private function getTypeOfBlock(board:Vector.<Vector.<uint>>, row:uint, col:uint):uint
@@ -95,7 +100,7 @@ package com.stintern.anipang.maingamescene.block
                     return GameBoard.TYPE_OF_BLOCK_EMPTY;
                     
                 case GameBoard.TYPE_OF_BLOCK_NONE:
-                    return _locateBlockAlgorithm.makeNewType(board, row, col);
+                    return _blockLocater.makeNewType(board, row, col);
             }
             
             return blockType;
@@ -121,7 +126,7 @@ package com.stintern.anipang.maingamescene.block
             }
             
             block  = new Block();
-            block.init(type, _drawManager.getTextureByType(type));
+            block.init(type, _blockPainter.getTextureByType(type), moveCallback);
             
             if( autoRegister)
             {
@@ -134,12 +139,101 @@ package com.stintern.anipang.maingamescene.block
         
         public function registerBlock(block:Block):void
         {
-            _drawManager.addBlock(block.image);
+            _blockPainter.addBlock(block.image);
         }
         
         public function removeBlock(block:Block):void
         {
             _blockPool.push(block);
+        }
+        
+        public function moveCallback(row1:int, col1:int, row2:int, col2:int):void
+        {
+            if( !nextPosAvailable(row2, col2) || _isBlockExchaning )
+                return;
+            
+            exchangeBlock(row1, col1, row2, col2);
+        }
+        
+        /**
+         * 블럭을 움직일 때 다음 위치로 옮길 수 있는 지 판단 
+         * @param row 옮겨갈 다음 위치의 row Index
+         * @param col 옮겨갈 다음 위치의 col Index
+         * @return 옮길 수 있는 지 여부
+         */
+        private function nextPosAvailable(row:int, col:int):Boolean
+        {
+            // 보드 밖이면 FALSE
+            if( row < 0 || col < 0 || row >= Resources.BOARD_ROW_COUNT || col >= Resources.BOARD_COL_COUNT )
+                return false;
+            
+            switch( GameBoard.instance.boardArray[row][col] )
+            {
+                case GameBoard.TYPE_OF_BLOCK_EMPTY:
+                    return false;
+                    
+                case GameBoard.TYPE_OF_BLOCK_BOX:
+                    return false;
+                    
+                default:
+                    return true;
+            }
+        }
+        
+        private function exchangeBlock(row1:uint, col1:uint, row2:uint, col2:uint):void
+        {
+            var image1:Image = _blockArray[row1][col1].image;
+            var image2:Image = _blockArray[row2][col2].image;
+            
+            var tween:Tween = new Tween(image1, 0.1);
+            var tween2:Tween = new Tween(image2, 0.1);
+            
+            tween.moveTo(image2.x, image2.y);
+            tween2.moveTo(image1.x, image1.y);
+            
+            Starling.juggler.add(tween);
+            Starling.juggler.add(tween2);
+            
+            tween.onStart = onStartExchangeBlock;
+            tween.onComplete = onCompleteExchangeBlock;
+
+            function onStartExchangeBlock():void
+            {
+                _isBlockExchaning = true;
+                _blockPainter.turnOnFlatten(false);
+            }
+            function onCompleteExchangeBlock():void
+            {
+                _isBlockExchaning = false; 
+                _blockPainter.turnOnFlatten(true);
+                
+                // 변경한 블럭들로 정보 변경
+                updateInfo(row1, col1, row2, col2);
+                
+                // 변경된 보드에서 삭제될 블럭이 있는 지 확인
+            }
+        }
+        
+        /**
+         * 블럭 및 보드들의 정보를 갱신 
+         */
+        private function updateInfo(row1:uint, col1:uint, row2:uint, col2:uint):void
+        {
+            // block의 row, col 정보 갱신
+            _blockArray[row1][col1].row = row2;
+            _blockArray[row1][col1].col = col2;
+            
+            _blockArray[row2][col2].row = row1;
+            _blockArray[row2][col2].col = col1;
+            
+            // BlockArray 정보 갱신
+            var tmp:Block = _blockArray[row1][col1];
+            _blockArray[row1][col1] = _blockArray[row2][col2];
+            _blockArray[row2][col2] = tmp;
+            
+            // Board 정보 갱신
+            GameBoard.instance.boardArray[row1][col1] = _blockArray[row1][col1].type;
+            GameBoard.instance.boardArray[row2][col2] = _blockArray[row2][col2].type;
         }
         
     }

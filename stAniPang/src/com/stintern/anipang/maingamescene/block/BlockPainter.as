@@ -55,6 +55,11 @@ package com.stintern.anipang.maingamescene.block
             _container.flatten();
         }
         
+        public function draw():void
+        {
+            _container.flatten();
+        }
+        
         private function getBlockPosition(row:uint, col:uint, texture:Texture):Point
         {
 			return new Point(
@@ -96,5 +101,14 @@ package com.stintern.anipang.maingamescene.block
                     return null;
             }
         }
+        
+        public function turnOnFlatten(turnOn:Boolean):void
+        {
+            if( turnOn )
+                _container.flatten();
+            else
+                _container.unflatten();
+        }
+        
     }
 }
