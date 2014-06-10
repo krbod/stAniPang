@@ -1,7 +1,6 @@
 package com.stintern.anipang.maingamescene.layer
 {
     import com.stintern.anipang.maingamescene.LevelManager;
-    import com.stintern.anipang.maingamescene.block.Block;
     import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
