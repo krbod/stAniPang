@@ -1,6 +1,7 @@
 package com.stintern.anipang.maingamescene.layer
 {
     import com.stintern.anipang.maingamescene.LevelManager;
+    import com.stintern.anipang.maingamescene.block.Block;
     import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
@@ -40,11 +41,18 @@ package com.stintern.anipang.maingamescene.layer
             
             // 블럭들을 배치
             BlockManager.instance.createBlocks();
+            
+            addEventListener(Event.ENTER_FRAME, gameLoop);
         }
         
         public function resetStage():void
         {
             GameBoard.instance.dispose();
+        }
+        
+        private function gameLoop(event:Event):void
+        {
+            BlockManager.instance.stepBlocks();
         }
         
     }

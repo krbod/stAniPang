@@ -59,6 +59,67 @@ package com.stintern.anipang.maingamescene.block
             
             _blockRemover = new BlockRemover();
         }
+        
+        public function stepBlocks():void
+        {
+            var rowCount:uint = _blockArray.length;
+            var boardArray:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
+            
+            for(var i:uint=0; i<rowCount; ++i)
+            {
+                var colCount:uint = _blockArray[i].length;
+                for(var j:uint=0; j<colCount; ++j)
+                {
+                    var block:Block = _blockArray[i][j];
+                    if(block == null)
+                        continue;
+                    
+                    if( block.row >= Resources.BOARD_ROW_COUNT -1 )
+                        continue;
+                    
+                    if( boardArray[block.row+1][block.col] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
+                    {
+                        moveDown(block);
+                    }
+                    
+                }
+            }
+        }
+        
+        private function moveDown(block:Block):void
+        {
+            if( block.isMoving )
+                return;
+            
+            var tween:Tween = new Tween(block.image, 0.2);
+            tween.moveTo(block.image.x, block.image.y + block.image.texture.width);
+            
+            Starling.juggler.add(tween);
+            
+            tween.onStart = onStartMove;
+            tween.onComplete = onCompleteMove;
+            
+            function onStartMove():void
+            {
+                block.isMoving = true;
+                
+                block.row += 1;
+                GameBoard.instance.boardArray[block.row][block.col] = block.type;
+                GameBoard.instance.boardArray[block.row-1][block.col] = GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED;
+                
+                _blockArray[block.row][block.col] = block;
+                _blockArray[block.row-1][block.col] = null;
+
+                _blockPainter.turnOnFlatten(false);
+            }
+            function onCompleteMove():void
+            {
+                block.isMoving = false;
+                
+                _blockPainter.turnOnFlatten(true);
+                tween = null;
+            }
+        }
 
         /**
          * 로드한 보드의 정보를 바탕으로 새로운 블럭들을 배치합니다. 
@@ -150,6 +211,7 @@ package com.stintern.anipang.maingamescene.block
         public function removeBlock(block:Block):void
         {
             _blockPool.push(block);
+            _blockArray[block.row][block.col] = null;
         }
         
         public function moveCallback(row1:int, col1:int, row2:int, col2:int):void
@@ -190,8 +252,6 @@ package com.stintern.anipang.maingamescene.block
             var image1:Image = _blockArray[row1][col1].image;
             var image2:Image = _blockArray[row2][col2].image;
             
-            trace(image1.x, image1.y, image2.x, image2.y);
-            
             var tween:Tween = new Tween(image1, 0.1);
             var tween2:Tween = new Tween(image2, 0.1);
             
@@ -218,6 +278,9 @@ package com.stintern.anipang.maingamescene.block
                 ++completeCount;
                 if(completeCount == 2)
                     updateBlocks(row1, col1, row2, col2, isReturn);
+                
+                tween = null;
+                tween2 = null;
             }
         }
         

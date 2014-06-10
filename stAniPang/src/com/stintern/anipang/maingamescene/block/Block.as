@@ -18,6 +18,7 @@ package com.stintern.anipang.maingamescene.block
 		private var _distanceX:int, _distanceY:int;
         
         private var _callbackMove:Function;
+        private var _isMoving:Boolean;
         
         public function Block()
         {
@@ -133,6 +134,15 @@ package com.stintern.anipang.maingamescene.block
         public function get width():uint
         {
             return _image.texture.width;
+        }
+        
+        public function get isMoving():Boolean
+        {
+            return _isMoving;
+        }
+        public function set isMoving(isMoving):void
+        {
+            _isMoving = isMoving;
         }
     }
 }
