@@ -1,7 +1,6 @@
 package com.stintern.anipang.maingamescene.layer
 {
     import com.stintern.anipang.maingamescene.LevelManager;
-    import com.stintern.anipang.maingamescene.block.Block;
     import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
@@ -11,8 +10,6 @@ package com.stintern.anipang.maingamescene.layer
     
     public class MainGameLayer extends Sprite
     {
-        private var _gameBoard:GameBoard;
-        
         public function MainGameLayer()
         {
             this.name = Resources.LAYER_MAIN_GAME;
@@ -23,9 +20,6 @@ package com.stintern.anipang.maingamescene.layer
         private function init( event:Event ):void
         {
             removeEventListener(Event.ADDED_TO_STAGE, init);
-            
-            // 게임 보드를 초기화 
-            _gameBoard = new GameBoard;
             
             // 블럭들을 출력할 수 있도록 초기화
             BlockManager.instance.init(this);
@@ -42,15 +36,15 @@ package com.stintern.anipang.maingamescene.layer
             var stageLevel:uint = LevelManager.instance.getCurrentLevel();
             
             // 스테이지 레벨에 맞도록 게임 보드를 초기화
-            _gameBoard.initBoard(stageLevel);
+            GameBoard.instance.initBoard(stageLevel);
             
             // 블럭들을 배치
-            BlockManager.instance.createBlocks( _gameBoard.boardArray );
+            BlockManager.instance.createBlocks();
         }
         
         public function resetStage():void
         {
-            _gameBoard.dispose();
+            GameBoard.instance.dispose();
         }
         
     }
