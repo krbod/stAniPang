@@ -1,5 +1,8 @@
 package com.stintern.anipang.maingamescene.block
 {
+    import com.stintern.anipang.maingamescene.block.algorithm.BlockLocater;
+    import com.stintern.anipang.maingamescene.block.algorithm.BlockRemover;
+    import com.stintern.anipang.maingamescene.block.algorithm.BlockRemoverResult;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
     
@@ -20,6 +23,7 @@ package com.stintern.anipang.maingamescene.block
         
         private var _blockPainter:BlockPainter;         // 블럭들을 그리는 객체
         private var _isBlockExchaning:Boolean = false;
+        private var _blockRemover:BlockRemover;
 
         public function BlockManager()
         {
@@ -53,6 +57,7 @@ package com.stintern.anipang.maingamescene.block
             _blockPainter = new BlockPainter();
             layer.addChild(_blockPainter);
             
+            _blockRemover = new BlockRemover();
         }
 
         /**
@@ -96,10 +101,10 @@ package com.stintern.anipang.maingamescene.block
             var blockType:uint;
             switch(board[row][col])
             {
-                case GameBoard.TYPE_OF_BLOCK_EMPTY:
-                    return GameBoard.TYPE_OF_BLOCK_EMPTY;
+                case GameBoard.TYPE_OF_CELL_EMPTY:
+                    return GameBoard.TYPE_OF_CELL_EMPTY;
                     
-                case GameBoard.TYPE_OF_BLOCK_NONE:
+                case GameBoard.TYPE_OF_CELL_NONE:
                     return _blockLocater.makeNewType(board, row, col);
             }
             
@@ -152,7 +157,7 @@ package com.stintern.anipang.maingamescene.block
             if( !nextPosAvailable(row2, col2) || _isBlockExchaning )
                 return;
             
-            exchangeBlock(row1, col1, row2, col2);
+            exchangeBlock(row1, col1, row2, col2, false);
         }
         
         /**
@@ -169,10 +174,10 @@ package com.stintern.anipang.maingamescene.block
             
             switch( GameBoard.instance.boardArray[row][col] )
             {
-                case GameBoard.TYPE_OF_BLOCK_EMPTY:
+                case GameBoard.TYPE_OF_CELL_EMPTY:
                     return false;
                     
-                case GameBoard.TYPE_OF_BLOCK_BOX:
+                case GameBoard.TYPE_OF_CELL_BOX:
                     return false;
                     
                 default:
@@ -180,7 +185,7 @@ package com.stintern.anipang.maingamescene.block
             }
         }
         
-        private function exchangeBlock(row1:uint, col1:uint, row2:uint, col2:uint):void
+        private function exchangeBlock(row1:uint, col1:uint, row2:uint, col2:uint, isReturn:Boolean):void
         {
             var image1:Image = _blockArray[row1][col1].image;
             var image2:Image = _blockArray[row2][col2].image;
@@ -210,7 +215,18 @@ package com.stintern.anipang.maingamescene.block
                 // 변경한 블럭들로 정보 변경
                 updateInfo(row1, col1, row2, col2);
                 
+                // 다시 돌아오는 경우에는 삭제될 블럭을 찾는 알고리즘을 실행시키지 않음
+                if( isReturn )
+                    return;
+                
                 // 변경된 보드에서 삭제될 블럭이 있는 지 확인
+                var result:Array = _blockRemover.checkBlocks(row1, col1, row2, col2);
+                
+                // 삭제될 블럭이 있으면 삭제하고 없으면 블럭을 다시 원위치
+                if( !removeBlocks(result) )
+                {
+                    exchangeBlock(row1, col1, row2, col2, true);
+                }
             }
         }
         
@@ -236,5 +252,71 @@ package com.stintern.anipang.maingamescene.block
             GameBoard.instance.boardArray[row2][col2] = _blockArray[row2][col2].type;
         }
         
+        private function removeBlocks(result:Array):Boolean
+        {
+            if( result[0] == null && result[1] == null )
+                return false;
+            
+            for(var i:uint=0; i<2; ++i)
+            {
+                if( result[i] == null )
+                    continue;
+                    
+                var removerResult:BlockRemoverResult = result[i] as BlockRemoverResult;
+                
+                var stringArray:Array = removerResult.removePos.split(",");
+                
+                var length:uint = stringArray.length;
+                for(var j:uint=0; j<length; ++j)
+                {
+                    var row:uint = removerResult.row;
+                    var col:uint = removerResult.col;
+                    
+                    if( stringArray[j] == "T2" )
+                    {
+                        row -= 2;
+                    }
+                    else if( stringArray[j] == "L2")
+                    {
+                        col -= 2;
+                    }
+                    else if( stringArray[j] == "B2")
+                    {
+                        row += 2;   
+                    }
+                    else if( stringArray[j] == "R2")
+                    {
+                        col += 2;
+                    }
+                    else if( stringArray[j] == "T" )
+                    {
+                        row -= 1;   
+                    }
+                    else if( stringArray[j] == "L")
+                    {
+                        col -= 1;  
+                    }
+                    else if( stringArray[j] == "B")
+                    {
+                        row += 1;
+                    }
+                    else if( stringArray[j] == "R")
+                    {
+                        col += 1;  
+                    }
+                    
+                    // Block 제거
+                    removeBlock(_blockArray[row][col]);
+                    
+                    // Board 정보 갱신
+                    GameBoard.instance.boardArray[row][col] = GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED;
+                }
+                
+
+            }
+            
+            return true;
+               
+        }
     }
 }

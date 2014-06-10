@@ -1,4 +1,4 @@
-package com.stintern.anipang.maingamescene.block
+package com.stintern.anipang.maingamescene.block.algorithm
 {
     import com.stintern.anipang.utils.Resources;
 

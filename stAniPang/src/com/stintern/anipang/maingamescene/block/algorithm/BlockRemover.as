@@ -1,0 +1,247 @@
+package com.stintern.anipang.maingamescene.block.algorithm
+{
+    import com.stintern.anipang.maingamescene.board.GameBoard;
+    import com.stintern.anipang.utils.Resources;
+
+    public class BlockRemover
+    {
+        private var _availableShape:Array;
+        
+        public static var MOVED_LEFT:uint = 0;
+        public static var MOVED_UP:uint = 1;
+        public static var MOVED_RIGHT:uint = 2;
+        public static var MOVED_DOWN:uint = 3;
+        
+        // M:Moved Block
+        // T(TOP):Blocks on the moved one
+        // B(BOTTOM):blocks under the moved one
+        // L(LEFT):blocks at the left side of moved one
+        // R(RIGHT):blocks at the right side of moved one
+        private var POS_TTX:uint = 0;
+        private var POS_TX:uint = 1;
+        private var POS_LLX:uint = 2;
+        private var POS_LX:uint = 3;
+        private var POS_BX:uint = 4;
+        private var POS_BBX:uint = 5;
+        private var POS_RX:uint = 6;
+        private var POS_RRX:uint = 7;
+        
+        private var _positionArray:Array = new Array();
+        
+        public function BlockRemover()
+        {
+            // POS_OOO 가 관여하는 Shape 들 
+            _positionArray.push ( new Array(RemoveShape.TTMBB, RemoveShape.LLMTT, RemoveShape.TTMRR, RemoveShape.TTMB, RemoveShape.TTM) );
+            _positionArray.push ( new Array(RemoveShape.TTMBB, RemoveShape.LLMTT, RemoveShape.TTMRR, RemoveShape.LTMRB, RemoveShape.TTMB, RemoveShape.TMBB, RemoveShape.TTM, RemoveShape.TMB) );
+            _positionArray.push ( new Array(RemoveShape.LLMRR, RemoveShape.LLMTT, RemoveShape.LLMBB, RemoveShape.LLMR, RemoveShape.LLM) );
+            _positionArray.push ( new Array(RemoveShape.LLMRR, RemoveShape.LLMTT, RemoveShape.LLMBB, RemoveShape.LTMRB, RemoveShape.LLMR, RemoveShape.LMRR, RemoveShape.LLM, RemoveShape.LMR) );
+            _positionArray.push ( new Array(RemoveShape.TTMBB, RemoveShape.LLMBB, RemoveShape.RRMBB, RemoveShape.LTMRB, RemoveShape.TTMB, RemoveShape.TMBB, RemoveShape.MBB, RemoveShape.TMB) );
+            _positionArray.push ( new Array(RemoveShape.TTMBB, RemoveShape.LLMBB, RemoveShape.RRMBB, RemoveShape.TMBB, RemoveShape.MBB) );
+            _positionArray.push ( new Array(RemoveShape.LLMRR, RemoveShape.RRMBB, RemoveShape.TTMRR, RemoveShape.LTMRB, RemoveShape.LLMR, RemoveShape.LMRR, RemoveShape.MRR, RemoveShape.LMR) );
+            _positionArray.push ( new Array(RemoveShape.LLMRR, RemoveShape.RRMBB, RemoveShape.TTMRR, RemoveShape.LMRR, RemoveShape.MRR) );
+        }
+        
+        /**
+         * 맞닿아 있는 블럭을 확인해서 제거합니다.
+         * 왼쪽으로 옮겨진 블럭은 오른쪽에 맞닿은 블럭과는 검사를 하지 않습니다. 
+         */
+        public function checkBlocks(row1, col1, row2, col2):Array
+        {
+            var result:Array = new Array();
+            
+            if( row1 < row2 )
+            {
+                result.push(processRemoveAlgorithm(row1, col1, MOVED_UP));
+                result.push(processRemoveAlgorithm(row2, col2, MOVED_DOWN));
+            }
+            else if( row1 > row2)
+            {
+                result.push(processRemoveAlgorithm(row1, col1, MOVED_DOWN));
+                    result.push(processRemoveAlgorithm(row2, col2, MOVED_UP));
+            }
+            else
+            {
+                if( col1 > col2 )
+                {
+                    result.push(processRemoveAlgorithm(row1, col1, MOVED_RIGHT));
+                        result.push(processRemoveAlgorithm(row2, col2, MOVED_LEFT));
+                }
+                else
+                {
+                    result.push(processRemoveAlgorithm(row1, col1, MOVED_LEFT));
+                        result.push(processRemoveAlgorithm(row2, col2, MOVED_RIGHT));
+                }
+            }
+            
+            return result;
+        }
+        
+        /**
+         * 중복되는 블럭을 찾습니다. 
+         * @param row 옮겨진 블럭의 row 인덱스
+         * @param col 옮겨진 블럭의 col 인덱스
+         * @param movedDirection 옮겨진 방향
+         * @return 
+         */
+        private function processRemoveAlgorithm(row:uint, col:uint, movedDirection:uint):BlockRemoverResult
+        {
+            // 제거될 수 있는 모양의 배열을 초기화
+            _availableShape = new Array();
+            _availableShape.length = RemoveShape.SHAPE_COUNT;
+            for(var i:uint=0; i<RemoveShape.SHAPE_COUNT; ++i)
+            {
+                _availableShape[i] = false;
+            }
+
+            // 옮겨진 방향을 기준으로 제거될 수 있는 모양을 설정
+            setAvailableShape(movedDirection);
+            
+            // 서로 맞닿아 있는 블럭들을 검사하여 제거될 수 있는 블럭이 있는 지 확인
+            checkDuplication(row, col, movedDirection);
+            
+            // 제거될 수 있는 모양이 있으면 결과를 리턴
+            for(i=0; i<RemoveShape.SHAPE_COUNT; ++i)
+            {
+                if( _availableShape[i] )
+                {
+                    _availableShape = null;
+                    return new BlockRemoverResult(row, col, i, RemoveShape.getStringAt(i));
+                }
+            }
+            
+            return null;
+        }
+        
+        /**
+         * 옮겨진 방향을 기준으로 제거될 수 있는 모양을 설정합니다. 
+         * @param movedDirection 블럭이 옮겨진 방향
+         */
+        private function setAvailableShape(movedDirection:uint):void
+        {
+            switch(movedDirection)
+            {
+                //블럭이 왼쪽으로 옮겨진 경우
+                // 가능한 모양 : '│', '┘', '┐', ... 
+                case MOVED_LEFT:
+                    _availableShape[0] = true;
+                    _availableShape[2] = true;
+                    _availableShape[3] = true;
+                    _availableShape[7] = true;
+                    _availableShape[8] = true;
+                    _availableShape[11] = true;
+                    _availableShape[12] = true;
+                    _availableShape[13] = true;
+                    _availableShape[15] = true;
+                    break;
+                    
+                case MOVED_UP:
+                    _availableShape[1] = true;
+                    _availableShape[2] = true;
+                    _availableShape[5] = true;
+                    _availableShape[9] = true;
+                    _availableShape[10] = true;
+                    _availableShape[11] = true;
+                    _availableShape[12] = true;
+                    _availableShape[14] = true;
+                    _availableShape[16] = true;
+                    
+                    break;
+                    
+                case MOVED_RIGHT:
+                    _availableShape[0] = true;
+                    _availableShape[4] = true;
+                    _availableShape[5] = true;
+                    _availableShape[7] = true;
+                    _availableShape[8] = true;
+                    _availableShape[11] = true;
+                    _availableShape[13] = true;
+                    _availableShape[14] = true;
+                    _availableShape[15] = true;
+                    break;
+                    
+                case MOVED_DOWN:
+                    _availableShape[1] = true;
+                    _availableShape[3] = true;
+                    _availableShape[4] = true;
+                    _availableShape[9] = true;
+                    _availableShape[10] = true;
+                    _availableShape[12] = true;
+                    _availableShape[13] = true;
+                    _availableShape[14] = true;
+                    _availableShape[16] = true;
+                    break;
+            }
+        }
+
+        private function checkDuplication(row:uint, col:uint, movedDirection:uint):void
+        {
+            var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
+            
+            // 아래로 옮겨진 블럭의 경우에는 위쪽 블럭들을 검사할 필요가 없음
+            if( movedDirection != MOVED_DOWN )
+            {
+                // 옮겨진 블럭과 2개 위쪽으로 떨어진 블럭이 옮겨진 블럭과 같지 않을 경우
+                // 가능하지 않은 모양들을 제거
+                if( row < 2 || board[row-2][col] != board[row][col] )
+                {
+                    removeAvailableFunction(POS_TTX);
+                }
+                
+                // 옮겨진 블럭과 위쪽 블럭을 확인해서 같지 않으면 가능하지 않은 모양을 제거
+                if( row < 1 || board[row-1][col] != board[row][col] )
+                {
+                    removeAvailableFunction(POS_TX);
+                }
+            }
+            
+            // 위와 같은 방식으로 나머지 방향도 검사
+
+            if( movedDirection != MOVED_RIGHT )
+            {
+                if( col < 2 || board[row][col-2] != board[row][col] )
+                {
+                    removeAvailableFunction(POS_LLX);
+                }
+                if( col < 1 || board[row][col-1] != board[row][col] )
+                {
+                    removeAvailableFunction(POS_LX);
+                }
+            }
+            
+            if( movedDirection != MOVED_UP )
+            {
+                if( row > Resources.BOARD_ROW_COUNT-2 || board[row+1][col] != board[row][col] )
+                {
+                    removeAvailableFunction(POS_BX);
+                }
+                if( row > Resources.BOARD_ROW_COUNT-3 || board[row+2][col] != board[row][col] )
+                {
+                    removeAvailableFunction(POS_BBX);
+                }
+            }
+
+            if( movedDirection != MOVED_LEFT )
+            {
+                if( col > Resources.BOARD_COL_COUNT-2 || board[row][col+1] != board[row][col] )
+                {
+                    removeAvailableFunction(POS_RX);
+                }
+                if( col > Resources.BOARD_COL_COUNT-3 || board[row][col+2] != board[row][col] )
+                {
+                    removeAvailableFunction(POS_RRX);
+                }
+            }
+        }
+       
+        private function removeAvailableFunction(type:uint):void
+        {
+            var count:uint = _positionArray[type].length;
+            for(var i:uint=0; i<count; ++i)
+            {
+                _availableShape[ _positionArray[type][i] ] = false;
+            }
+        }
+            
+    }
+}
+

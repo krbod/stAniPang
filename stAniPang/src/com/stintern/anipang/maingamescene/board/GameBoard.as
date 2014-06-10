@@ -11,10 +11,11 @@ package com.stintern.anipang.maingamescene.board
         
         private var _stageInfo:StageInfo; 
         
-        public static var TYPE_OF_BLOCK_NONE:uint = 0;      // 동물만 있는 공간
-        public static var TYPE_OF_BLOCK_EMPTY:uint = 10;     // 아무 것도 없는 공간
-        public static var TYPE_OF_BLOCK_ICE:uint = 20;
-        public static var TYPE_OF_BLOCK_BOX:uint = 30;
+        public static var TYPE_OF_CELL_NONE:uint = 0;      // 동물만 있는 공간
+        public static var TYPE_OF_CELL_EMPTY:uint = 10;     // 아무 것도 없는 공간
+        public static var TYPE_OF_CELL_ICE:uint = 20;
+        public static var TYPE_OF_CELL_BOX:uint = 30;
+        public static var TYPE_OF_CELL_NEED_TO_BE_FILLED:uint = 40;  // 기존에 블럭이 없어지거나 해서 채워져야할 공간
         
         public function GameBoard()
         {
