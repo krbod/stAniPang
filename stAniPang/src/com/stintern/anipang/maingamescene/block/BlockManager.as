@@ -190,6 +190,8 @@ package com.stintern.anipang.maingamescene.block
             var image1:Image = _blockArray[row1][col1].image;
             var image2:Image = _blockArray[row2][col2].image;
             
+            trace(image1.x, image1.y, image2.x, image2.y);
+            
             var tween:Tween = new Tween(image1, 0.1);
             var tween2:Tween = new Tween(image2, 0.1);
             
@@ -201,35 +203,46 @@ package com.stintern.anipang.maingamescene.block
             
             tween.onStart = onStartExchangeBlock;
             tween.onComplete = onCompleteExchangeBlock;
+            tween2.onComplete = onCompleteExchangeBlock;
+            
 
             function onStartExchangeBlock():void
             {
                 _isBlockExchaning = true;
                 _blockPainter.turnOnFlatten(false);
             }
+            
+            var completeCount:uint = 0;
             function onCompleteExchangeBlock():void
             {
-                _isBlockExchaning = false; 
-                _blockPainter.turnOnFlatten(true);
-                
-                // 변경한 블럭들로 정보 변경
-                updateInfo(row1, col1, row2, col2);
-                
-                // 다시 돌아오는 경우에는 삭제될 블럭을 찾는 알고리즘을 실행시키지 않음
-                if( isReturn )
-                    return;
-                
-                // 변경된 보드에서 삭제될 블럭이 있는 지 확인
-                var result:Array = _blockRemover.checkBlocks(row1, col1, row2, col2);
-                
-                // 삭제될 블럭이 있으면 삭제하고 없으면 블럭을 다시 원위치
-                if( !removeBlocks(result) )
-                {
-                    exchangeBlock(row1, col1, row2, col2, true);
-                }
+                ++completeCount;
+                if(completeCount == 2)
+                    updateBlocks(row1, col1, row2, col2, isReturn);
             }
         }
         
+        private function updateBlocks(row1:uint, col1:uint, row2:uint, col2:uint, isReturn:Boolean):void
+        {
+            _isBlockExchaning = false; 
+            _blockPainter.turnOnFlatten(true);
+            
+            // 변경한 블럭들로 정보 변경
+            updateInfo(row1, col1, row2, col2);
+            
+            // 다시 돌아오는 경우에는 삭제될 블럭을 찾는 알고리즘을 실행시키지 않음
+            if( isReturn )
+                return;
+            
+            // 변경된 보드에서 삭제될 블럭이 있는 지 확인
+            var result:Array = _blockRemover.checkBlocks(row1, col1, row2, col2);
+            
+            // 삭제될 블럭이 있으면 삭제하고 없으면 블럭을 다시 원위치
+            if( !removeBlocks(result) )
+            {
+                exchangeBlock(row1, col1, row2, col2, true);
+            }
+        }
+            
         /**
          * 블럭 및 보드들의 정보를 갱신 
          */
