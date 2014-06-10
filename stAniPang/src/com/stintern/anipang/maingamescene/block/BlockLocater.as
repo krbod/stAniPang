@@ -82,7 +82,7 @@ package com.stintern.anipang.maingamescene.block
             {
                 if( except[i] == result )
                 {
-                    return getRandom(except);
+                    return getRandom(except[0], except[1]);
                 }
             }
             
