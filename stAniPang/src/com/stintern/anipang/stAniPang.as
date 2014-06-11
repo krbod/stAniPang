@@ -1,7 +1,6 @@
 package com.stintern.anipang
 {
     import com.stintern.anipang.maingamescene.layer.MainGameScene;
-    import com.stintern.anipang.utils.Resources;
     
     import flash.display.Sprite;
     import flash.display.StageAlign;
@@ -10,7 +9,7 @@ package com.stintern.anipang
     
     import starling.core.Starling;
     
-    
+    [SWF(frameRate="60")]
     public class stAniPang extends Sprite
     {
         private var mStarling:Starling;
@@ -26,6 +25,8 @@ package com.stintern.anipang
             
             // set anti-aliasing (higher the better quality but slower performance)
             mStarling.antiAliasing = 1;
+            
+            mStarling.showStats = true;
             
             // start it!
             mStarling.start();
