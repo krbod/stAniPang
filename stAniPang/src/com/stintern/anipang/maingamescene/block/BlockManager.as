@@ -1,5 +1,7 @@
 package com.stintern.anipang.maingamescene.block
 {
+    import com.greensock.TweenLite;
+    import com.greensock.TweenMax;
     import com.stintern.anipang.maingamescene.block.algorithm.BlockLocater;
     import com.stintern.anipang.maingamescene.block.algorithm.BlockRemover;
     import com.stintern.anipang.maingamescene.block.algorithm.BlockRemoverResult;
@@ -73,10 +75,32 @@ package com.stintern.anipang.maingamescene.block
             var boardArray:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
             
 			// 블럭들을 아래로 낙하시킴
-            for(var i:uint=0; i<rowCount; ++i)
+//            for(var i:uint=0; i<rowCount; ++i)
+//            {
+//                var colCount:uint = _blockArray[i].length;
+//                for(var j:uint=0; j<colCount; ++j)
+//                {
+//                    var block:Block = _blockArray[i][j];    // 비워있는 보드칸이면 null 반환
+//                    if(block == null)
+//                        continue;
+//                    
+//                    // 마지막 행이면 검사하지 않음
+//                    if( block.row == Resources.BOARD_ROW_COUNT -1 )
+//                        continue;
+//                    
+//                    // 아래가 블록으로 채워져야하는 칸이면 낙하
+//                    if( boardArray[block.row+1][block.col] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
+//                    {
+//                        moveDown(block);
+//                    }
+//                    
+//                }
+//            }
+            
+            for(var i:int=rowCount-1; i>=0; --i)
             {
                 var colCount:uint = _blockArray[i].length;
-                for(var j:uint=0; j<colCount; ++j)
+                for(var j:int=colCount-1; j>=0; --j)
                 {
                     var block:Block = _blockArray[i][j];    // 비워있는 보드칸이면 null 반환
                     if(block == null)
@@ -154,12 +178,7 @@ package com.stintern.anipang.maingamescene.block
                 return;
             
             // 낙하 트윈 생성
-            var tween:Tween = new Tween(block.image, 0.1);
-            tween.moveTo(block.image.x, block.image.y + block.image.texture.width);
-            Starling.juggler.add(tween);
-            
-            tween.onStart = onStartMove;
-            tween.onComplete = onCompleteMove;
+            TweenLite.to(block.image, 0.1, {x:block.image.x, y:block.image.y + block.image.texture.width, onStart:onStartMove, onComplete:onCompleteMove});
             
             function onStartMove():void
             {
@@ -180,7 +199,7 @@ package com.stintern.anipang.maingamescene.block
                 block.isMoving = false;
                 
                 _blockPainter.turnOnFlatten(true);
-                tween = null;
+                //tween = null;
             }
         }
 
