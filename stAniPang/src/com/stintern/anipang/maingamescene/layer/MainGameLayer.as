@@ -1,6 +1,7 @@
 package com.stintern.anipang.maingamescene.layer
 {
     import com.stintern.anipang.maingamescene.LevelManager;
+    import com.stintern.anipang.maingamescene.block.Block;
     import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
@@ -42,6 +43,12 @@ package com.stintern.anipang.maingamescene.layer
             BlockManager.instance.createBlocks();
             
             addEventListener(Event.ENTER_FRAME, gameLoop);
+            
+            //Debugging
+            var b:Block = BlockManager.instance.createBlock(1);
+            b.image.x = 50;
+            b.image.y = 50;
+            b.image.name = "DEBUGGING";
         }
         
         public function resetStage():void

@@ -81,6 +81,12 @@ package com.stintern.anipang.maingamescene.block
 					
 					case TouchPhase.ENDED :
 						_isTouch = false;
+                        
+                        //debugging
+                        if( _image.name == "DEBUGGING" )
+                        {
+                            BlockManager.instance.debugging(this);
+                        }
 						break;
 				}
 			}
@@ -124,11 +130,11 @@ package com.stintern.anipang.maingamescene.block
         
         public function get visible():Boolean
         {
-            return _image.visible;
+            return _image.isVisible;
         }
         public function set visible(visible:Boolean):void
         {
-            _image.visible = visible;
+            _image.isVisible = visible;
         }
         
         public function get width():uint

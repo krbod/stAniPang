@@ -6,9 +6,11 @@ package com.stintern.anipang.maingamescene.block
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
     
+    import starling.animation.Transitions;
     import starling.animation.Tween;
     import starling.core.Starling;
     import starling.display.Image;
+    import starling.display.Quad;
     import starling.display.Sprite;
 
     public class BlockManager
@@ -120,12 +122,13 @@ package com.stintern.anipang.maingamescene.block
 					
 					tween.onStart = onStartMove;
 					tween.onComplete = onCompleteMove;
+                    
+                    _blockArray[block.row][block.col] = block;
 					
 					function onStartMove():void
 					{
 						block.isMoving = true;
 						
-						_blockArray[block.row][block.col] = block;
 						_blockPainter.turnOnFlatten(false);
 					}
 					function onCompleteMove():void
@@ -235,7 +238,7 @@ package com.stintern.anipang.maingamescene.block
          * @param autoRegister 블럭 매니저에 등록하여 바로 화면에 출력할 지 여부
          * @return 생성한 블럭
          */
-        private function createBlock(type:uint, autoRegister:Boolean = true):Block
+        public function createBlock(type:uint, autoRegister:Boolean = true):Block
         {
             //투명 블럭등 동물 블럭이 아닌 경우
             if( type > Resources.BLOCK_TYPE_END )
@@ -461,12 +464,45 @@ package com.stintern.anipang.maingamescene.block
                     // Board 정보 갱신
                     GameBoard.instance.boardArray[row][col] = GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED;
                 }
-                
-
             }
             
             return true;
-               
+        }
+        
+        
+        
+        //DEBUGGING
+        public function debugging(block:Block):void
+        {
+            var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray; 
+            var rowCount:uint = Resources.BOARD_ROW_COUNT;
+            var colCount:uint = Resources.BOARD_ROW_COUNT;
+            
+            trace("");
+            trace("board");
+            for(var i:uint = 0; i<rowCount; ++i)
+            {
+                var str:String = "";
+                for(var j:uint = 0; j<colCount; ++j)
+                {
+                    str += board[i][j].toString() + ", ";
+                }
+                trace( str );
+            }
+            trace("board");
+            for(var i:uint = 0; i<rowCount; ++i)
+            {
+                var str:String = "";
+                for(var j:uint = 0; j<colCount; ++j)
+                {
+                    if(_blockArray[i][j] == null )
+                        str += "null, ";
+                    else
+                        str += _blockArray[i][j].type.toString() + ", ";
+                }
+                trace( str );
+            }
+            
         }
     }
 }
