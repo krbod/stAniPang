@@ -6,11 +6,11 @@ package com.stintern.anipang.maingamescene.block
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
     
-    import starling.animation.Transitions;
+    import flash.geom.Point;
+    
     import starling.animation.Tween;
     import starling.core.Starling;
     import starling.display.Image;
-    import starling.display.Quad;
     import starling.display.Sprite;
 
     public class BlockManager
@@ -107,7 +107,7 @@ package com.stintern.anipang.maingamescene.block
 			{
 				if( boardArray[0][i] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
 				{
-					var block:Block = createBlock( uint(Math.random() * Resources.BLOCK_TYPE_COUNT) );	
+					var block:Block = createBlock( uint(Math.random() * Resources.BLOCK_TYPE_COUNT) + Resources.BLOCK_TYPE_START);	
 					block.row = 0;
 					block.col = i;
 					
@@ -227,6 +227,9 @@ package com.stintern.anipang.maingamescene.block
                     
                 case GameBoard.TYPE_OF_CELL_NONE:
                     return _blockLocater.makeNewType(board, row, col);
+                    
+                default:
+                    return board[row][col];
             }
             
             return blockType;
@@ -409,6 +412,7 @@ package com.stintern.anipang.maingamescene.block
             if( result[0] == null && result[1] == null )
                 return false;
             
+            var point:Point = new Point();
             for(var i:uint=0; i<2; ++i)
             {
                 if( result[i] == null )
@@ -420,55 +424,84 @@ package com.stintern.anipang.maingamescene.block
                 var length:uint = stringArray.length;
                 for(var j:uint=0; j<length; ++j)
                 {
-                    var row:uint = removerResult.row;
-                    var col:uint = removerResult.col;
+                    point.x = removerResult.row;
+                    point.y = removerResult.col;
                     
-                    switch( stringArray[j] )
+                    parseIndexString(point, stringArray[j]);
+                    
+                    // 옮겨진 블럭인 경우 타입을 확인해서 다른 블럭으로 변환할 지 확인
+                    if( removerResult.row == point.x && removerResult.col == point.y )
                     {
-                        case "T2":
-                            row -= 2;
-                            break;
-                        
-                        case "L2":
-                            col -= 2;
-                            break;
-                        
-                        case "B2":
-                            row += 2;
-                            break;
-
-                        case "R2":
-                            col += 2;
-                            break;
-
-                        case "T":
-                            row -= 1;
-                            break;
-                        
-                        case "L":
-                            col -= 1;
-                            break;
-                        
-                        case "B":
-                            row += 1;
-                            break;
-
-                        case "R":
-                            col += 1;
-                            break;
+                        makeSpecialBlock(point.x, point.y, removerResult.type);
                     }
-                    
-                    // Block 제거
-                    removeBlock(_blockArray[row][col]);
-                    
-                    // Board 정보 갱신
-                    GameBoard.instance.boardArray[row][col] = GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED;
+                    else
+                    {
+                        // Block 제거
+                        removeBlock(_blockArray[point.x][point.y]);
+                        
+                        // Board 정보 갱신
+                        GameBoard.instance.boardArray[point.x][point.y] = GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED;  
+                    }
                 }
             }
             
+            point= null
             return true;
         }
         
+        private function makeSpecialBlock(row:uint, col:uint, type:uint):void
+        {
+            switch( type )
+            {
+                case BlockRemoverResult.TYPE_RESULT_5_BLOCKS_LINEAR:
+                    _blockArray[row][col].type = Resources.BLOCK_TYPE_STAR;
+                    GameBoard.instance.boardArray[row][col] = _blockArray[row][col].type
+                    break;
+                
+                case BlockRemoverResult.TYPE_RESULT_5_BLOCKS_RIGHT_ANGLE:
+                    _blockArray[row][col].type *= 10;
+                    GameBoard.instance.boardArray[row][col] = _blockArray[row][col].type
+                    break;
+                
+                case BlockRemoverResult.TYPE_RESULT_4_BLOCKS_LEFT_RIGHT:
+                    _blockArray[row][col].type = _blockArray[row][col].type * 10 + 1;
+                    GameBoard.instance.boardArray[row][col] = _blockArray[row][col].type
+                    break;
+                
+                case BlockRemoverResult.TYPE_RESULT_4_BLOCKS_UP_DOWN:
+                    _blockArray[row][col].type = _blockArray[row][col].type * 10 + 2;
+                    GameBoard.instance.boardArray[row][col] = _blockArray[row][col].type
+                    break;
+                
+                case BlockRemoverResult.TYPE_RESULT_3_BLOCKS:
+                    removeBlock(_blockArray[row][col]);
+                    GameBoard.instance.boardArray[row][col] = GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED;
+                    break;
+            }
+            
+            if( type != BlockRemoverResult.TYPE_RESULT_3_BLOCKS )
+            {
+                trace( _blockArray[row][col].type) ;
+                _blockPainter.changeTexture(_blockArray[row][col], _blockArray[row][col].type);
+            }
+        }
+        
+        private function parseIndexString(result:Point, letter:String):Point
+        {
+            switch( letter )
+            {
+                case "T2":  result.x -= 2;  break;
+                case "L2":  result.y -= 2;  break;
+                case "B2":  result.x += 2;  break;
+                case "R2":  result.y += 2;  break;
+                case "T":   result.x -= 1;  break;
+                case "L":   result.y -= 1;  break;
+                case "B":   result.x += 1;  break;
+                case "R":   result.y += 1;  break;
+            }
+            
+            return result;
+        }
         
         
         //DEBUGGING
@@ -503,6 +536,7 @@ package com.stintern.anipang.maingamescene.block
                 trace( str );
             }
             
+            _blockPainter.changeTexture(block, 7);
         }
     }
 }

@@ -77,7 +77,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
         
         private function getRandom(... except):uint
         {
-            var result:uint = uint(Math.random() * Resources.BLOCK_TYPE_COUNT);
+            var result:uint = uint(Math.random() * Resources.BLOCK_TYPE_COUNT) + Resources.BLOCK_TYPE_START;
             for(var i:uint=0; i<except.length; ++i)
             {
                 if( except[i] == result )

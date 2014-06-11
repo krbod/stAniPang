@@ -33,19 +33,105 @@ package com.stintern.anipang.utils
         public static var MISSION_PROPERTY_SCORE:String = "score";
         
         
-        public static var BLOCK_TYPE_START:uint = 0;
-        public static var BLOCK_TYPE_ARI:uint = 0;
-        public static var BLOCK_TYPE_MICKY:uint = 1;
-        public static var BLOCK_TYPE_LUCY:uint = 2;
-        public static var BLOCK_TYPE_BLUE:uint = 3;
-        public static var BLOCK_TYPE_PINKY:uint = 4;
-        public static var BLOCK_TYPE_ANI:uint = 5;
-        public static var BLOCK_TYPE_PANG:uint = 6;
-        public static var BLOCK_TYPE_MONGYI:uint = 7;
-        public static var BLOCK_TYPE_END:uint = 7;
-        public static var BLOCK_TYPE_COUNT:uint = BLOCK_TYPE_END + 1;
-        
 
+        /** Block Type */
+        public static var BLOCK_TYPE_START:uint = 1;
+
+        public static var BLOCK_TYPE_ARI:uint = 1;
+        public static var BLOCK_TYPE_MICKY:uint = 2;
+        public static var BLOCK_TYPE_LUCY:uint = 3;
+        public static var BLOCK_TYPE_BLUE:uint = 4;
+        public static var BLOCK_TYPE_PINKY:uint = 5;
+        public static var BLOCK_TYPE_ANI:uint = 6;
+        public static var BLOCK_TYPE_MONGYI:uint = 7;
+
+        public static var BLOCK_TYPE_END:uint = 7;
+        public static var BLOCK_TYPE_COUNT:uint = BLOCK_TYPE_END - BLOCK_TYPE_START + 1;
+
+        // Special Blocks
+        public static var BLOCK_TYPE_ARI_HEART:uint = BLOCK_TYPE_ARI * 10;
+        public static var BLOCK_TYPE_ARI_LR_ARROW:uint = BLOCK_TYPE_ARI * 10 + 1;
+        public static var BLOCK_TYPE_ARI_TB_ARROW:uint = BLOCK_TYPE_ARI * 10 + 2;
+
+        public static var BLOCK_TYPE_MICKY_HEART:uint = BLOCK_TYPE_MICKY * 10;
+        public static var BLOCK_TYPE_MICKY_LR_ARROW:uint = BLOCK_TYPE_MICKY * 10 + 1;
+        public static var BLOCK_TYPE_MICKY_TB_ARROW:uint = BLOCK_TYPE_MICKY * 10 + 2;
+
+        public static var BLOCK_TYPE_LUCY_HEART:uint = BLOCK_TYPE_LUCY * 10;
+        public static var BLOCK_TYPE_LUCY_LR_ARROW:uint = BLOCK_TYPE_LUCY * 10 + 1;
+        public static var BLOCK_TYPE_LUCY_TB_ARROW:uint = BLOCK_TYPE_LUCY * 10 + 2;
+
+        public static var BLOCK_TYPE_BLUE_HEART:uint = BLOCK_TYPE_BLUE * 10 ;
+        public static var BLOCK_TYPE_BLUE_LR_ARROW:uint = BLOCK_TYPE_BLUE * 10 + 1;
+        public static var BLOCK_TYPE_BLUE_TB_ARROW:uint = BLOCK_TYPE_BLUE * 10 + 2;
+
+        public static var BLOCK_TYPE_PINKY_HEART:uint = BLOCK_TYPE_PINKY * 10;
+        public static var BLOCK_TYPE_PINKY_LR_ARROW:uint = BLOCK_TYPE_PINKY * 10 + 1;
+        public static var BLOCK_TYPE_PINKY_TB_ARROW:uint = BLOCK_TYPE_PINKY * 10 + 2;
+
+        public static var BLOCK_TYPE_ANI_HEART:uint = BLOCK_TYPE_ANI * 10;
+        public static var BLOCK_TYPE_ANI_LR_ARROW:uint = BLOCK_TYPE_ANI * 10 + 1;
+        public static var BLOCK_TYPE_ANI_TB_ARROW:uint = BLOCK_TYPE_ANI * 10 + 2;
+
+        public static var BLOCK_TYPE_MONGYI_HEART:uint = BLOCK_TYPE_MONGYI * 10;
+        public static var BLOCK_TYPE_MONGYI_LR_ARROW:uint = BLOCK_TYPE_MONGYI * 10 + 1;
+        public static var BLOCK_TYPE_MONGYI_TB_ARROW:uint = BLOCK_TYPE_MONGYI * 10 + 2;
+
+        public static var BLOCK_TYPE_STAR:uint = 90;
+
+        // Others
+        public static var BLOCK_TYPE_BOX:uint = 91;
+        public static var BLOCK_TYPE_BOX_CROSS_HALF:uint = 92;
+        public static var BLOCK_TYPE_BOX_CROSS:uint = 93;
+
+        public static var BLOCK_TYPE_ICE:uint = 94;
+
+        
+        
+        
+        /** Texture Name */
+        public static var TEXTURE_NAME_ANI:String = "ani";
+        public static var TEXTURE_NAME_ANI_HEART:String = "ani_heart";
+        public static var TEXTURE_NAME_ANI_LR_ARROW:String = "ani_LR_arrow";
+        public static var TEXTURE_NAME_ANI_TB_ARROW:String = "ani_TB_arrow";
+        
+        public static var TEXTURE_NAME_ARI:String = "ari";
+        public static var TEXTURE_NAME_ARI_HEART:String = "ari_heart";
+        public static var TEXTURE_NAME_ARI_LR_ARROW:String = "ari_LR_arrow";
+        public static var TEXTURE_NAME_ARI_TB_ARROW:String = "ari_TB_arrow";
+        
+        public static var TEXTURE_NAME_BLUE:String = "blue";
+        public static var TEXTURE_NAME_BLUE_HEART:String = "blue_heart";
+        public static var TEXTURE_NAME_BLUE_LR_ARROW:String = "blue_LR_arrow";
+        public static var TEXTURE_NAME_BLUE_TB_ARROW:String = "blue_TB_arrow";
+        
+        public static var TEXTURE_NAME_LUCY:String = "lucy";
+        public static var TEXTURE_NAME_LUCY_HEART:String = "lucy_heart";
+        public static var TEXTURE_NAME_LUCY_LR_ARROW:String = "lucy_LR_arrow";
+        public static var TEXTURE_NAME_LUCY_TB_ARROW:String = "lucy_TB_arrow";
+        
+        public static var TEXTURE_NAME_MICKY:String = "micky";
+        public static var TEXTURE_NAME_MICKY_HEART:String = "micky_heart";
+        public static var TEXTURE_NAME_MICKY_LR_ARROW:String = "micky_LR_arrow";
+        public static var TEXTURE_NAME_MICKY_TB_ARROW:String = "micky_TB_arrow";
+        
+        public static var TEXTURE_NAME_MONGYI:String = "mongyi";
+        public static var TEXTURE_NAME_MONGYI_HEART:String = "mongyi_heart";
+        public static var TEXTURE_NAME_MONGYI_LR_ARROW:String = "mongyi_LR_arrow";
+        public static var TEXTURE_NAME_MONGYI_TB_ARROW:String = "mongyi_TB_arrow";
+        
+        public static var TEXTURE_NAME_PINKY:String = "pinky";
+        public static var TEXTURE_NAME_PINKY_HEART:String = "pinky_heart";
+        public static var TEXTURE_NAME_PINKY_LR_ARROW:String = "pinky_LR_arrow";
+        public static var TEXTURE_NAME_PINKY_TB_ARROW:String = "pinky_TB_arrow";
+        
+        public static var TEXTURE_NAME_BOX:String = "box";
+        public static var TEXTURE_NAME_BOX_CROSS:String = "box_cross";
+        public static var TEXTURE_NAME_HEART:String = "heart";
+        public static var TEXTURE_NAME_ICE:String = "ice";
+        public static var TEXTURE_NAME_PANG:String = "pang";
+        public static var TEXTURE_NAME_STAR:String = "star";
+            
         /** Game Enviroment */
 
         public static var BOARD_ROW_COUNT:uint = 8;

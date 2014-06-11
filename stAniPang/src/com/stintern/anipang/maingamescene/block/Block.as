@@ -26,16 +26,30 @@ package com.stintern.anipang.maingamescene.block
         
         internal function init(type:uint, texture:Texture, callback:Function):void
         {
-            if( _image == null )
-            {                
-                _image = new Image(texture);
-				_image.addEventListener(TouchEvent.TOUCH, onTouch);
-            }
+            setTexture(texture);
             
             _type = type;
             _callbackMove = callback;
         }
 		
+        public function setTexture(texture:Texture, x:Number = 0.0, y:Number = 0.0):void
+        {
+            if( _image == null )
+            {
+                _image = new Image(texture);
+                _image.addEventListener(TouchEvent.TOUCH, onTouch);
+                
+                _image.x = x;
+                _image.y = y;
+            }
+        }
+        
+        public function disposeImage():void
+        {
+            _image.removeEventListener(TouchEvent.TOUCH, onTouch);
+            _image = null;
+        }
+        
 		private function onTouch(event:TouchEvent):void
 		{
 			var touch:Touch = event.getTouch(event.target as DisplayObject);

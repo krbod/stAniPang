@@ -40,7 +40,7 @@ package com.stintern.anipang.utils
                 var colVector:Vector.<uint> = new Vector.<uint>();
                 for(var j:uint=0; j<colCount; ++j)
                 {
-                    colVector.push( (int)(trim(tmpArray[i*colCount + j])) * 10);
+                    colVector.push( (int)(trim(tmpArray[i*colCount + j])) );
                 }
                 resultBoard.push(colVector);
             }
