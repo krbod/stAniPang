@@ -34,7 +34,8 @@ package com.stintern.anipang.utils
         
         
 
-        /** Block Type */
+        /** Block Types */
+
         public static var BLOCK_TYPE_START:uint = 1;
 
         public static var BLOCK_TYPE_ARI:uint = 1;
@@ -48,38 +49,50 @@ package com.stintern.anipang.utils
         public static var BLOCK_TYPE_END:uint = 7;
         public static var BLOCK_TYPE_COUNT:uint = BLOCK_TYPE_END - BLOCK_TYPE_START + 1;
 
-        // Special Blocks
-        public static var BLOCK_TYPE_ARI_HEART:uint = BLOCK_TYPE_ARI * 10;
-        public static var BLOCK_TYPE_ARI_LR_ARROW:uint = BLOCK_TYPE_ARI * 10 + 1;
-        public static var BLOCK_TYPE_ARI_TB_ARROW:uint = BLOCK_TYPE_ARI * 10 + 2;
+        /** Special Blocks Types */
 
-        public static var BLOCK_TYPE_MICKY_HEART:uint = BLOCK_TYPE_MICKY * 10;
-        public static var BLOCK_TYPE_MICKY_LR_ARROW:uint = BLOCK_TYPE_MICKY * 10 + 1;
-        public static var BLOCK_TYPE_MICKY_TB_ARROW:uint = BLOCK_TYPE_MICKY * 10 + 2;
+        // Utilities
+        public static var BLOCK_TYPE_PADDING:uint = 10;
+        public static var BLOCK_TYPE_HEART_INDEX = 0;
+        public static var BLOCK_TYPE_LR_ARROW_INDEX = 1;
+        public static var BLOCK_TYPE_TB_ARROW_INDEX = 2;
 
-        public static var BLOCK_TYPE_LUCY_HEART:uint = BLOCK_TYPE_LUCY * 10;
-        public static var BLOCK_TYPE_LUCY_LR_ARROW:uint = BLOCK_TYPE_LUCY * 10 + 1;
-        public static var BLOCK_TYPE_LUCY_TB_ARROW:uint = BLOCK_TYPE_LUCY * 10 + 2;
+        // Special block types
+        public static var BLOCK_TYPE_SPECIAL_BLOCK_START:uint = BLOCK_TYPE_START * BLOCK_TYPE_PADDING;
 
-        public static var BLOCK_TYPE_BLUE_HEART:uint = BLOCK_TYPE_BLUE * 10 ;
-        public static var BLOCK_TYPE_BLUE_LR_ARROW:uint = BLOCK_TYPE_BLUE * 10 + 1;
-        public static var BLOCK_TYPE_BLUE_TB_ARROW:uint = BLOCK_TYPE_BLUE * 10 + 2;
+        public static var BLOCK_TYPE_ARI_HEART:uint = BLOCK_TYPE_ARI * BLOCK_TYPE_PADDING;
+        public static var BLOCK_TYPE_ARI_LR_ARROW:uint = BLOCK_TYPE_ARI * BLOCK_TYPE_PADDING + 1;
+        public static var BLOCK_TYPE_ARI_TB_ARROW:uint = BLOCK_TYPE_ARI * BLOCK_TYPE_PADDING + 2;
 
-        public static var BLOCK_TYPE_PINKY_HEART:uint = BLOCK_TYPE_PINKY * 10;
-        public static var BLOCK_TYPE_PINKY_LR_ARROW:uint = BLOCK_TYPE_PINKY * 10 + 1;
-        public static var BLOCK_TYPE_PINKY_TB_ARROW:uint = BLOCK_TYPE_PINKY * 10 + 2;
+        public static var BLOCK_TYPE_MICKY_HEART:uint = BLOCK_TYPE_MICKY * BLOCK_TYPE_PADDING;
+        public static var BLOCK_TYPE_MICKY_LR_ARROW:uint = BLOCK_TYPE_MICKY * BLOCK_TYPE_PADDING + 1;
+        public static var BLOCK_TYPE_MICKY_TB_ARROW:uint = BLOCK_TYPE_MICKY * BLOCK_TYPE_PADDING + 2;
 
-        public static var BLOCK_TYPE_ANI_HEART:uint = BLOCK_TYPE_ANI * 10;
-        public static var BLOCK_TYPE_ANI_LR_ARROW:uint = BLOCK_TYPE_ANI * 10 + 1;
-        public static var BLOCK_TYPE_ANI_TB_ARROW:uint = BLOCK_TYPE_ANI * 10 + 2;
+        public static var BLOCK_TYPE_LUCY_HEART:uint = BLOCK_TYPE_LUCY * BLOCK_TYPE_PADDING;
+        public static var BLOCK_TYPE_LUCY_LR_ARROW:uint = BLOCK_TYPE_LUCY * BLOCK_TYPE_PADDING + 1;
+        public static var BLOCK_TYPE_LUCY_TB_ARROW:uint = BLOCK_TYPE_LUCY * BLOCK_TYPE_PADDING + 2;
 
-        public static var BLOCK_TYPE_MONGYI_HEART:uint = BLOCK_TYPE_MONGYI * 10;
-        public static var BLOCK_TYPE_MONGYI_LR_ARROW:uint = BLOCK_TYPE_MONGYI * 10 + 1;
-        public static var BLOCK_TYPE_MONGYI_TB_ARROW:uint = BLOCK_TYPE_MONGYI * 10 + 2;
+        public static var BLOCK_TYPE_BLUE_HEART:uint = BLOCK_TYPE_BLUE * BLOCK_TYPE_PADDING ;
+        public static var BLOCK_TYPE_BLUE_LR_ARROW:uint = BLOCK_TYPE_BLUE * BLOCK_TYPE_PADDING + 1;
+        public static var BLOCK_TYPE_BLUE_TB_ARROW:uint = BLOCK_TYPE_BLUE * BLOCK_TYPE_PADDING + 2;
+
+        public static var BLOCK_TYPE_PINKY_HEART:uint = BLOCK_TYPE_PINKY * BLOCK_TYPE_PADDING;
+        public static var BLOCK_TYPE_PINKY_LR_ARROW:uint = BLOCK_TYPE_PINKY * BLOCK_TYPE_PADDING + 1;
+        public static var BLOCK_TYPE_PINKY_TB_ARROW:uint = BLOCK_TYPE_PINKY * BLOCK_TYPE_PADDING + 2;
+
+        public static var BLOCK_TYPE_ANI_HEART:uint = BLOCK_TYPE_ANI * BLOCK_TYPE_PADDING;
+        public static var BLOCK_TYPE_ANI_LR_ARROW:uint = BLOCK_TYPE_ANI * BLOCK_TYPE_PADDING + 1;
+        public static var BLOCK_TYPE_ANI_TB_ARROW:uint = BLOCK_TYPE_ANI * BLOCK_TYPE_PADDING + 2;
+
+        public static var BLOCK_TYPE_MONGYI_HEART:uint = BLOCK_TYPE_MONGYI * BLOCK_TYPE_PADDING;
+        public static var BLOCK_TYPE_MONGYI_LR_ARROW:uint = BLOCK_TYPE_MONGYI * BLOCK_TYPE_PADDING + 1;
+        public static var BLOCK_TYPE_MONGYI_TB_ARROW:uint = BLOCK_TYPE_MONGYI * BLOCK_TYPE_PADDING + 2;
 
         public static var BLOCK_TYPE_STAR:uint = 90;
 
-        // Others
+        public static var BLOCK_TYPE_SPECIAL_BLOCK_END:uint = BLOCK_TYPE_STAR;;
+
+        // Other Blocks
         public static var BLOCK_TYPE_BOX:uint = 91;
         public static var BLOCK_TYPE_BOX_CROSS_HALF:uint = 92;
         public static var BLOCK_TYPE_BOX_CROSS:uint = 93;

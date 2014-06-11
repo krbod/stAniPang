@@ -182,13 +182,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
             {
                 // 옮겨진 블럭과 2개 위쪽으로 떨어진 블럭이 옮겨진 블럭과 같지 않을 경우
                 // 가능하지 않은 모양들을 제거
-                if( row < 2 || board[row-2][col] != board[row][col] )
+                if(row < 2  ||  !check2Value(board, row, col, -2, 0) )
                 {
                     removeAvailableFunction(POS_TTX);
                 }
                 
-                // 옮겨진 블럭과 위쪽 블럭을 확인해서 같지 않으면 가능하지 않은 모양을 제거
-                if( row < 1 || board[row-1][col] != board[row][col] )
+                if( row < 1 || !check2Value(board, row, col, -1, 0) )
                 {
                     removeAvailableFunction(POS_TX);
                 }
@@ -198,11 +197,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
 
             if( movedDirection != MOVED_RIGHT )
             {
-                if( col < 2 || board[row][col-2] != board[row][col] )
+                if( col < 2 || !check2Value(board, row, col, 0, -2) )
                 {
                     removeAvailableFunction(POS_LLX);
                 }
-                if( col < 1 || board[row][col-1] != board[row][col] )
+                  
+                if( col < 1 || !check2Value(board, row, col, 0, -1) )
                 {
                     removeAvailableFunction(POS_LX);
                 }
@@ -210,11 +210,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
             
             if( movedDirection != MOVED_UP )
             {
-                if( row > Resources.BOARD_ROW_COUNT-2 || board[row+1][col] != board[row][col] )
+                if( row > Resources.BOARD_ROW_COUNT-2 ||  !check2Value(board, row, col, 1, 0) )
                 {
                     removeAvailableFunction(POS_BX);
                 }
-                if( row > Resources.BOARD_ROW_COUNT-3 || board[row+2][col] != board[row][col] )
+                
+                if( row > Resources.BOARD_ROW_COUNT-3 || !check2Value(board, row, col, 2, 0) )
                 {
                     removeAvailableFunction(POS_BBX);
                 }
@@ -222,15 +223,31 @@ package com.stintern.anipang.maingamescene.block.algorithm
 
             if( movedDirection != MOVED_LEFT )
             {
-                if( col > Resources.BOARD_COL_COUNT-2 || board[row][col+1] != board[row][col] )
+                if( col > Resources.BOARD_COL_COUNT-2 || !check2Value(board, row, col, 0, 1) )
                 {
                     removeAvailableFunction(POS_RX);
                 }
-                if( col > Resources.BOARD_COL_COUNT-3 || board[row][col+2] != board[row][col] )
+                
+                if( col > Resources.BOARD_COL_COUNT-3 || !check2Value(board, row, col, 0, 2 ) )
                 {
                     removeAvailableFunction(POS_RRX);
                 }
             }
+            
+        }
+        
+        private function check2Value(board:Vector.<Vector.<uint>>, row:uint, col:uint, rowAlpha:int, colAlpha:int):Boolean
+        {
+            var tmp1:uint, tmp2:uint;
+            
+            board[row+rowAlpha][col+colAlpha] < 10 ? tmp1 = board[row + rowAlpha][col + colAlpha] : tmp1 = uint(board[row + rowAlpha][col + colAlpha] / Resources.BLOCK_TYPE_PADDING);
+            board[row][col] < 10 ? tmp2 = board[row][col] : tmp2 = uint(board[row][col] / Resources.BLOCK_TYPE_PADDING);
+            
+            if( tmp1 == tmp2 )
+            {
+                return true;
+            }
+            return false;
         }
        
         private function removeAvailableFunction(type:uint):void

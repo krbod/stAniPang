@@ -44,6 +44,12 @@ package com.stintern.anipang.maingamescene.block
             }
         }
         
+        public function dispose():void
+        {
+            disposeImage();
+            _callbackMove = null;
+        }
+        
         public function disposeImage():void
         {
             _image.removeEventListener(TouchEvent.TOUCH, onTouch);
