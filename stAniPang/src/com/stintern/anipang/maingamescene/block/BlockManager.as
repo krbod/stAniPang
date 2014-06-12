@@ -197,9 +197,6 @@ package com.stintern.anipang.maingamescene.block
                 }
                 _blockArray.push( colVector );
             }
-            
-            // 생성한 블럭들을 그림
-            _blockPainter.drawBlocks(_blockArray);
         }
         
         private function getTypeOfBlock(board:Vector.<Vector.<uint>>, row:uint, col:uint):uint
