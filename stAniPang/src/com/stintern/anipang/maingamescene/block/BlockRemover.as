@@ -115,16 +115,6 @@ package com.stintern.anipang.maingamescene.block
             if( block == null )
                 return;
             
-            if( block.type > Resources.BLOCK_TYPE_END )
-            {
-                _blockArray[block.row][block.col] = null;
-                
-                block.dispose();
-                block = null;
-                
-                return;
-            }
-            
             _blockPool.push(block);
             _blockArray[block.row][block.col] = null;
         }

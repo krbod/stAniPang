@@ -53,9 +53,9 @@ package com.stintern.anipang.utils
 
         // Utilities
         public static var BLOCK_TYPE_PADDING:uint = 10;
-        public static var BLOCK_TYPE_HEART_INDEX = 0;
-        public static var BLOCK_TYPE_LR_ARROW_INDEX = 1;
-        public static var BLOCK_TYPE_TB_ARROW_INDEX = 2;
+        public static var BLOCK_TYPE_HEART_INDEX:uint = 0;
+        public static var BLOCK_TYPE_LR_ARROW_INDEX:uint = 1;
+        public static var BLOCK_TYPE_TB_ARROW_INDEX:uint = 2;
 
         // Special block types
         public static var BLOCK_TYPE_SPECIAL_BLOCK_START:uint = BLOCK_TYPE_START * BLOCK_TYPE_PADDING;

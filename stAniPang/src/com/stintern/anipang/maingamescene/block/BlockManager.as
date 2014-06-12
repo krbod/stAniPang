@@ -6,6 +6,8 @@ package com.stintern.anipang.maingamescene.block
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
     
+    import flash.utils.Dictionary;
+    
     import starling.animation.Tween;
     import starling.core.Starling;
     import starling.display.Image;
@@ -94,7 +96,11 @@ package com.stintern.anipang.maingamescene.block
                 if( result == null )
                 {
                     trace("연결된 블럭이 없습니다.");
-                    //mixBoard();                    
+					debugging();
+					
+                   	recreateBoard();        
+					
+					debugging();
                 }
             }
         }
@@ -245,8 +251,80 @@ package com.stintern.anipang.maingamescene.block
             }
             
             return block;
-            
         }
+		
+		private function recreateBoard():void
+		{
+			var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray; 
+			var rowCount:uint = Resources.BOARD_ROW_COUNT;
+			var colCount:uint = Resources.BOARD_ROW_COUNT;
+			
+			// 보드를 재배열한 후에 특수블럭은 그대로 남아 있어야 되기 때문에
+			//기존에 있던 블록중에 특수 블럭의 타입을 저장
+			var dic:Dictionary = new Dictionary();
+			for(var i:uint = 0; i<rowCount; ++i)
+			{
+				for(var j:uint = 0; j<colCount; ++j)
+				{
+					var block:Block = _blockArray[i][j];
+					if( block == null )
+						return;
+					
+					if( block.type >= Resources.BLOCK_TYPE_SPECIAL_BLOCK_START && 
+						block.type <= Resources.BLOCK_TYPE_SPECIAL_BLOCK_END )
+					{
+						if( dic[type] == null )
+							dic[type] = 1;
+						else
+							dic[type] += 1;
+					}
+				}
+			}
+			
+			// 풀에 저장한 블록들을 바탕으로 보드를 재배열
+			for(i = 0; i<rowCount; ++i)
+			{
+				for(j = 0; j<colCount; ++j)
+				{
+					if(_blockArray[i][j] == null)
+						continue;
+					
+					// 새로운 타입을 생성
+					var type:uint = _blockLocater.makeNewType(board, i, j);
+					
+					// 저장해놓은 특수블럭과 같은 타입이면 특수블럭으로 생성
+					if( dic[type*10] != null && dic[type*10] > 0 )
+					{
+						type = type * 10;
+						dic[type*10]--;
+					}
+					else if( dic[type * 10 + 1] != null && dic[type * 10 + 1] > 0 )
+					{
+						type = type * 10 + 1;
+						dic[type*10+1]--;
+					}
+					else if( dic[type * 10 + 2] != null && dic[type * 10 + 2] > 0 )
+					{
+						type = type * 10 + 2;
+						dic[type*10+2]--;
+					}	
+					else if( dic[90] != null && dic[90] > 0 )
+					{
+						type = 90;
+					}
+						
+					
+					// 블럭의 이미지를 변경
+					_blockPainter.changeTexture(_blockArray[i][j], type);
+					_blockArray[i][j].type = type;
+					
+					//새롭게 생성한 타입으로 보드를 초기화
+					board[i][j] = _blockArray[i][j].type;
+				}
+			}
+			
+			dic = null;
+		}
         
         public function registerBlock(block:Block):void
         {
@@ -426,7 +504,7 @@ package com.stintern.anipang.maingamescene.block
         }
 
         //DEBUGGING
-        public function debugging(block:Block):void
+        public function debugging(block:Block=null):void
         {
             var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray; 
             var rowCount:uint = Resources.BOARD_ROW_COUNT;
@@ -443,19 +521,19 @@ package com.stintern.anipang.maingamescene.block
                 }
                 trace( str );
             }
-            trace("block");
-            for(i = 0; i<rowCount; ++i)
-            {
-                str = "";
-                for(j = 0; j<colCount; ++j)
-                {
-                    if(_blockArray[i][j] == null )
-                        str += "0, ";
-                    else
-                        str += _blockArray[i][j].type.toString() + ", ";
-                }
-                trace( str );
-            }
+//            trace("block");
+//            for(i = 0; i<rowCount; ++i)
+//            {
+//                str = "";
+//                for(j = 0; j<colCount; ++j)
+//                {
+//                    if(_blockArray[i][j] == null )
+//                        str += "0, ";
+//                    else
+//                        str += _blockArray[i][j].type.toString() + ", ";
+//                }
+//                trace( str );
+//            }
             
             
             //for(var i:uint=0; i<10; ++i)
