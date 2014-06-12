@@ -297,7 +297,7 @@ package com.stintern.anipang.maingamescene.block
                 var colCount:uint = _blockArray[i].length;
                 for(var j:uint=0; j<colCount; ++j)
                 {
-                    var res:RemoveAlgoResult = _blockRemoveAlgorithm.processRemoveAlgorithm(i, j, BlockRemoveAlgorithm.MOVED_DOWN);
+                    var res:RemoveAlgoResult = _blockRemoveAlgorithm.process(i, j, BlockRemoveAlgorithm.MOVED_DOWN);
                     removeBlockWithRemoveResult(res);
                 }
             }

@@ -51,25 +51,25 @@ package com.stintern.anipang.maingamescene.block.algorithm
             
             if( row1 < row2 )
             {
-                result.push(processRemoveAlgorithm(row1, col1, MOVED_UP));
-                result.push(processRemoveAlgorithm(row2, col2, MOVED_DOWN));
+                result.push(process(row1, col1, MOVED_UP));
+                result.push(process(row2, col2, MOVED_DOWN));
             }
             else if( row1 > row2)
             {
-                result.push(processRemoveAlgorithm(row1, col1, MOVED_DOWN));
-                    result.push(processRemoveAlgorithm(row2, col2, MOVED_UP));
+                result.push(process(row1, col1, MOVED_DOWN));
+                    result.push(process(row2, col2, MOVED_UP));
             }
             else
             {
                 if( col1 > col2 )
                 {
-                    result.push(processRemoveAlgorithm(row1, col1, MOVED_RIGHT));
-                        result.push(processRemoveAlgorithm(row2, col2, MOVED_LEFT));
+                    result.push(process(row1, col1, MOVED_RIGHT));
+                        result.push(process(row2, col2, MOVED_LEFT));
                 }
                 else
                 {
-                    result.push(processRemoveAlgorithm(row1, col1, MOVED_LEFT));
-                        result.push(processRemoveAlgorithm(row2, col2, MOVED_RIGHT));
+                    result.push(process(row1, col1, MOVED_LEFT));
+                        result.push(process(row2, col2, MOVED_RIGHT));
                 }
             }
             
@@ -83,7 +83,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
          * @param movedDirection 옮겨진 방향
          * @return 
          */
-        public function processRemoveAlgorithm(row:uint, col:uint, movedDirection:uint):RemoveAlgoResult
+        public function process(row:uint, col:uint, movedDirection:uint):RemoveAlgoResult
         {
             // 제거될 수 있는 모양의 배열을 초기화
             _availableShape = new Array();

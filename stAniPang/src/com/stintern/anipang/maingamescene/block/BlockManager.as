@@ -1,7 +1,7 @@
 package com.stintern.anipang.maingamescene.block
 {
     import com.stintern.anipang.maingamescene.block.algorithm.BlockLocater;
-    import com.stintern.anipang.maingamescene.block.algorithm.BlockRemoveAlgorithm;
+    import com.stintern.anipang.maingamescene.block.algorithm.ConnectedBlockFinder;
     import com.stintern.anipang.maingamescene.block.algorithm.RemoveAlgoResult;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
@@ -21,7 +21,8 @@ package com.stintern.anipang.maingamescene.block
         private var _blockLocater:BlockLocater;                     // 블럭을 배치알고리즘
         private var _blockArray:Vector.<Vector.<Block>>;    // 생성된 블럭들이 저장되어 있는 벡터
         
-        private var _blockRemover:BlockRemover;                              // 블럭삭제 알고리즘에 의해 삭제할 블럭들을 없앰
+        private var _blockRemover:BlockRemover;              // 블럭삭제 알고리즘에 의해 삭제할 블럭들을 없앰
+        private var _connectedBlockFinder:ConnectedBlockFinder;
         
         private var _blockPainter:BlockPainter;                     // 블럭들을 그리는 객체
         private var _isBlockExchaning:Boolean = false;      // 블럭을 교환하고 있을 때 다른 블럭을 교환할 수 없게 하기 위해
@@ -66,6 +67,8 @@ package com.stintern.anipang.maingamescene.block
             
             // 삭제 알고리즘의 결과값을 통해 블럭을 삭제
             _blockRemover = new BlockRemover(_blockArray, _blockPool);
+            
+            _connectedBlockFinder = new ConnectedBlockFinder(callbackConnectedBlock);
         }
         
         /**
@@ -82,10 +85,17 @@ package com.stintern.anipang.maingamescene.block
             // 변경된 블럭의 정보를 바탕으로 블럭을 새로 그림
             _blockPainter.drawBlocks(_blockArray);
             
-            // 블럭이 없어지고 새로운 블럭이 생긴 후 연결되는 블럭이 있는 지 확인 후 삭제
             if( _movingBlockCount == 0 )
             {
+                // 블럭이 없어지고 새로운 블럭이 생긴 후 연결되는 블럭이 있는 지 확인 후 삭제
                 _blockRemover.removeConnectedBlocks();
+                
+                var result:Array = _connectedBlockFinder.process();
+                if( result == null )
+                {
+                    trace("연결된 블럭이 없습니다.");
+                    //mixBoard();                    
+                }
             }
         }
         
@@ -320,6 +330,9 @@ package com.stintern.anipang.maingamescene.block
                 
                 tween = null;
                 tween2 = null;
+                
+                // 블럭을 움직였을 경우에 연결된 블럭을 찾는 것을 리셋
+                _connectedBlockFinder.reset();
             }
         }
         
@@ -396,6 +409,11 @@ package com.stintern.anipang.maingamescene.block
             }
         }
         
+        public function callbackConnectedBlock(connectedBlock:Array):void
+        {
+            trace(connectedBlock[0], connectedBlock[1], connectedBlock[2], connectedBlock[3], connectedBlock[4], connectedBlock[5] );      
+        }
+        
         public function get blockPainter():BlockPainter
         {
             return _blockPainter;
@@ -417,30 +435,30 @@ package com.stintern.anipang.maingamescene.block
             var rowCount:uint = Resources.BOARD_ROW_COUNT;
             var colCount:uint = Resources.BOARD_ROW_COUNT;
             
-//            trace("");
-//            trace("board");
-//            for(var i:uint = 0; i<rowCount; ++i)
-//            {
-//                var str:String = "";
-//                for(var j:uint = 0; j<colCount; ++j)
-//                {
-//                    str += board[i][j].toString() + ", ";
-//                }
-//                trace( str );
-//            }
-//            trace("block");
-//            for(i = 0; i<rowCount; ++i)
-//            {
-//                str = "";
-//                for(j = 0; j<colCount; ++j)
-//                {
-//                    if(_blockArray[i][j] == null )
-//                        str += "0, ";
-//                    else
-//                        str += _blockArray[i][j].type.toString() + ", ";
-//                }
-//                trace( str );
-//            }
+            trace("");
+            trace("board");
+            for(var i:uint = 0; i<rowCount; ++i)
+            {
+                var str:String = "";
+                for(var j:uint = 0; j<colCount; ++j)
+                {
+                    str += board[i][j].toString() + ", ";
+                }
+                trace( str );
+            }
+            trace("block");
+            for(i = 0; i<rowCount; ++i)
+            {
+                str = "";
+                for(j = 0; j<colCount; ++j)
+                {
+                    if(_blockArray[i][j] == null )
+                        str += "0, ";
+                    else
+                        str += _blockArray[i][j].type.toString() + ", ";
+                }
+                trace( str );
+            }
             
             
             //for(var i:uint=0; i<10; ++i)
