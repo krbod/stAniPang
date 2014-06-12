@@ -9,16 +9,18 @@ package com.stintern.anipang.maingamescene.block
     
     public class Block
     {
+        // 블럭 정보
         private var _type:uint;
         private var _image:Image;
-		
 		private var _row:uint, _col:uint;
 		
+        // 터치 관련
 		private var _isTouch:Boolean;
 		private var _distanceX:int, _distanceY:int;
+        private var _callbackMove:Function;     // 블럭을 터치할 때 불려지는 콜백함수 저장
         
-        private var _callbackMove:Function;
-        private var _isMoving:Boolean;
+        // 출력 여부
+        private var _requiredRedraw:Boolean;    // 블럭이 옮겨진 후 재 출력해야 할지 여부
         
         public function Block()
         {
@@ -162,13 +164,13 @@ package com.stintern.anipang.maingamescene.block
             return _image.texture.width;
         }
         
-        public function get isMoving():Boolean
+        public function get requiredRedraw():Boolean
         {
-            return _isMoving;
+            return _requiredRedraw;
         }
-        public function set isMoving(isMoving):void
+        public function set requiredRedraw(requiredRedraw:Boolean):void
         {
-            _isMoving = isMoving;
+            _requiredRedraw = requiredRedraw;
         }
     }
 }

@@ -3,7 +3,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
 
-    public class BlockRemover
+    public class BlockRemoveAlgorithm
     {
         private var _availableShape:Array;
         
@@ -28,7 +28,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
         
         private var _positionArray:Array = new Array();
         
-        public function BlockRemover()
+        public function BlockRemoveAlgorithm()
         {
             // POS_OOO 가 관여하는 Shape 들 
             _positionArray.push ( new Array(RemoveShape.TTMBB, RemoveShape.LLMTT, RemoveShape.TTMRR, RemoveShape.TTMB, RemoveShape.TTM) );
@@ -83,7 +83,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
          * @param movedDirection 옮겨진 방향
          * @return 
          */
-        private function processRemoveAlgorithm(row:uint, col:uint, movedDirection:uint):BlockRemoverResult
+        private function processRemoveAlgorithm(row:uint, col:uint, movedDirection:uint):RemoveAlgoResult
         {
             // 제거될 수 있는 모양의 배열을 초기화
             _availableShape = new Array();
@@ -105,7 +105,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
                 if( _availableShape[i] )
                 {
                     _availableShape = null;
-                    return new BlockRemoverResult(row, col, i, RemoveShape.getStringAt(i));
+                    return new RemoveAlgoResult(row, col, i, RemoveShape.getStringAt(i));
                 }
             }
             

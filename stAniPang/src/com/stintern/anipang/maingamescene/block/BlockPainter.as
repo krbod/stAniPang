@@ -1,5 +1,6 @@
 package com.stintern.anipang.maingamescene.block
 {
+    import com.greensock.TweenLite;
     import com.stintern.anipang.utils.AssetLoader;
     import com.stintern.anipang.utils.Resources;
     
@@ -47,21 +48,33 @@ package com.stintern.anipang.maingamescene.block
                 var colCount:uint = blocks[i].length;
                 for(var j:uint=0; j<colCount; ++j)
                 {
-                    if(blocks[i][j] == null)
+                    if(blocks[i][j] == null || blocks[i][j].requiredRedraw != true )
                         continue;
                     
-                    var pos:Point = getBlockPosition(i, j, blocks[i][j].image.texture);
-                    blocks[i][j].image.x = pos.x;
-                    blocks[i][j].image.y = pos.y;
+                    drawBlock(blocks[i][j]);
                 }
             }
             
-            _container.flatten();
+        }
+        
+        private function drawBlock(block:Block):void
+        {
+            var pos:Point = getBlockPosition(block.row, block.col, block.image.texture);
+            
+            var speed:Number = 0.2 * ( pos.y - block.image.y ) / block.image.texture.height;
+            if( speed < 0.2 )
+                speed = 0.2;
+            
+            TweenLite.to(block.image, speed, {x:pos.x, y:pos.y, onComplete:onMoveComplete});
+            
+            function onMoveComplete():void
+            {
+                block.requiredRedraw = false;
+            }
         }
         
         public function draw():void
         {
-            _container.flatten();
         }
         
         public function changeTexture(block:Block, type:uint):void
@@ -75,15 +88,23 @@ package com.stintern.anipang.maingamescene.block
             block.setTexture( getTextureByType(type), x, y );
             
             _container.addChild(block.image);
-            _container.flatten();
         }
         
         private function getBlockPosition(row:uint, col:uint, texture:Texture):Point
         {
 			return new Point(
 				col * texture.width + Starling.current.stage.stageWidth  * 0.5 - texture.width * 4,
-				texture.height * row + Resources.PADDING_TOP
+				texture.height * row + Starling.current.stage.stageHeight  * 0.5 - texture.height * 4
 			);
+        }
+        
+        public function setBlockImage(image:Image, row:uint, col:uint):void
+        {
+            var pos:Point = getBlockPosition(row, col, image.texture);
+            image.x = pos.x;
+            image.y = pos.y;
+            
+            pos = null;
         }
         
         public function getTextureByType(type:uint):Texture
@@ -177,14 +198,6 @@ package com.stintern.anipang.maingamescene.block
                 default:
                     return null;
             }
-        }
-        
-        public function turnOnFlatten(turnOn:Boolean):void
-        {
-            if( turnOn )
-                _container.flatten();
-            else
-                _container.unflatten();
         }
         
     }

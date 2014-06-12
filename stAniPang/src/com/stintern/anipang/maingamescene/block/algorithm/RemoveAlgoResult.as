@@ -1,6 +1,6 @@
 package com.stintern.anipang.maingamescene.block.algorithm
 {
-    public class BlockRemoverResult
+    public class RemoveAlgoResult
     {
         private var _row:uint, _col:uint;
         private var _type:uint;
@@ -12,7 +12,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
         public static var TYPE_RESULT_4_BLOCKS_UP_DOWN:uint = 3;
         public static var TYPE_RESULT_3_BLOCKS:uint = 4;
         
-        public function BlockRemoverResult(row:uint, col:uint, type:uint, removePos:String)
+        public function RemoveAlgoResult(row:uint, col:uint, type:uint, removePos:String)
         {
             switch( type )
             {
