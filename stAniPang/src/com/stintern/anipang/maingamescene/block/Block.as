@@ -19,6 +19,7 @@ package com.stintern.anipang.maingamescene.block
 		private var _distanceX:int, _distanceY:int;
         private var _callbackMove:Function;     // 블럭을 터치할 때 불려지는 콜백함수 저장
         
+        public var isMoving:Boolean = false;
         // 출력 여부
         private var _requiredRedraw:Boolean;    // 블럭이 옮겨진 후 재 출력해야 할지 여부
         
@@ -164,11 +165,11 @@ package com.stintern.anipang.maingamescene.block
             return _image.texture.width;
         }
         
-        public function get requiredRedraw():Boolean
+        public function get drawRequired():Boolean
         {
             return _requiredRedraw;
         }
-        public function set requiredRedraw(requiredRedraw:Boolean):void
+        public function set drawRequired(requiredRedraw:Boolean):void
         {
             _requiredRedraw = requiredRedraw;
         }

@@ -4,7 +4,6 @@ package com.stintern.anipang.maingamescene.block
     import com.stintern.anipang.utils.AssetLoader;
     import com.stintern.anipang.utils.Resources;
     
-    import flash.display.Bitmap;
     import flash.geom.Point;
     
     import starling.core.Starling;
@@ -24,10 +23,9 @@ package com.stintern.anipang.maingamescene.block
             addChild(_container);
             
             // TextureAtlas 생성
-            var bitmap:Bitmap = AssetLoader.instance.getTextureBitmap( Resources.PATH_IMAGE_BLOCK_SPRITE_SHEET );
             _textureAtlas = new TextureAtlas(
-                Texture.fromBitmap( bitmap ), 
-                AssetLoader.instance.loadXML( Resources.PATH_XML_BLOCK_SPRITE_SHEET )
+                    Texture.fromBitmap( AssetLoader.instance.getTextureBitmap( Resources.PATH_IMAGE_BLOCK_SPRITE_SHEET ) ), 
+                    AssetLoader.instance.loadXML( Resources.PATH_XML_BLOCK_SPRITE_SHEET )
             );
         }
         
@@ -48,7 +46,7 @@ package com.stintern.anipang.maingamescene.block
                 var colCount:uint = blocks[i].length;
                 for(var j:uint=0; j<colCount; ++j)
                 {
-                    if(blocks[i][j] == null || blocks[i][j].requiredRedraw != true )
+                    if(blocks[i][j] == null )
                         continue;
                     
                     drawBlock(blocks[i][j]);
@@ -59,22 +57,28 @@ package com.stintern.anipang.maingamescene.block
         
         private function drawBlock(block:Block):void
         {
+            if( !block.drawRequired )
+                return;
+            
             var pos:Point = getBlockPosition(block.row, block.col, block.image.texture);
             
             var speed:Number = 0.2 * ( pos.y - block.image.y ) / block.image.texture.height;
             if( speed < 0.2 )
                 speed = 0.2;
             
+            block.drawRequired = false;
             TweenLite.to(block.image, speed, {x:pos.x, y:pos.y, onComplete:onMoveComplete});
+            
+            if( block.isMoving == false)
+                BlockManager.instance.movingBlockCount++;
+            
+            block.isMoving = true;
             
             function onMoveComplete():void
             {
-                block.requiredRedraw = false;
+                BlockManager.instance.movingBlockCount--;
+                block.isMoving = false;
             }
-        }
-        
-        public function draw():void
-        {
         }
         
         public function changeTexture(block:Block, type:uint):void

@@ -83,7 +83,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
          * @param movedDirection 옮겨진 방향
          * @return 
          */
-        private function processRemoveAlgorithm(row:uint, col:uint, movedDirection:uint):RemoveAlgoResult
+        public function processRemoveAlgorithm(row:uint, col:uint, movedDirection:uint):RemoveAlgoResult
         {
             // 제거될 수 있는 모양의 배열을 초기화
             _availableShape = new Array();
