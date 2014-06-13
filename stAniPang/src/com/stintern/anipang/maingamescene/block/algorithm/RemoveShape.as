@@ -46,7 +46,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
         public static var T2:Point = new Point(-2, 0);
         public static var T:Point = new Point(-1, 0);
         public static var B2:Point = new Point(2, 0);
-        public static var B:Point = new Point(-1, 0);
+        public static var B:Point = new Point(1, 0);
         public static var R2:Point = new Point(0, 2);
         public static var R:Point = new Point(0, 1);
         public static var L2:Point = new Point(0, -2);

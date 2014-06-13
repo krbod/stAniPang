@@ -19,8 +19,8 @@ package com.stintern.anipang.maingamescene.block.algorithm
         {
             switch( type )
             {
-                case RemoveShape.TTMBB:
                 case RemoveShape.LLMRR:
+                case RemoveShape.TTMBB:
                     _type = TYPE_RESULT_5_BLOCKS_LINEAR;
                     break;
                 
