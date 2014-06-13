@@ -62,7 +62,11 @@ package com.stintern.anipang.maingamescene.block
                 point.x = removerResult.row;
                 point.y = removerResult.col;
                 
+                trace(point.x, point.y);
+                
                 parseIndexString(point, stringArray[j]);
+                
+                trace(point.x, point.y, stringArray[j]);
                 
                 if( _blockArray[point.x][point.y] == null )
                     continue;

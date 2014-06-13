@@ -12,7 +12,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
         public static var MOVED_RIGHT:uint = 2;
         public static var MOVED_DOWN:uint = 3;
         
-        // M:Moved Block
+        // X:Moved Block
         // T(TOP):Blocks on the moved one
         // B(BOTTOM):blocks under the moved one
         // L(LEFT):blocks at the left side of moved one
@@ -31,14 +31,14 @@ package com.stintern.anipang.maingamescene.block.algorithm
         public function BlockRemoveAlgorithm()
         {
             // POS_OOO 가 관여하는 Shape 들 
-            _positionArray.push ( new Array(RemoveShape.TTMBB, RemoveShape.LLMTT, RemoveShape.TTMRR, RemoveShape.TTMB, RemoveShape.TTM) );
-            _positionArray.push ( new Array(RemoveShape.TTMBB, RemoveShape.LLMTT, RemoveShape.TTMRR, RemoveShape.LTMRB, RemoveShape.TTMB, RemoveShape.TMBB, RemoveShape.TTM, RemoveShape.TMB) );
-            _positionArray.push ( new Array(RemoveShape.LLMRR, RemoveShape.LLMTT, RemoveShape.LLMBB, RemoveShape.LLMR, RemoveShape.LLM) );
-            _positionArray.push ( new Array(RemoveShape.LLMRR, RemoveShape.LLMTT, RemoveShape.LLMBB, RemoveShape.LTMRB, RemoveShape.LLMR, RemoveShape.LMRR, RemoveShape.LLM, RemoveShape.LMR) );
-            _positionArray.push ( new Array(RemoveShape.TTMBB, RemoveShape.LLMBB, RemoveShape.RRMBB, RemoveShape.LTMRB, RemoveShape.TTMB, RemoveShape.TMBB, RemoveShape.MBB, RemoveShape.TMB) );
-            _positionArray.push ( new Array(RemoveShape.TTMBB, RemoveShape.LLMBB, RemoveShape.RRMBB, RemoveShape.TMBB, RemoveShape.MBB) );
-            _positionArray.push ( new Array(RemoveShape.LLMRR, RemoveShape.RRMBB, RemoveShape.TTMRR, RemoveShape.LTMRB, RemoveShape.LLMR, RemoveShape.LMRR, RemoveShape.MRR, RemoveShape.LMR) );
-            _positionArray.push ( new Array(RemoveShape.LLMRR, RemoveShape.RRMBB, RemoveShape.TTMRR, RemoveShape.LMRR, RemoveShape.MRR) );
+            _positionArray.push ( new Array(RemoveShape.TTMBB, RemoveShape.LLMTT, RemoveShape.TTMRR, RemoveShape.TTLMR, RemoveShape.TTMB, RemoveShape.TTM) );
+            _positionArray.push ( new Array(RemoveShape.TTMBB, RemoveShape.LLMTT, RemoveShape.TTMRR, RemoveShape.LTMRB, RemoveShape.TTLMR, RemoveShape.LLTMB, RemoveShape.RRTMB, RemoveShape.TTMB, RemoveShape.TMBB, RemoveShape.TTM, RemoveShape.TMB) );
+            _positionArray.push ( new Array(RemoveShape.LLMRR, RemoveShape.LLMTT, RemoveShape.LLMBB, RemoveShape.LLTMB, RemoveShape.LLMR, RemoveShape.LLM) );
+            _positionArray.push ( new Array(RemoveShape.LLMRR, RemoveShape.LLMTT, RemoveShape.LLMBB, RemoveShape.LTMRB, RemoveShape.LLTMB, RemoveShape.TTLMR, RemoveShape.LMRBB, RemoveShape.LLMR, RemoveShape.LMRR, RemoveShape.LLM, RemoveShape.LMR) );
+            _positionArray.push ( new Array(RemoveShape.TTMBB, RemoveShape.LLMBB, RemoveShape.RRMBB, RemoveShape.LTMRB, RemoveShape.LMRBB, RemoveShape.LLTMB, RemoveShape.RRTMB, RemoveShape.TTMB, RemoveShape.TMBB, RemoveShape.MBB, RemoveShape.TMB) );
+            _positionArray.push ( new Array(RemoveShape.TTMBB, RemoveShape.LLMBB, RemoveShape.RRMBB, RemoveShape.LMRBB, RemoveShape.TMBB, RemoveShape.MBB) );
+            _positionArray.push ( new Array(RemoveShape.LLMRR, RemoveShape.RRMBB, RemoveShape.TTMRR, RemoveShape.LTMRB, RemoveShape.RRTMB, RemoveShape.TTLMR, RemoveShape.LMRBB, RemoveShape.LLMR, RemoveShape.LMRR, RemoveShape.MRR, RemoveShape.LMR) );
+            _positionArray.push ( new Array(RemoveShape.LLMRR, RemoveShape.RRMBB, RemoveShape.TTMRR, RemoveShape.RRTMB, RemoveShape.LMRR, RemoveShape.MRR) );
         }
         
         /**
@@ -123,52 +123,64 @@ package com.stintern.anipang.maingamescene.block.algorithm
                 //블럭이 왼쪽으로 옮겨진 경우
                 // 가능한 모양 : '│', '┘', '┐', ... 
                 case MOVED_LEFT:
-                    _availableShape[0] = true;
-                    _availableShape[2] = true;
-                    _availableShape[3] = true;
-                    _availableShape[7] = true;
-                    _availableShape[8] = true;
-                    _availableShape[11] = true;
-                    _availableShape[12] = true;
-                    _availableShape[13] = true;
-                    _availableShape[15] = true;
+                    _availableShape[RemoveShape.TTMBB] = true;
+                    _availableShape[RemoveShape.LLMTT] = true;
+                    _availableShape[RemoveShape.LLMBB] = true;
+                    
+                    _availableShape[RemoveShape.LLTMB] = true;
+                    
+                    _availableShape[RemoveShape.TTMB] = true;
+                    _availableShape[RemoveShape.TMBB] = true;
+                    _availableShape[RemoveShape.TTM] = true;
+                    _availableShape[RemoveShape.LLM] = true;
+                    _availableShape[RemoveShape.MBB] = true;
+                    _availableShape[RemoveShape.TMB] = true;
                     break;
                     
                 case MOVED_UP:
-                    _availableShape[1] = true;
-                    _availableShape[2] = true;
-                    _availableShape[5] = true;
-                    _availableShape[9] = true;
-                    _availableShape[10] = true;
-                    _availableShape[11] = true;
-                    _availableShape[12] = true;
-                    _availableShape[14] = true;
-                    _availableShape[16] = true;
+                    _availableShape[RemoveShape.LLMRR] = true;
+                    _availableShape[RemoveShape.LLMTT] = true;
+                    _availableShape[RemoveShape.TTMRR] = true;
+                    
+                    _availableShape[RemoveShape.TTLMR] = true;
+                    
+                    _availableShape[RemoveShape.LLMR] = true;
+                    _availableShape[RemoveShape.LMRR] = true;
+                    _availableShape[RemoveShape.TTM] = true;
+                    _availableShape[RemoveShape.LLM] = true;
+                    _availableShape[RemoveShape.MRR] = true;
+                    _availableShape[RemoveShape.LMR] = true;
                     
                     break;
                     
                 case MOVED_RIGHT:
-                    _availableShape[0] = true;
-                    _availableShape[4] = true;
-                    _availableShape[5] = true;
-                    _availableShape[7] = true;
-                    _availableShape[8] = true;
-                    _availableShape[11] = true;
-                    _availableShape[13] = true;
-                    _availableShape[14] = true;
-                    _availableShape[15] = true;
+                    _availableShape[RemoveShape.TTMBB] = true;
+                    _availableShape[RemoveShape.RRMBB] = true;
+                    _availableShape[RemoveShape.TTMRR] = true;
+                    
+                    _availableShape[RemoveShape.RRTMB] = true;
+                    
+                    _availableShape[RemoveShape.TTMB] = true;
+                    _availableShape[RemoveShape.TMBB] = true;
+                    _availableShape[RemoveShape.TTM] = true;
+                    _availableShape[RemoveShape.MBB] = true;
+                    _availableShape[RemoveShape.MRR] = true;
+                    _availableShape[RemoveShape.TMB] = true;
                     break;
                     
                 case MOVED_DOWN:
-                    _availableShape[1] = true;
-                    _availableShape[3] = true;
-                    _availableShape[4] = true;
-                    _availableShape[9] = true;
-                    _availableShape[10] = true;
-                    _availableShape[12] = true;
-                    _availableShape[13] = true;
-                    _availableShape[14] = true;
-                    _availableShape[16] = true;
+                    _availableShape[RemoveShape.LLMRR] = true;
+                    _availableShape[RemoveShape.LLMBB] = true;
+                    _availableShape[RemoveShape.RRMBB] = true;
+                    
+                    _availableShape[RemoveShape.LMRBB] = true;
+                    
+                    _availableShape[RemoveShape.LLMR] = true;
+                    _availableShape[RemoveShape.LMRR] = true;
+                    _availableShape[RemoveShape.LLM] = true;
+                    _availableShape[RemoveShape.MBB] = true;
+                    _availableShape[RemoveShape.MRR] = true;
+                    _availableShape[RemoveShape.LMR] = true;
                     break;
             }
         }

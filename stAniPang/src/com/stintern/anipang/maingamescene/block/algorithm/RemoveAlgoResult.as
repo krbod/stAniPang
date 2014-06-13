@@ -26,6 +26,10 @@ package com.stintern.anipang.maingamescene.block.algorithm
                 case RemoveShape.RRMBB:
                 case RemoveShape.TTMRR: 
                 case RemoveShape.LTMRB:
+                case RemoveShape.LLTMB:
+                case RemoveShape.TTLMR:
+                case RemoveShape.RRTMB:
+                case RemoveShape.LMRBB:
                     _type = TYPE_RESULT_5_BLOCKS_RIGHT_ANGLE;
                     break;
                 
