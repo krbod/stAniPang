@@ -6,6 +6,9 @@ package com.stintern.anipang.maingamescene.layer
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
     
+    import flash.geom.Rectangle;
+    
+    import starling.core.Starling;
     import starling.display.Sprite;
     import starling.events.Event;
     
@@ -26,6 +29,8 @@ package com.stintern.anipang.maingamescene.layer
             BlockManager.instance.init(this);
             
             loadStage();
+            
+            //this.clipRect = new Rectangle();
         }
         
         /**

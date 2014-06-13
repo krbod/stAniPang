@@ -373,11 +373,11 @@ package com.stintern.anipang.maingamescene.block
             switch( type )
             {
                 case RemoveAlgoResult.TYPE_RESULT_5_BLOCKS_LINEAR:
-                    _blockArray[row][col].type = Resources.BLOCK_TYPE_STAR;
+                    _blockArray[row][col].type = Resources.BLOCK_TYPE_GHOST;
                     break;
                 
                 case RemoveAlgoResult.TYPE_RESULT_5_BLOCKS_RIGHT_ANGLE:
-                    _blockArray[row][col].type *= Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_HEART_INDEX;
+                    _blockArray[row][col].type *= Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_GOGGLE_INDEX;
                     break;
                 
                 case RemoveAlgoResult.TYPE_RESULT_4_BLOCKS_LEFT_RIGHT:
@@ -401,6 +401,25 @@ package com.stintern.anipang.maingamescene.block
             {
                 _blockPainter.changeTexture(block, type);
             }
+        }
+        
+        public function getBlocksByType(type:uint):Array
+        {
+            var result:Array = new Array();
+            var rowCount:uint = _blockArray.length;
+            for(var i:uint=0; i<rowCount; ++i)
+            {
+                var colCount:uint = _blockArray[i].length;
+                for(var j:uint=0; j<colCount; ++j)
+                {
+                    if( _blockArray[i][j].type == type)
+                    {
+                        result.push( _blockArray[i][j]);
+                    }
+                }
+            }
+            
+            return result;
         }
         
         public function callbackConnectedBlock(connectedBlock:Array):void

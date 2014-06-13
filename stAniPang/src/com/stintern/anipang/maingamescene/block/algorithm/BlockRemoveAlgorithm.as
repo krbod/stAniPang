@@ -53,6 +53,13 @@ package com.stintern.anipang.maingamescene.block.algorithm
         {
             var result:Array = new Array();
             
+            if( lhs.type == Resources.BLOCK_TYPE_GHOST ||
+                rhs.type == Resources.BLOCK_TYPE_GHOST )
+            {
+                result.push( processExchangeWithGhost(lhs, rhs) );
+                return result;
+            }
+            
             // 특수블럭끼리 교환하는지 확인
             if( lhs.type >= Resources.BLOCK_TYPE_SPECIAL_BLOCK_START && 
                 lhs.type <= Resources.BLOCK_TYPE_SPECIAL_BLOCK_END &&
@@ -122,7 +129,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
                 if( _availableShape[i] )
                 {
                     _availableShape = null;
-                    return new RemoveAlgoResult(block.row, block.col, i, RemoveShape.getPositionArrayByType(i));
+                    return new RemoveAlgoResult(block.row, block.col, i, RemoveShape.getPositionArrayByType(i), false);
                 }
             }
             
@@ -138,8 +145,8 @@ package com.stintern.anipang.maingamescene.block.algorithm
         {
             switch(lhs.type % Resources.BLOCK_TYPE_PADDING)
             {
-                case Resources.BLOCK_TYPE_HEART_INDEX:
-                    return processExchangeWithHeart(lhs, rhs);
+                case Resources.BLOCK_TYPE_GOGGLE_INDEX:
+                    return processExchangeWithGoggle(lhs, rhs);
                 
                 case Resources.BLOCK_TYPE_LR_ARROW_INDEX:
                 case Resources.BLOCK_TYPE_TB_ARROW_INDEX:
@@ -150,18 +157,109 @@ package com.stintern.anipang.maingamescene.block.algorithm
             }
         }
         
-        private function processExchangeWithHeart(lhs:Block, rhs:Block):RemoveAlgoResult
+        public function processExchangeWithGhost(lhs:Block, rhs:Block):RemoveAlgoResult
+        {
+            var ghostBlock:Block, normalBlock:Block;
+            if( lhs.type == Resources.BLOCK_TYPE_GHOST )
+            {
+                ghostBlock = lhs;
+                normalBlock = rhs;
+            }
+            else
+            {
+                ghostBlock = rhs;
+                normalBlock = lhs;
+            }
+            
+            // 특수 블럭끼리 연결할 경우
+            if( normalBlock.type >= Resources.BLOCK_TYPE_SPECIAL_BLOCK_START )
+            {
+                return processExchangeGhostWithSpecial(ghostBlock, normalBlock);                
+            }
+            else
+            {
+                return processExchangeGhostWithNormal(ghostBlock, normalBlock);
+            }
+        }
+            
+        /**
+         *  
+         * @param star
+         * @param normal
+         * @return 
+         * 
+         */
+        private function processExchangeGhostWithNormal(ghost:Block, normal:Block):RemoveAlgoResult
+        {
+            var blocks:Array = BlockManager.instance.getBlocksByType(normal.type);
+            
+            var positionArray:Array = new Array( new Point(0, 0) );
+            var blockCount:uint = blocks.length;
+            for(var i:uint=0; i<blockCount; ++i)
+            {
+                positionArray.push( new Point(blocks[i].row - ghost.row, blocks[i].col - ghost.col) );
+            }
+            
+            blocks.length = 0;
+            blocks = null;
+            
+           return new RemoveAlgoResult(ghost.row, ghost.col, RemoveShape.EXCHANGE_GHOST_NORMAL, positionArray, true);
+        }
+        
+        private function processExchangeGhostWithSpecial(ghost:Block, normal:Block):RemoveAlgoResult
+        {
+            if(normal.type == Resources.BLOCK_TYPE_GHOST)
+            {
+                return null;
+            }
+            else
+            {
+                var blocks:Array = BlockManager.instance.getBlocksByType( uint(normal.type / Resources.BLOCK_TYPE_PADDING) );
+                
+                var positionArray:Array = new Array( );
+                var blockCount:uint = blocks.length;
+                for(var i:uint=0; i<blockCount; ++i)
+                {
+                    switch( normal.type % Resources.BLOCK_TYPE_PADDING )
+                    {
+                        case Resources.BLOCK_TYPE_GOGGLE_INDEX:
+                            BlockManager.instance.makeSpecialBlock(blocks[i].row, blocks[i].col, RemoveAlgoResult.TYPE_RESULT_5_BLOCKS_RIGHT_ANGLE);
+                            break;
+                            
+                        case Resources.BLOCK_TYPE_LR_ARROW_INDEX:
+                            BlockManager.instance.makeSpecialBlock(blocks[i].row, blocks[i].col, RemoveAlgoResult.TYPE_RESULT_4_BLOCKS_LEFT_RIGHT);
+                            break;
+                        
+                        case Resources.BLOCK_TYPE_TB_ARROW_INDEX:
+                            BlockManager.instance.makeSpecialBlock(blocks[i].row, blocks[i].col, RemoveAlgoResult.TYPE_RESULT_4_BLOCKS_UP_DOWN);
+                            break;
+                    }
+                    //blocks[i].type = normal.type;
+                    
+                    positionArray.push( new Point(blocks[i].row - ghost.row, blocks[i].col - ghost.col) );
+                }
+                
+                positionArray.push(new Point(0, 0));
+                
+                blocks.length = 0;
+                blocks = null;
+                
+                return new RemoveAlgoResult(ghost.row, ghost.col, RemoveShape.EXCHNAGE_GHOST_HEART, positionArray, true);
+            }
+        }
+        
+        private function processExchangeWithGoggle(lhs:Block, rhs:Block):RemoveAlgoResult
         {
             switch( rhs.type % Resources.BLOCK_TYPE_PADDING )
             {
-                case Resources.BLOCK_TYPE_HEART_INDEX:
-                    return new RemoveAlgoResult(lhs.row, lhs.col, RemoveShape.EXCHANGE_HEARTS, new Array(new Point(0, 0), new Point(rhs.row-lhs.row, rhs.col-lhs.col)) );
+                case Resources.BLOCK_TYPE_GOGGLE_INDEX:
+                    return new RemoveAlgoResult(lhs.row, lhs.col, RemoveShape.EXCHANGE_GOGGLES, new Array(new Point(0, 0), new Point(rhs.row-lhs.row, rhs.col-lhs.col)), true);
                     
                 case Resources.BLOCK_TYPE_LR_ARROW_INDEX:
                 case Resources.BLOCK_TYPE_TB_ARROW_INDEX:
                     // 근처의 블럭들을 Arrow 블럭으로 바꿔서 상하좌우 Arrow 특수 블럭 모양으로 터지도록 함
                     exchangeBlockTypeWithHeartAround(lhs);
-                    return new RemoveAlgoResult(lhs.row, lhs.col, RemoveShape.EXCHANGE_HEART_ARROW, new Array(new Point(0, 0)) );
+                    return new RemoveAlgoResult(lhs.row, lhs.col, RemoveShape.EXCHANGE_GOGGLE_ARROW, new Array(new Point(0, 0)) , true);
                     
                 default:
                     return null;
@@ -172,14 +270,14 @@ package com.stintern.anipang.maingamescene.block.algorithm
         {
             switch( rhs.type % Resources.BLOCK_TYPE_PADDING )
             {
-                case Resources.BLOCK_TYPE_HEART_INDEX:
+                case Resources.BLOCK_TYPE_GOGGLE_INDEX:
                     // 근처의 블럭들을 Arrow 블럭으로 바꿔서 상하좌우 Arrow 특수 블럭 모양으로 터지도록 함
                     exchangeBlockTypeWithHeartAround(rhs);
-                    return new RemoveAlgoResult(rhs.row, rhs.col, RemoveShape.EXCHANGE_HEART_ARROW, new Array(new Point(0, 0)) );
+                    return new RemoveAlgoResult(rhs.row, rhs.col, RemoveShape.EXCHANGE_GOGGLE_ARROW, new Array(new Point(0, 0)) , true);
                     
                 case Resources.BLOCK_TYPE_LR_ARROW_INDEX:
                 case Resources.BLOCK_TYPE_TB_ARROW_INDEX:
-                    return new RemoveAlgoResult(lhs.row, lhs.col, RemoveShape.EXCHANGE_ARROWS, new Array(new Point(0, 0), new Point(rhs.row-lhs.row, rhs.col-lhs.col)) );
+                    return new RemoveAlgoResult(lhs.row, lhs.col, RemoveShape.EXCHANGE_ARROWS, new Array(new Point(0, 0), new Point(rhs.row-lhs.row, rhs.col-lhs.col)) , true);
                     
                 default:
                     return null;

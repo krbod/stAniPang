@@ -67,7 +67,8 @@ package com.stintern.anipang.maingamescene.block
                 
                 // 특수 블럭인 경우 블럭의 특성에 맞게 주위 블럭들을 모두 삭제
                 if( _blockArray[point.x][point.y].type >= Resources.BLOCK_TYPE_SPECIAL_BLOCK_START &&
-                    _blockArray[point.x][point.y].type <= Resources.BLOCK_TYPE_SPECIAL_BLOCK_END )
+                    _blockArray[point.x][point.y].type <= Resources.BLOCK_TYPE_SPECIAL_BLOCK_END &&
+                    _blockArray[point.x][point.y].type != Resources.BLOCK_TYPE_GHOST )  // 유령 블럭은 제외
                 {
                     removeSpecialBlockAt(point.x, point.y);
                 }
@@ -137,7 +138,7 @@ package com.stintern.anipang.maingamescene.block
             var block:Block = _blockArray[x][y];
             switch( block.type % Resources.BLOCK_TYPE_PADDING  )
             {
-                case Resources.BLOCK_TYPE_HEART_INDEX:
+                case Resources.BLOCK_TYPE_GOGGLE_INDEX:
                     removeHexagon(block.row, block.col);
                     break;
                 
@@ -211,7 +212,7 @@ package com.stintern.anipang.maingamescene.block
                 if( row -1 < 0 )
                     break;
                 
-                if( col+i < 0 || col + i > Resources.BOARD_COL_COUNT )
+                if( col+i < 0 || col + i >= Resources.BOARD_COL_COUNT )
                     continue;
                 
                 processRemove(-1, i);
@@ -220,7 +221,7 @@ package com.stintern.anipang.maingamescene.block
             // 세 번째 줄의 블럭 5개 삭제
             for(i=-2; i<=2; ++i)
             {
-                if( col+i < 0 || col + i > Resources.BOARD_COL_COUNT )
+                if( col+i < 0 || col + i >= Resources.BOARD_COL_COUNT )
                     continue;
                 
                 if( i == 0 )
@@ -235,7 +236,7 @@ package com.stintern.anipang.maingamescene.block
                 if( row + 1 >= Resources.BOARD_ROW_COUNT )
                     break;
                 
-                if( col+i < 0 || col + i > Resources.BOARD_COL_COUNT )
+                if( col+i < 0 || col + i >= Resources.BOARD_COL_COUNT )
                     continue;
                 
                 processRemove(1, i);

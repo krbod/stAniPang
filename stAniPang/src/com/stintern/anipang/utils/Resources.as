@@ -53,7 +53,7 @@ package com.stintern.anipang.utils
 
         // Utilities
         public static var BLOCK_TYPE_PADDING:uint = 10;
-        public static var BLOCK_TYPE_HEART_INDEX:uint = 0;
+        public static var BLOCK_TYPE_GOGGLE_INDEX:uint = 0;
         public static var BLOCK_TYPE_LR_ARROW_INDEX:uint = 1;
         public static var BLOCK_TYPE_TB_ARROW_INDEX:uint = 2;
 
@@ -88,9 +88,9 @@ package com.stintern.anipang.utils
         public static var BLOCK_TYPE_MONGYI_LR_ARROW:uint = BLOCK_TYPE_MONGYI * BLOCK_TYPE_PADDING + 1;
         public static var BLOCK_TYPE_MONGYI_TB_ARROW:uint = BLOCK_TYPE_MONGYI * BLOCK_TYPE_PADDING + 2;
 
-        public static var BLOCK_TYPE_STAR:uint = 90;
+        public static var BLOCK_TYPE_GHOST:uint = 90;
 
-        public static var BLOCK_TYPE_SPECIAL_BLOCK_END:uint = BLOCK_TYPE_STAR;;
+        public static var BLOCK_TYPE_SPECIAL_BLOCK_END:uint = BLOCK_TYPE_GHOST;;
 
         // Other Blocks
         public static var BLOCK_TYPE_BOX:uint = 91;

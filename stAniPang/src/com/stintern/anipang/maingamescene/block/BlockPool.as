@@ -15,10 +15,11 @@ package com.stintern.anipang.maingamescene.block
             for(var i:uint = Resources.BLOCK_TYPE_START; i<=Resources.BLOCK_TYPE_END; ++i)
             {
                 _blockPool[i] = new Vector.<Block>();
-				_blockPool[i * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_HEART_INDEX] = new Vector.<Block>();
+				_blockPool[i * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_GOGGLE_INDEX] = new Vector.<Block>();
 				_blockPool[i * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_LR_ARROW_INDEX] = new Vector.<Block>();
 				_blockPool[i * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_TB_ARROW_INDEX] = new Vector.<Block>();
             }
+            _blockPool[Resources.BLOCK_TYPE_GHOST] = new Vector.<Block>();
         }
         
         public function push(block:Block):void

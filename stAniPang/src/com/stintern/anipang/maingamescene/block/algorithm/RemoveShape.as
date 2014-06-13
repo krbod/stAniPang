@@ -35,13 +35,13 @@ package com.stintern.anipang.maingamescene.block.algorithm
         
         // Special Blocks
         public static var EXCHANGE_ARROWS:uint = 30;
-        public static var EXCHANGE_HEART_ARROW:uint = 31;
-        public static var EXCHANGE_HEARTS:uint = 32;
+        public static var EXCHANGE_GOGGLE_ARROW:uint = 31;
+        public static var EXCHANGE_GOGGLES:uint = 32;
         
-        public static var EXCHANGE_STAR_NORMAL:uint = 33;
-        public static var EXCHANGE_STAR_ARROWS:uint = 34;
-        public static var EXCHNAGE_STAR_HEART:uint = 35;
-        public static var EXCHANGE_STARS:uint = 36; 
+        public static var EXCHANGE_GHOST_NORMAL:uint = 33;
+        public static var EXCHANGE_GHOST_ARROWS:uint = 34;
+        public static var EXCHNAGE_GHOST_HEART:uint = 35;
+        public static var EXCHANGE_GHOSTS:uint = 36; 
         
         public static var T2:Point = new Point(-2, 0);
         public static var T:Point = new Point(-1, 0);

@@ -20,6 +20,8 @@ package com.stintern.anipang.maingamescene.block
         
         private var _hitImages:Array;
         
+        private var _textureWidth:Number, _textureHeight:Number;
+        
         public function BlockPainter()
         {
             _container = new Sprite();
@@ -37,6 +39,8 @@ package com.stintern.anipang.maingamescene.block
                 _hitImages.push( new Image(getTextureByType(Resources.BLOCK_TYPE_HINT)) );
                 _hitImages[i].touchable = false;
             }
+            
+            _textureWidth
         }
         
         public function addBlock(image:Image):void
@@ -219,7 +223,7 @@ package com.stintern.anipang.maingamescene.block
                 case Resources.BLOCK_TYPE_BLUE_TB_ARROW:
                     return _textureAtlas.getTexture(Resources.TEXTURE_NAME_BLUE_TB_ARROW);
                     
-                case Resources.BLOCK_TYPE_STAR:
+                case Resources.BLOCK_TYPE_GHOST:
                     return _textureAtlas.getTexture(Resources.TEXTURE_NAME_STAR);
                 case Resources.BLOCK_TYPE_BOX:
                     return _textureAtlas.getTexture(Resources.TEXTURE_NAME_BOX);
