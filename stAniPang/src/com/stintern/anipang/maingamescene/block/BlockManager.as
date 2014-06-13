@@ -7,8 +7,6 @@ package com.stintern.anipang.maingamescene.block
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
     
-    import flash.utils.Dictionary;
-    
     import starling.core.Starling;
     import starling.display.Image;
     import starling.display.Sprite;
@@ -70,6 +68,7 @@ package com.stintern.anipang.maingamescene.block
             // 삭제 알고리즘의 결과값을 통해 블럭을 삭제
             _blockRemover = new BlockRemover(_blockArray, _blockPool);
             
+            //  블럭을 옮기면 연결될 블럭을 찾는 객체 생성 
             _connectedBlockFinder = new ConnectedBlockFinder(callbackConnectedBlock);
         }
         
@@ -87,11 +86,13 @@ package com.stintern.anipang.maingamescene.block
             // 변경된 블럭의 정보를 바탕으로 블럭을 새로 그림
             _blockPainter.drawBlocks(_blockArray);
             
+            // 블럭이 낙하한 뒤 연결된 블럭이 있는 지 확인
             if( _movingBlockCount == 0 )
             {
-                // 블럭이 없어지고 새로운 블럭이 생긴 후 연결되는 블럭이 있는 지 확인 후 삭제
+                // 낙하한 뒤 새로운 보드에서 연결된 블럭이 있으면 삭제
                 _blockRemover.removeConnectedBlocks();
-                
+
+                // 블럭을 하나 옮기면 연결될 블럭이 있는 지 확인 후 없으면 보드를 재배열
                 var result:Array = _connectedBlockFinder.process();
                 if( result == null )
                 {
@@ -100,6 +101,9 @@ package com.stintern.anipang.maingamescene.block
             }
         }
         
+        /**
+         * 블럭의 아랫칸을 확인하고 내려가야 하면 블럭의 정보를 갱신합니다. 
+         */
         private function moveBlocks():void
         {
             var boardArray:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
@@ -110,12 +114,12 @@ package com.stintern.anipang.maingamescene.block
                 var colCount:uint = _blockArray[i].length;
                 for(var j:uint=0; j<colCount; ++j)
                 {
-                    var block:Block = _blockArray[i][j];    // 비워있는 보드칸이면 null 반환
+                    // 블럭이 null (비어있는 칸)이거나 맨 아랫줄이면 낙하시키지 않음
+                    var block:Block = _blockArray[i][j];    
                     if(block == null || block.row == Resources.BOARD_ROW_COUNT - 1)
                     {
                         continue;
                     }
-                    
                         
                     // 아래가 블록으로 채워져야하는 칸이면 낙하
                     if( boardArray[block.row+1][block.col] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
@@ -127,12 +131,17 @@ package com.stintern.anipang.maingamescene.block
             
         }
 		
+        /**
+         * 블럭이 낙하함으로 인해 첫 행이 비워졌을 때 
+         * 새로운 블럭을 생성합니다. 
+         */
 		private function fillWithNewBlocks():void
 		{
 			var boardArray:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
 			var colCount:uint = boardArray[0].length;
 			for(var i:uint=0; i<colCount; ++i)
 			{
+                // 맨 윗행이 채워져야하는 공간이면 새로운 블럭을 생성하여 배치함
 				if( boardArray[0][i] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
 				{
 					var block:Block = createBlock( uint(Math.random() * Resources.BLOCK_TYPE_COUNT) + Resources.BLOCK_TYPE_START);	
@@ -164,6 +173,7 @@ package com.stintern.anipang.maingamescene.block
             _blockArray[block.row][block.col] = block;
             _blockArray[block.row-1][block.col] = null;
             
+            // 다음 프레임 때 BlockPainter 에 의해서 갱신된 위치로 블럭을 Tween
             block.drawRequired = true;
         }
 
@@ -181,6 +191,7 @@ package com.stintern.anipang.maingamescene.block
                 var colVector:Vector.<Block> = new Vector.<Block>();
                 for(var j:uint = 0; j<colCount; ++j)
                 {
+                    // 보드 정보를 보고 블럭의 타입을 받아옴
                     board[i][j] = getTypeOfBlock(board, i, j);
                     
                     var block:Block = createBlock(board[i][j]);	//보드가 빈공간이면  null을 반환
@@ -257,7 +268,7 @@ package com.stintern.anipang.maingamescene.block
             if( !nextPosAvailable(row2, col2) || _isBlockExchaning )
                 return;
             
-            exchangeBlock(row1, col1, row2, col2, false);
+            exchangeBlock(_blockArray[row1][col1], _blockArray[row2][col2], false);
         }
         
         /**
@@ -293,10 +304,10 @@ package com.stintern.anipang.maingamescene.block
          * @param col2 이동할 위치의 col Index
          * @param isReturn 교환한 후 연결되는 블럭이 없어서 다시 돌아오는 경우에는 true, 그렇지 않으면 false
          */
-        private function exchangeBlock(row1:uint, col1:uint, row2:uint, col2:uint, isReturn:Boolean):void
+        private function exchangeBlock(lhs:Block, rhs:Block, isReturn:Boolean):void
         {
-            var image1:Image = _blockArray[row1][col1].image;
-            var image2:Image = _blockArray[row2][col2].image;
+            var image1:Image = lhs.image;
+            var image2:Image = rhs.image;
             
             TweenLite.to(image1, 0.15, {x:image2.x, y:image2.y, onComplete:onCompleteExchangeBlock});
             TweenLite.to(image2, 0.15, {x:image1.x, y:image1.y, onComplete:onCompleteExchangeBlock});
@@ -309,7 +320,7 @@ package com.stintern.anipang.maingamescene.block
             {
                 ++completeCount;
                 if(completeCount == 2)
-                    updateBlocks(row1, col1, row2, col2, isReturn);
+                    updateBlocks(lhs, rhs, isReturn);
                 
                 // 블럭을 움직였을 경우에 연결된 블럭을 찾는 것을 리셋
                 _connectedBlockFinder.reset();
@@ -317,12 +328,12 @@ package com.stintern.anipang.maingamescene.block
             }
         }
         
-        private function updateBlocks(row1:uint, col1:uint, row2:uint, col2:uint, isReturn:Boolean):void
+        private function updateBlocks(lhs:Block, rhs:Block, isReturn:Boolean):void
         {
             _isBlockExchaning = false; 
             
             // 변경한 블럭들로 정보 변경
-            updateInfo(row1, col1, row2, col2);
+            updateInfo(lhs, rhs);
             
             // 다시 돌아오는 경우에는 삭제될 블럭을 찾는 알고리즘을 실행시키지 않음
             if( isReturn )
@@ -330,32 +341,28 @@ package com.stintern.anipang.maingamescene.block
             
             // 변경된 보드에서 삭제될 블럭이 있는 지 확인 후
             // 삭제될 블럭이 있으면 삭제하고 없으면 블럭을 다시 원위치
-            if( !_blockRemover.removeBlocks(row1, col1, row2, col2) )
+            if( !_blockRemover.removeBlocks(lhs, rhs) )
             {
-                exchangeBlock(row1, col1, row2, col2, true);
+                exchangeBlock(lhs, rhs, true);
             }
         }
             
         /**
          * 블럭 및 보드들의 정보를 갱신 
          */
-        private function updateInfo(row1:uint, col1:uint, row2:uint, col2:uint):void
+        private function updateInfo(lhs:Block, rhs:Block):void
         {
             // block의 row, col 정보 갱신
-            _blockArray[row1][col1].row = row2;
-            _blockArray[row1][col1].col = col2;
-            
-            _blockArray[row2][col2].row = row1;
-            _blockArray[row2][col2].col = col1;
+            lhs.swapIndex(rhs);
             
             // BlockArray 정보 갱신
-            var tmp:Block = _blockArray[row1][col1];
-            _blockArray[row1][col1] = _blockArray[row2][col2];
-            _blockArray[row2][col2] = tmp;
+            var tmp:Block = _blockArray[lhs.row][lhs.col];
+            _blockArray[lhs.row][lhs.col] = _blockArray[rhs.row][rhs.col];
+            _blockArray[rhs.row][rhs.col] = tmp;
             
             // Board 정보 갱신
-            GameBoard.instance.boardArray[row1][col1] = _blockArray[row1][col1].type;
-            GameBoard.instance.boardArray[row2][col2] = _blockArray[row2][col2].type;
+            GameBoard.instance.boardArray[lhs.row][lhs.col] = lhs.type;
+            GameBoard.instance.boardArray[rhs.row][rhs.col] = rhs.type;
         }
         
         public function makeSpecialBlock(row:uint, col:uint, type:uint):void

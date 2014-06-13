@@ -1,5 +1,6 @@
 package com.stintern.anipang.maingamescene.block.algorithm
 {
+    import com.stintern.anipang.maingamescene.block.Block;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
 
@@ -45,31 +46,31 @@ package com.stintern.anipang.maingamescene.block.algorithm
          * 맞닿아 있는 블럭을 확인해서 제거합니다.
          * 왼쪽으로 옮겨진 블럭은 오른쪽에 맞닿은 블럭과는 검사를 하지 않습니다. 
          */
-        public function checkBlocks(row1, col1, row2, col2):Array
+        public function checkBlocks(lhs:Block, rhs:Block):Array
         {
             var result:Array = new Array();
             
-            if( row1 < row2 )
+            if( lhs.row < rhs.row )
             {
-                result.push(process(row1, col1, MOVED_UP));
-                result.push(process(row2, col2, MOVED_DOWN));
+                result.push(process(lhs.row, lhs.col, MOVED_UP));
+                result.push(process(rhs.row, rhs.col, MOVED_DOWN));
             }
-            else if( row1 > row2)
+            else if( lhs.row > rhs.row)
             {
-                result.push(process(row1, col1, MOVED_DOWN));
-                    result.push(process(row2, col2, MOVED_UP));
+                result.push(process(lhs.row, lhs.col, MOVED_DOWN));
+                result.push(process(rhs.row, rhs.col, MOVED_UP));
             }
             else
             {
-                if( col1 > col2 )
+                if( lhs.col > rhs.col )
                 {
-                    result.push(process(row1, col1, MOVED_RIGHT));
-                        result.push(process(row2, col2, MOVED_LEFT));
+                    result.push(process(lhs.row, lhs.col, MOVED_RIGHT));
+                    result.push(process(rhs.row, rhs.col, MOVED_LEFT));
                 }
                 else
                 {
-                    result.push(process(row1, col1, MOVED_LEFT));
-                        result.push(process(row2, col2, MOVED_RIGHT));
+                    result.push(process(lhs.row, lhs.col, MOVED_LEFT));
+                    result.push(process(rhs.row, rhs.col, MOVED_RIGHT));
                 }
             }
             

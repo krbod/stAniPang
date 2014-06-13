@@ -28,9 +28,9 @@ package com.stintern.anipang.maingamescene.block
          * @param result    블럭 제거 알고리즘의 결과값
          * @return 연결된 블럭이 없어 제거되지 않을 경우 false 리턴, 그렇지 않으면 true 
          */
-        public function removeBlocks(row1:uint, col1:uint, row2:uint, col2:uint):Boolean
+        public function removeBlocks(lhs:Block, rhs:Block):Boolean
         {
-            var result:Array = _blockRemoveAlgorithm.checkBlocks(row1, col1, row2, col2);
+            var result:Array = _blockRemoveAlgorithm.checkBlocks(lhs, rhs);
             
             // 연결된 블럭이 없을 경우 
             if( result[0] == null && result[1] == null )

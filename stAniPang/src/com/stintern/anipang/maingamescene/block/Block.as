@@ -115,6 +115,17 @@ package com.stintern.anipang.maingamescene.block
 			}
 		}
         
+        public function swapIndex(block:Block):void
+        {
+            var tmp:uint = _row;
+            _row = block.row;
+            block.row = tmp;
+
+            tmp = _col;
+            _col = block.col;
+            block.col = tmp;
+        }
+        
         public function get type():uint
         {
             return _type;
