@@ -129,15 +129,73 @@ package com.stintern.anipang.maingamescene.block
                     {
                         moveBlock(block, block.row+1, block.col);
                     }
-                    else if(  block.col-1>=0 && _blockArray[block.row][block.col-1] == null && boardArray[block.row+1][block.col-1] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
+					// 왼쪽이 블럭이 없는 곳이고 대각선 왼쪽이 비어 있으면 대각선 왼쪽으로 옮김
+                    else if( checkDiagonal(block.row, block.col, true) )
                     {
                         moveBlock(block, block.row+1, block.col-1);
                     }
+					// 오른쪽 대각선 체크
+					else if( checkDiagonal(block.row, block.col, false) )
+					{
+						moveBlock(block, block.row+1, block.col+1);
+					}
                     
                 }
             }
             
         }
+		
+		/**
+		 * 대각선으로 블럭이 이동할 수 있는 지 확인하고 블럭을 이동시킵니다. 
+		 * @param row 현재 블럭의 위치 row
+		 * @param col 현재 블럭의 위치 col
+		 * @param isLeft 왼쪽 대각선이면 true, 그렇지 않으면 false
+		 * @return 이동할 수 있으면 true, 그렇지 않으면 false
+		 */
+		private function checkDiagonal(row:uint, col:uint, isLeft:Boolean):Boolean
+		{
+			var boardArray:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
+			if( isLeft )
+			{
+				if( col-1 < 0 )
+					return false;
+				
+				// 대각선에 다른 블럭이 있을 경우 옮기지 않음
+				if( boardArray[row+1][col-1] != GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
+					return false;
+				
+				// 왼쪽에 보드 정보를 확인하고 블럭을 옮겨야 하면 옮김
+				switch( boardArray[row][col-1] )
+				{
+					case GameBoard.TYPE_OF_CELL_EMPTY:
+					case GameBoard.TYPE_OF_CELL_BOX:
+						return true;
+					
+					default:
+						return false;
+				}
+					
+			}
+			else
+			{
+				if( col+1 > Resources.BOARD_COL_COUNT-1 )
+					return false;
+				
+				if( boardArray[row+1][col+1] != GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
+					return false;
+				
+				switch( boardArray[row][col+1] )
+				{
+					case GameBoard.TYPE_OF_CELL_EMPTY:
+					case GameBoard.TYPE_OF_CELL_BOX:
+						return true;
+						
+					default:
+						return false;
+				}	
+			}
+			return true;
+		}
 		
         /**
          * 블럭이 낙하함으로 인해 첫 행이 비워졌을 때 
