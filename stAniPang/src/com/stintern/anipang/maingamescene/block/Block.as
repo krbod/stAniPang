@@ -115,6 +115,17 @@ package com.stintern.anipang.maingamescene.block
 			}
 		}
         
+        public function swapIndex(block:Block):void
+        {
+            var tmp:uint = _row;
+            _row = block.row;
+            block.row = tmp;
+
+            tmp = _col;
+            _col = block.col;
+            block.col = tmp;
+        }
+        
         public function get type():uint
         {
             return _type;
@@ -153,11 +164,11 @@ package com.stintern.anipang.maingamescene.block
         
         public function get visible():Boolean
         {
-            return _image.isVisible;
+            return _image.visible;
         }
         public function set visible(visible:Boolean):void
         {
-            _image.isVisible = visible;
+            _image.visible = visible;
         }
         
         public function get width():uint

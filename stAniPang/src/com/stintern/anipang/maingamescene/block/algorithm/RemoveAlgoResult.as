@@ -4,15 +4,18 @@ package com.stintern.anipang.maingamescene.block.algorithm
     {
         private var _row:uint, _col:uint;
         private var _type:uint;
-        private var _removePos:String;
+        private var _removePos:Array;
+        private var _cleanRequired:Boolean;
         
         public static var TYPE_RESULT_5_BLOCKS_LINEAR:uint = 0;
         public static var TYPE_RESULT_5_BLOCKS_RIGHT_ANGLE:uint = 1;
         public static var TYPE_RESULT_4_BLOCKS_LEFT_RIGHT:uint = 2;
         public static var TYPE_RESULT_4_BLOCKS_UP_DOWN:uint = 3;
         public static var TYPE_RESULT_3_BLOCKS:uint = 4;
+        public static var TYPE_RESULT_EXCHANGE_SPECIAL_BLOCKS:uint = 5;
+        public static var TYPE_RESULT_EXCHANGE_GHOST:uint = 6;
         
-        public function RemoveAlgoResult(row:uint, col:uint, type:uint, removePos:String)
+        public function RemoveAlgoResult(row:uint, col:uint, type:uint, removePos:Array, cleanRequired:Boolean)
         {
             switch( type )
             {
@@ -26,6 +29,10 @@ package com.stintern.anipang.maingamescene.block.algorithm
                 case RemoveShape.RRMBB:
                 case RemoveShape.TTMRR: 
                 case RemoveShape.LTMRB:
+                case RemoveShape.LLTMB:
+                case RemoveShape.TTLMR:
+                case RemoveShape.RRTMB:
+                case RemoveShape.LMRBB:
                     _type = TYPE_RESULT_5_BLOCKS_RIGHT_ANGLE;
                     break;
                 
@@ -38,6 +45,15 @@ package com.stintern.anipang.maingamescene.block.algorithm
                 case RemoveShape.LMRR:
                     _type = TYPE_RESULT_4_BLOCKS_UP_DOWN;
                     break;
+                
+                case RemoveShape.EXCHANGE_ARROWS:
+                case RemoveShape.EXCHANGE_GOGGLE_ARROW:
+                case RemoveShape.EXCHANGE_GOGGLES:
+                    _type = TYPE_RESULT_EXCHANGE_SPECIAL_BLOCKS;
+                    break;
+                
+                case RemoveShape.EXCHANGE_GHOST_NORMAL:
+                    _type = TYPE_RESULT_EXCHANGE_GHOST;
                 
                 default:
                     _type = TYPE_RESULT_3_BLOCKS;
@@ -64,9 +80,14 @@ package com.stintern.anipang.maingamescene.block.algorithm
             return _type;
         }
         
-        public function get removePos():String
+        public function get removePos():Array
         {
             return _removePos;
+        }
+        
+        public function get cleanRequired():Boolean
+        {
+            return _cleanRequired;
         }
     }
 }

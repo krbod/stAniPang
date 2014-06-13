@@ -28,9 +28,9 @@ package com.stintern.anipang.maingamescene.block
          * @param result    블럭 제거 알고리즘의 결과값
          * @return 연결된 블럭이 없어 제거되지 않을 경우 false 리턴, 그렇지 않으면 true 
          */
-        public function removeBlocks(row1:uint, col1:uint, row2:uint, col2:uint):Boolean
+        public function removeBlocks(lhs:Block, rhs:Block):Boolean
         {
-            var result:Array = _blockRemoveAlgorithm.checkBlocks(row1, col1, row2, col2);
+            var result:Array = _blockRemoveAlgorithm.checkBlocks(lhs, rhs);
             
             // 연결된 블럭이 없을 경우 
             if( result[0] == null && result[1] == null )
@@ -53,30 +53,36 @@ package com.stintern.anipang.maingamescene.block
             if( removerResult == null )
                 return;
             
-            var stringArray:Array = removerResult.removePos.split(",");
-            var length:uint = stringArray.length;
+            var removePos:Array = removerResult.removePos;
+            var posCount:uint = removePos.length;
             
             var point:Point = new Point();
-            for(var j:uint=0; j<length; ++j)
+            for(var i:uint=0; i<posCount; ++i)
             {
-                point.x = removerResult.row;
-                point.y = removerResult.col;
-                
-                parseIndexString(point, stringArray[j]);
+                point.x = removerResult.row + removePos[i].x;
+                point.y = removerResult.col + removePos[i].y;
                 
                 if( _blockArray[point.x][point.y] == null )
                     continue;
                 
                 // 특수 블럭인 경우 블럭의 특성에 맞게 주위 블럭들을 모두 삭제
                 if( _blockArray[point.x][point.y].type >= Resources.BLOCK_TYPE_SPECIAL_BLOCK_START &&
-                    _blockArray[point.x][point.y].type <= Resources.BLOCK_TYPE_SPECIAL_BLOCK_END )
+                    _blockArray[point.x][point.y].type <= Resources.BLOCK_TYPE_SPECIAL_BLOCK_END &&
+                    _blockArray[point.x][point.y].type != Resources.BLOCK_TYPE_GHOST )  // 유령 블럭은 제외
                 {
                     removeSpecialBlockAt(point.x, point.y);
                 }
-                    // 옮겨진 블럭인 경우 타입을 확인해서 다른 블럭으로 변환할 지 확인
+                // 옮겨진 블럭인 경우 타입을 확인해서 다른 블럭으로 변환할 지 확인
                 else if( removerResult.row == point.x && removerResult.col == point.y )
                 {
-                    BlockManager.instance.makeSpecialBlock(point.x, point.y, removerResult.type);
+                    if( removerResult.type == RemoveAlgoResult.TYPE_RESULT_3_BLOCKS )
+                    {
+                        removeBlockAt(point.x, point.y);
+                    }
+                    else
+                    {
+                        BlockManager.instance.makeSpecialBlock(point.x, point.y, removerResult.type);
+                    }
                 }
                 else
                 {
@@ -84,6 +90,8 @@ package com.stintern.anipang.maingamescene.block
                 }
             }
             
+            removePos.length = 0;
+            removePos = null;
             point= null;
         }
         
@@ -92,8 +100,11 @@ package com.stintern.anipang.maingamescene.block
          */
         public function removeBlockAt(row:uint, col:uint):void
         {
+            if( _blockArray[row][col] == null)
+                return;
+            
             // 더이상 이미지를 그리지 않음
-            if( _blockArray[row][col].type > Resources.BLOCK_TYPE_END )
+            if( _blockArray[row][col].type > Resources.BLOCK_TYPE_SPECIAL_BLOCK_END )
             {
                 BlockManager.instance.blockPainter.removeBlock(_blockArray[row][col].image);
             }
@@ -115,16 +126,6 @@ package com.stintern.anipang.maingamescene.block
             if( block == null )
                 return;
             
-            if( block.type > Resources.BLOCK_TYPE_END )
-            {
-                _blockArray[block.row][block.col] = null;
-                
-                block.dispose();
-                block = null;
-                
-                return;
-            }
-            
             _blockPool.push(block);
             _blockArray[block.row][block.col] = null;
         }
@@ -137,7 +138,7 @@ package com.stintern.anipang.maingamescene.block
             var block:Block = _blockArray[x][y];
             switch( block.type % Resources.BLOCK_TYPE_PADDING  )
             {
-                case Resources.BLOCK_TYPE_HEART_INDEX:
+                case Resources.BLOCK_TYPE_GOGGLE_INDEX:
                     removeHexagon(block.row, block.col);
                     break;
                 
@@ -211,7 +212,7 @@ package com.stintern.anipang.maingamescene.block
                 if( row -1 < 0 )
                     break;
                 
-                if( col+i < 0 || col + i > Resources.BOARD_COL_COUNT )
+                if( col+i < 0 || col + i >= Resources.BOARD_COL_COUNT )
                     continue;
                 
                 processRemove(-1, i);
@@ -220,7 +221,7 @@ package com.stintern.anipang.maingamescene.block
             // 세 번째 줄의 블럭 5개 삭제
             for(i=-2; i<=2; ++i)
             {
-                if( col+i < 0 || col + i > Resources.BOARD_COL_COUNT )
+                if( col+i < 0 || col + i >= Resources.BOARD_COL_COUNT )
                     continue;
                 
                 if( i == 0 )
@@ -235,14 +236,14 @@ package com.stintern.anipang.maingamescene.block
                 if( row + 1 >= Resources.BOARD_ROW_COUNT )
                     break;
                 
-                if( col+i < 0 || col + i > Resources.BOARD_COL_COUNT )
+                if( col+i < 0 || col + i >= Resources.BOARD_COL_COUNT )
                     continue;
                 
                 processRemove(1, i);
             }
             
             // 5번째 줄의 블럭 1개 삭제
-            if( row  + 2 >= Resources.BOARD_ROW_COUNT )
+            if( row  + 2 <= Resources.BOARD_ROW_COUNT - 1 )
             {
                 processRemove(2, 0);
             }
@@ -265,27 +266,6 @@ package com.stintern.anipang.maingamescene.block
             
         }
         
-        
-        /**
-         * 블럭 제거 알고리즘의 결과로 받은 스트링을 파싱해서 인덱스를 반환합니다. 
-         */
-        private function parseIndexString(result:Point, letter:String):Point
-        {
-            switch( letter )
-            {
-                case "T2":  result.x -= 2;  break;
-                case "L2":  result.y -= 2;  break;
-                case "B2":  result.x += 2;  break;
-                case "R2":  result.y += 2;  break;
-                case "T":   result.x -= 1;  break;
-                case "L":   result.y -= 1;  break;
-                case "B":   result.x += 1;  break;
-                case "R":   result.y += 1;  break;
-            }
-            
-            return result;
-        }
-        
         /**
          * 블럭이 낙하한 뒤 연결된 블럭이 있으면 삭제합니다. 
          */
@@ -297,7 +277,7 @@ package com.stintern.anipang.maingamescene.block
                 var colCount:uint = _blockArray[i].length;
                 for(var j:uint=0; j<colCount; ++j)
                 {
-                    var res:RemoveAlgoResult = _blockRemoveAlgorithm.process(i, j, BlockRemoveAlgorithm.MOVED_DOWN);
+                    var res:RemoveAlgoResult = _blockRemoveAlgorithm.process(_blockArray[i][j], BlockRemoveAlgorithm.MOVED_DOWN);
                     removeBlockWithRemoveResult(res);
                 }
             }

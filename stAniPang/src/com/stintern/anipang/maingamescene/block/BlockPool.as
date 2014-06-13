@@ -12,10 +12,14 @@ package com.stintern.anipang.maingamescene.block
         {
             // 각 Type 에 따라서 Pool 생성
             _blockPool = new Dictionary();
-            for(var i:uint = 0; i<=Resources.BLOCK_TYPE_END; ++i)
+            for(var i:uint = Resources.BLOCK_TYPE_START; i<=Resources.BLOCK_TYPE_END; ++i)
             {
                 _blockPool[i] = new Vector.<Block>();
+				_blockPool[i * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_GOGGLE_INDEX] = new Vector.<Block>();
+				_blockPool[i * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_LR_ARROW_INDEX] = new Vector.<Block>();
+				_blockPool[i * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_TB_ARROW_INDEX] = new Vector.<Block>();
             }
+            _blockPool[Resources.BLOCK_TYPE_GHOST] = new Vector.<Block>();
         }
         
         public function push(block:Block):void

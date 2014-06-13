@@ -1,6 +1,7 @@
 package com.stintern.anipang.maingamescene.block
 {
     import com.greensock.TweenLite;
+    import com.greensock.easing.Linear;
     import com.stintern.anipang.utils.AssetLoader;
     import com.stintern.anipang.utils.Resources;
     
@@ -17,6 +18,10 @@ package com.stintern.anipang.maingamescene.block
         private var _container:Sprite;
         private var _textureAtlas:TextureAtlas;
         
+        private var _hitImages:Array;
+        
+        private var _textureWidth:Number, _textureHeight:Number;
+        
         public function BlockPainter()
         {
             _container = new Sprite();
@@ -27,6 +32,15 @@ package com.stintern.anipang.maingamescene.block
                     Texture.fromBitmap( AssetLoader.instance.getTextureBitmap( Resources.PATH_IMAGE_BLOCK_SPRITE_SHEET ) ), 
                     AssetLoader.instance.loadXML( Resources.PATH_XML_BLOCK_SPRITE_SHEET )
             );
+            
+            _hitImages = new Array();
+            for(var i:uint=0; i<3; ++i)
+            {
+                _hitImages.push( new Image(getTextureByType(Resources.BLOCK_TYPE_HINT)) );
+                _hitImages[i].touchable = false;
+            }
+            
+            _textureWidth
         }
         
         public function addBlock(image:Image):void
@@ -67,7 +81,7 @@ package com.stintern.anipang.maingamescene.block
                 speed = 0.2;
             
             block.drawRequired = false;
-            TweenLite.to(block.image, speed, {x:pos.x, y:pos.y, onComplete:onMoveComplete});
+            TweenLite.to(block.image, speed, {x:pos.x, y:pos.y, onComplete:onMoveComplete, ease:Linear.easeNone});
             
             if( block.isMoving == false)
                 BlockManager.instance.movingBlockCount++;
@@ -92,6 +106,29 @@ package com.stintern.anipang.maingamescene.block
             block.setTexture( getTextureByType(type), x, y );
             
             _container.addChild(block.image);
+        }
+        
+        public function showHint(positions:Array):void
+        {
+            for(var i:uint=0; i<3; ++i)
+            {
+                var pos:Point = getBlockPosition(positions[i*2], positions[i*2+1], _hitImages[i].texture);
+                _hitImages[i].x = pos.x;
+                _hitImages[i].y = pos.y;
+                
+                _container.addChild(_hitImages[i]);
+                pos = null;
+            }
+            
+            positions = null;
+        }
+        
+        public function disposeHint():void
+        {
+            for(var i:uint=0; i<3; ++i)
+            {
+                _container.removeChild(_hitImages[i]);   
+            }
         }
         
         private function getBlockPosition(row:uint, col:uint, texture:Texture):Point
@@ -186,7 +223,7 @@ package com.stintern.anipang.maingamescene.block
                 case Resources.BLOCK_TYPE_BLUE_TB_ARROW:
                     return _textureAtlas.getTexture(Resources.TEXTURE_NAME_BLUE_TB_ARROW);
                     
-                case Resources.BLOCK_TYPE_STAR:
+                case Resources.BLOCK_TYPE_GHOST:
                     return _textureAtlas.getTexture(Resources.TEXTURE_NAME_STAR);
                 case Resources.BLOCK_TYPE_BOX:
                     return _textureAtlas.getTexture(Resources.TEXTURE_NAME_BOX);
@@ -197,7 +234,8 @@ package com.stintern.anipang.maingamescene.block
                 case Resources.BLOCK_TYPE_ICE:
                     return _textureAtlas.getTexture(Resources.TEXTURE_NAME_ICE);
                        
-                    
+                case Resources.BLOCK_TYPE_HINT:
+                    return _textureAtlas.getTexture(Resources.TEXTURE_NAME_HINT);
                     
                 default:
                     return null;

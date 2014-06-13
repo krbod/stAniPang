@@ -2,6 +2,12 @@ package com.stintern.anipang.maingamescene.board
 {
     import com.stintern.anipang.maingamescene.LevelManager;
     import com.stintern.anipang.maingamescene.StageInfo;
+    import com.stintern.anipang.maingamescene.block.Block;
+    import com.stintern.anipang.maingamescene.block.BlockPainter;
+    import com.stintern.anipang.maingamescene.block.algorithm.BlockLocater;
+    import com.stintern.anipang.utils.Resources;
+    
+    import flash.utils.Dictionary;
 
     public class GameBoard
     {
@@ -48,6 +54,102 @@ package com.stintern.anipang.maingamescene.board
             // 레벨에 맞는 보드 정보를 불러옵니다.
             _stageInfo = LevelManager.instance.loadStageInfo(level);
         }
+        
+        
+        /**
+         * 보드에 더이상 연결될 블럭이 없을 경우에 블럭을 재배열합니다. 
+         */
+        public function recreateBoard(blockArray:Vector.<Vector.<Block>>, blockLocater:BlockLocater, blockPainter:BlockPainter):void
+        {
+            var rowCount:uint = Resources.BOARD_ROW_COUNT;
+            var colCount:uint = Resources.BOARD_ROW_COUNT;
+            
+            // 보드를 재배열한 후에 특수블럭은 그대로 남아 있어야 되기 때문에
+            //기존에 있던 블록중에 특수 블럭의 타입을 저장
+            var dictionary:Dictionary = storeSpecialBlocks(blockArray);
+            
+            // 풀에 저장한 블록들을 바탕으로 보드를 재배열
+            relocateBoard(dictionary, blockArray, blockLocater, blockPainter);
+            dictionary = null;
+        }
+        
+        private function storeSpecialBlocks(blockArray:Vector.<Vector.<Block>>):Dictionary
+        {
+            var rowCount:uint = Resources.BOARD_ROW_COUNT;
+            var colCount:uint = Resources.BOARD_ROW_COUNT;
+            
+            var dic:Dictionary = new Dictionary();
+            for(var i:uint = 0; i<rowCount; ++i)
+            {
+                for(var j:uint = 0; j<colCount; ++j)
+                {
+                    var block:Block = blockArray[i][j];
+                    if( block == null )
+                        continue;
+                    
+                    if( block.type >= Resources.BLOCK_TYPE_SPECIAL_BLOCK_START && 
+                        block.type <= Resources.BLOCK_TYPE_SPECIAL_BLOCK_END )
+                    {
+                        if( dic[block.type] == null )
+                            dic[block.type] = 1;
+                        else
+                            dic[block.type] += 1;
+                    }
+                }
+            }
+            
+            return dic;
+        }
+        
+        private function relocateBoard(dic:Dictionary, blockArray:Vector.<Vector.<Block>>, blockLocater:BlockLocater, blockPainter:BlockPainter):void
+        {
+            var rowCount:uint = Resources.BOARD_ROW_COUNT;
+            var colCount:uint = Resources.BOARD_ROW_COUNT;
+            
+            for(var i:uint = 0; i<rowCount; ++i)
+            {
+                for(var j:uint = 0; j<colCount; ++j)
+                {
+                    if(blockArray[i][j] == null)
+                        continue;
+                    
+                    // 새로운 타입을 생성
+                    var type:uint = blockLocater.makeNewType(_stageInfo.boardArray, i, j);
+                    
+                    // 저장해놓은 특수블럭과 같은 타입이면 특수블럭으로 생성
+                    if( dic[type*10] != null && dic[type*10] > 0 )
+                    {
+                        type = type * 10;
+                        dic[type*10]--;
+                    }
+                    else if( dic[type * 10 + 1] != null && dic[type * 10 + 1] > 0 )
+                    {
+                        type = type * 10 + 1;
+                        dic[type*10+1]--;
+                    }
+                    else if( dic[type * 10 + 2] != null && dic[type * 10 + 2] > 0 )
+                    {
+                        type = type * 10 + 2;
+                        dic[type*10+2]--;
+                    }	
+                    else if( dic[90] != null && dic[90] > 0 )
+                    {
+                        type = 90;
+                    }
+                    
+                    // 블럭의 이미지를 변경
+                    blockPainter.changeTexture(blockArray[i][j], type);
+                    blockArray[i][j].type = type;
+                    
+                    //새롭게 생성한 타입으로 보드를 초기화
+                    _stageInfo.boardArray[i][j] = blockArray[i][j].type;
+                }
+            }
+        }
+        
+        
+        
+        
         
         public function get boardArray():Vector.<Vector.<uint>>
         {

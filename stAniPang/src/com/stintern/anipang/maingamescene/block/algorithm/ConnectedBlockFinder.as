@@ -24,7 +24,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
         {
             _callback = callback;
             
-            _timer = new Timer(3000, 0);
+            _timer = new Timer(3000, -1);
             _timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
             
             _availableShape = new Array();
@@ -53,31 +53,36 @@ package com.stintern.anipang.maingamescene.block.algorithm
                 var colCount:uint = boardArray[i].length;
                 for(var j:uint=0; j<colCount; ++j)
                 {                 
+                    for(var k:uint=0; k<16; ++k)
+                    {
+                        _availableShape[k] = true;
+                    }
+                    
                     var value:uint = boardArray[i][j];
                     
                     // LT 확인
-                    if( i-1 >= 0 && j-1 >= 0 && boardArray[i-1][j-1] != value )
+                    if( i-1 < 0 ||  j-1 < 0 || boardArray[i-1][j-1] != value )
                     {
-                        for(var k:uint=0; k<_LTIndex.length; ++k)
+                        for(k=0; k<_LTIndex.length; ++k)
                             _availableShape[ _LTIndex[k] ] = false;
                     }
                     
                     // RT 확인
-                    if( i-1 >= 0 && j+1 <= colCount-1 && boardArray[i-1][j+1] != value )
+                    if( i-1 < 0 || j+1 > colCount-1 || boardArray[i-1][j+1] != value )
                     {
                         for( k=0; k<_RTIndex.length; ++k)
                             _availableShape[ _RTIndex[k] ] = false;
                     }
                     
                     // LB 확인
-                    if( i+1 <= rowCount-1 && j-1 >= 0 && boardArray[i+1][j-1] != value )
+                    if( i+1 > rowCount-1 || j-1 < 0 || boardArray[i+1][j-1] != value )
                     {
                         for( k=0; k<_LBIndex.length; ++k)
                             _availableShape[ _LBIndex[k] ] = false;
                     }    
                     
                     // RB 확인
-                    if( i+1 <= rowCount-1 && j+1 <= colCount-1 && boardArray[i+1][j+1] != value )
+                    if( i+1 > rowCount-1 || j+1 > colCount-1 || boardArray[i+1][j+1] != value )
                     {
                         for( k=0; k<_RBIndex.length; ++k)
                             _availableShape[ _RBIndex[k] ] = false;
@@ -132,8 +137,17 @@ package com.stintern.anipang.maingamescene.block.algorithm
                 if( tmp3 >= 10 )
                     tmp3 = (uint)(tmp3 * 0.1);
                 
+                
+                // TEST
+                if( tmp == 400 || tmp2 == 400 || tmp3 == 400 )
+                    continue;
+                
                 if( tmp == tmp3 && tmp2 == tmp3 )
                 {
+                    result[0] += row;
+                    result[1] += col;
+                    result[2] += row;
+                    result[3] += col;
                     result.push(row, col);
                     return result;
                 }
