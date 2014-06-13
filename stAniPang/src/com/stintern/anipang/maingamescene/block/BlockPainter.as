@@ -1,6 +1,7 @@
 package com.stintern.anipang.maingamescene.block
 {
     import com.greensock.TweenLite;
+    import com.greensock.easing.Linear;
     import com.stintern.anipang.utils.AssetLoader;
     import com.stintern.anipang.utils.Resources;
     
@@ -76,7 +77,7 @@ package com.stintern.anipang.maingamescene.block
                 speed = 0.2;
             
             block.drawRequired = false;
-            TweenLite.to(block.image, speed, {x:pos.x, y:pos.y, onComplete:onMoveComplete});
+            TweenLite.to(block.image, speed, {x:pos.x, y:pos.y, onComplete:onMoveComplete, ease:Linear.easeNone});
             
             if( block.isMoving == false)
                 BlockManager.instance.movingBlockCount++;

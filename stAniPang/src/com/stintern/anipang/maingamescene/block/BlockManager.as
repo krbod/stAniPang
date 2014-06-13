@@ -120,6 +120,9 @@ package com.stintern.anipang.maingamescene.block
                     {
                         continue;
                     }
+                    
+                    if(block.isMoving)
+                        continue;
                         
                     // 아래가 블록으로 채워져야하는 칸이면 낙하
                     if( boardArray[block.row+1][block.col] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
@@ -222,7 +225,6 @@ package com.stintern.anipang.maingamescene.block
                     return _blockLocater.makeNewType(board, row, col);
                     
                 default:
-                    trace(board[row][col]);
                     return board[row][col];
             }
             
