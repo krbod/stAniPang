@@ -127,8 +127,13 @@ package com.stintern.anipang.maingamescene.block
                     // 아래가 블록으로 채워져야하는 칸이면 낙하
                     if( boardArray[block.row+1][block.col] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
                     {
-                        moveBlock(block);
+                        moveBlock(block, block.row+1, block.col);
                     }
+                    else if(  block.col-1>=0 && _blockArray[block.row][block.col-1] == null && boardArray[block.row+1][block.col-1] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
+                    {
+                        moveBlock(block, block.row+1, block.col-1);
+                    }
+                    
                 }
             }
             
@@ -163,18 +168,19 @@ package com.stintern.anipang.maingamescene.block
 		}
         
         /**
-         * 블럭을 아래로 낙하시킵니다. 
-         * @param block 아래로 낙하할 블럭
+         * 블럭을 입력한 인덱스 위치로 이동시킵니다. 
          */
-        private function moveBlock(block:Block):void
+        private function moveBlock(block:Block, row:uint, col:uint):void
         {
             // 정보 갱신
-            block.row += 1;
-            GameBoard.instance.boardArray[block.row][block.col] = block.type;
-            GameBoard.instance.boardArray[block.row-1][block.col] = GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED;
+            GameBoard.instance.boardArray[block.row][block.col] = GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED
+            _blockArray[block.row][block.col] = null
             
+            block.row = row;
+            block.col = col;
+            
+            GameBoard.instance.boardArray[block.row][block.col] = block.type;
             _blockArray[block.row][block.col] = block;
-            _blockArray[block.row-1][block.col] = null;
             
             // 다음 프레임 때 BlockPainter 에 의해서 갱신된 위치로 블럭을 Tween
             block.drawRequired = true;
