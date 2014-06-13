@@ -1,8 +1,11 @@
 package com.stintern.anipang.maingamescene.block.algorithm
 {
     import com.stintern.anipang.maingamescene.block.Block;
+    import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
+    
+    import flash.geom.Point;
 
     public class BlockRemoveAlgorithm
     {
@@ -50,27 +53,37 @@ package com.stintern.anipang.maingamescene.block.algorithm
         {
             var result:Array = new Array();
             
+            // 특수블럭끼리 교환하는지 확인
+            if( lhs.type >= Resources.BLOCK_TYPE_SPECIAL_BLOCK_START && 
+                lhs.type <= Resources.BLOCK_TYPE_SPECIAL_BLOCK_END &&
+                rhs.type >= Resources.BLOCK_TYPE_SPECIAL_BLOCK_START &&
+                rhs.type <= Resources.BLOCK_TYPE_SPECIAL_BLOCK_END )
+            {
+                result.push(processExchangeSpecialBlocks(lhs, rhs));
+                return result;
+            }
+            
             if( lhs.row < rhs.row )
             {
-                result.push(process(lhs.row, lhs.col, MOVED_UP));
-                result.push(process(rhs.row, rhs.col, MOVED_DOWN));
+                result.push(process(lhs, MOVED_UP));
+                result.push(process(rhs, MOVED_DOWN));
             }
             else if( lhs.row > rhs.row)
             {
-                result.push(process(lhs.row, lhs.col, MOVED_DOWN));
-                result.push(process(rhs.row, rhs.col, MOVED_UP));
+                result.push(process(lhs, MOVED_DOWN));
+                result.push(process(rhs, MOVED_UP));
             }
             else
             {
                 if( lhs.col > rhs.col )
                 {
-                    result.push(process(lhs.row, lhs.col, MOVED_RIGHT));
-                    result.push(process(rhs.row, rhs.col, MOVED_LEFT));
+                    result.push(process(lhs, MOVED_RIGHT));
+                    result.push(process(rhs, MOVED_LEFT));
                 }
                 else
                 {
-                    result.push(process(lhs.row, lhs.col, MOVED_LEFT));
-                    result.push(process(rhs.row, rhs.col, MOVED_RIGHT));
+                    result.push(process(lhs, MOVED_LEFT));
+                    result.push(process(rhs, MOVED_RIGHT));
                 }
             }
             
@@ -84,8 +97,11 @@ package com.stintern.anipang.maingamescene.block.algorithm
          * @param movedDirection 옮겨진 방향
          * @return 
          */
-        public function process(row:uint, col:uint, movedDirection:uint):RemoveAlgoResult
+        public function process(block:Block, movedDirection:uint):RemoveAlgoResult
         {
+            if( block == null)
+                return null;
+            
             // 제거될 수 있는 모양의 배열을 초기화
             _availableShape = new Array();
             _availableShape.length = RemoveShape.SHAPE_COUNT;
@@ -98,7 +114,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
             setAvailableShape(movedDirection);
             
             // 서로 맞닿아 있는 블럭들을 검사하여 제거될 수 있는 블럭이 있는 지 확인
-            checkDuplication(row, col, movedDirection);
+            checkDuplication(block.row, block.col, movedDirection);
             
             // 제거될 수 있는 모양이 있으면 결과를 리턴
             for(i=0; i<RemoveShape.SHAPE_COUNT; ++i)
@@ -106,11 +122,85 @@ package com.stintern.anipang.maingamescene.block.algorithm
                 if( _availableShape[i] )
                 {
                     _availableShape = null;
-                    return new RemoveAlgoResult(row, col, i, RemoveShape.getStringAt(i));
+                    return new RemoveAlgoResult(block.row, block.col, i, RemoveShape.getPositionArrayByType(i));
                 }
             }
             
             return null;
+        }
+        
+        /**
+         * 특수 블럭끼리 교체하였을 경우 각 특수 블럭의 기능에 맞게 블럭을 삭제한다. 
+         * @param lhs 클릭해서 이동한 특수 블럭
+         * @param rhs 자리가 교체된 특수 블럭
+         */
+        private function processExchangeSpecialBlocks(lhs:Block, rhs:Block):RemoveAlgoResult
+        {
+            switch(lhs.type % Resources.BLOCK_TYPE_PADDING)
+            {
+                case Resources.BLOCK_TYPE_HEART_INDEX:
+                    return processExchangeWithHeart(lhs, rhs);
+                
+                case Resources.BLOCK_TYPE_LR_ARROW_INDEX:
+                case Resources.BLOCK_TYPE_TB_ARROW_INDEX:
+                    return processExchangeWithArrow(lhs, rhs);
+                
+                default:
+                    return null;
+            }
+        }
+        
+        private function processExchangeWithHeart(lhs:Block, rhs:Block):RemoveAlgoResult
+        {
+            switch( rhs.type % Resources.BLOCK_TYPE_PADDING )
+            {
+                case Resources.BLOCK_TYPE_HEART_INDEX:
+                    return new RemoveAlgoResult(lhs.row, lhs.col, RemoveShape.EXCHANGE_HEARTS, new Array(new Point(0, 0), new Point(rhs.row-lhs.row, rhs.col-lhs.col)) );
+                    
+                case Resources.BLOCK_TYPE_LR_ARROW_INDEX:
+                case Resources.BLOCK_TYPE_TB_ARROW_INDEX:
+                    // 근처의 블럭들을 Arrow 블럭으로 바꿔서 상하좌우 Arrow 특수 블럭 모양으로 터지도록 함
+                    exchangeBlockTypeWithHeartAround(lhs);
+                    return new RemoveAlgoResult(lhs.row, lhs.col, RemoveShape.EXCHANGE_HEART_ARROW, new Array(new Point(0, 0)) );
+                    
+                default:
+                    return null;
+            }
+        }
+        
+        private function processExchangeWithArrow(lhs:Block, rhs:Block):RemoveAlgoResult
+        {
+            switch( rhs.type % Resources.BLOCK_TYPE_PADDING )
+            {
+                case Resources.BLOCK_TYPE_HEART_INDEX:
+                    // 근처의 블럭들을 Arrow 블럭으로 바꿔서 상하좌우 Arrow 특수 블럭 모양으로 터지도록 함
+                    exchangeBlockTypeWithHeartAround(rhs);
+                    return new RemoveAlgoResult(rhs.row, rhs.col, RemoveShape.EXCHANGE_HEART_ARROW, new Array(new Point(0, 0)) );
+                    
+                case Resources.BLOCK_TYPE_LR_ARROW_INDEX:
+                case Resources.BLOCK_TYPE_TB_ARROW_INDEX:
+                    return new RemoveAlgoResult(lhs.row, lhs.col, RemoveShape.EXCHANGE_ARROWS, new Array(new Point(0, 0), new Point(rhs.row-lhs.row, rhs.col-lhs.col)) );
+                    
+                default:
+                    return null;
+            }
+        }
+        
+        /**
+         * 상하 및 좌우 모든 블럭이 터지는 특수 블럭과 육각형 모양으로 터지는 특수블럭이 만났을 경우에
+         * 육각형 특수블럭 상하좌우로 3라인씩 삭제하기 위해서 주위 블럭을 Arrow 블럭으로 교체 
+         * @param lhs 육각형 모양의 특수블럭
+         */
+        private function exchangeBlockTypeWithHeartAround(block:Block):void
+        {
+            var blockArray:Vector.<Vector.<Block>> = BlockManager.instance.blockArray;
+            BlockManager.instance.exchangeBlockType(blockArray[block.row-1][block.col-1], blockArray[block.row-1][block.col-1].type * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_LR_ARROW_INDEX, false);
+            BlockManager.instance.exchangeBlockType(blockArray[block.row-1][block.col], blockArray[block.row-1][block.col].type * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_TB_ARROW_INDEX, false);
+            BlockManager.instance.exchangeBlockType(blockArray[block.row-1][block.col+1], blockArray[block.row-1][block.col+1].type * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_TB_ARROW_INDEX, false);
+            
+            BlockManager.instance.exchangeBlockType(blockArray[block.row][block.col-1], blockArray[block.row][block.col-1].type * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_LR_ARROW_INDEX, false);
+            BlockManager.instance.exchangeBlockType(blockArray[block.row+1][block.col-1], blockArray[block.row+1][block.col-1].type * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_TB_ARROW_INDEX, false);
+            BlockManager.instance.exchangeBlockType(blockArray[block.row+1][block.col+1], blockArray[block.row+1][block.col+1].type * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_LR_ARROW_INDEX, false);
         }
         
         /**

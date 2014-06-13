@@ -222,6 +222,7 @@ package com.stintern.anipang.maingamescene.block
                     return _blockLocater.makeNewType(board, row, col);
                     
                 default:
+                    trace(board[row][col]);
                     return board[row][col];
             }
             
@@ -237,7 +238,7 @@ package com.stintern.anipang.maingamescene.block
         public function createBlock(type:uint, autoRegister:Boolean = true):Block
         {
             //투명 블럭등 동물 블럭이 아닌 경우
-            if( type > Resources.BLOCK_TYPE_END )
+            if( type > Resources.BLOCK_TYPE_SPECIAL_BLOCK_END )
                 return null;
             
             // 풀에 블럭이 있으면 새로 만들지 않음.
@@ -384,22 +385,30 @@ package com.stintern.anipang.maingamescene.block
                 case RemoveAlgoResult.TYPE_RESULT_4_BLOCKS_UP_DOWN:
                     _blockArray[row][col].type = _blockArray[row][col].type * Resources.BLOCK_TYPE_PADDING + Resources.BLOCK_TYPE_TB_ARROW_INDEX;
                     break;
-                
-                case RemoveAlgoResult.TYPE_RESULT_3_BLOCKS:
-                    _blockRemover.removeBlockAt(row, col);
-                    break;
             }
             
-            if( type != RemoveAlgoResult.TYPE_RESULT_3_BLOCKS )
+            GameBoard.instance.boardArray[row][col] = _blockArray[row][col].type
+            _blockPainter.changeTexture(_blockArray[row][col], _blockArray[row][col].type);
+        }
+        
+        public function exchangeBlockType(block:Block, type:uint, requiredTextureChange:Boolean):void
+        {
+            block.type = type;
+            
+            if( requiredTextureChange )
             {
-                GameBoard.instance.boardArray[row][col] = _blockArray[row][col].type
-                _blockPainter.changeTexture(_blockArray[row][col], _blockArray[row][col].type);
+                _blockPainter.changeTexture(block, type);
             }
         }
         
         public function callbackConnectedBlock(connectedBlock:Array):void
         {
             _blockPainter.showHint(connectedBlock);
+        }
+        
+        public function get blockArray():Vector.<Vector.<Block>>
+        {
+            return _blockArray;
         }
         
         public function get blockPainter():BlockPainter
@@ -434,31 +443,19 @@ package com.stintern.anipang.maingamescene.block
                 }
                 trace( str );
             }
-//            trace("block");
-//            for(i = 0; i<rowCount; ++i)
-//            {
-//                str = "";
-//                for(j = 0; j<colCount; ++j)
-//                {
-//                    if(_blockArray[i][j] == null )
-//                        str += "0, ";
-//                    else
-//                        str += _blockArray[i][j].type.toString() + ", ";
-//                }
-//                trace( str );
-//            }
-            
-            
-            //for(var i:uint=0; i<10; ++i)
-            
-//            trace("a : " + block.image.x, block.image.y);
-//            
-//            TweenLite.to(block.image, 3, {x:block.image.x, y:block.image.y+100, onComplete:onTest});
-//            
-//            function onTest():void
-//            {
-//                trace(block.image.x, block.image.y);
-//            }
+            trace("block");
+            for(i = 0; i<rowCount; ++i)
+            {
+                str = "";
+                for(j = 0; j<colCount; ++j)
+                {
+                    if(_blockArray[i][j] == null )
+                        str += "0, ";
+                    else
+                        str += _blockArray[i][j].type.toString() + ", ";
+                }
+                trace( str );
+            }
         }
 
     }

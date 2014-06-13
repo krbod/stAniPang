@@ -1,5 +1,7 @@
 package com.stintern.anipang.maingamescene.block.algorithm
 {
+    import flash.geom.Point;
+
     public class RemoveShape
     {
         //5개 일직선
@@ -31,33 +33,55 @@ package com.stintern.anipang.maingamescene.block.algorithm
         
         public static var SHAPE_COUNT:uint = 21;
         
-        public static function getStringAt(type:uint):String
+        // Special Blocks
+        public static var EXCHANGE_ARROWS:uint = 30;
+        public static var EXCHANGE_HEART_ARROW:uint = 31;
+        public static var EXCHANGE_HEARTS:uint = 32;
+        
+        public static var EXCHANGE_STAR_NORMAL:uint = 33;
+        public static var EXCHANGE_STAR_ARROWS:uint = 34;
+        public static var EXCHNAGE_STAR_HEART:uint = 35;
+        public static var EXCHANGE_STARS:uint = 36; 
+        
+        public static var T2:Point = new Point(-2, 0);
+        public static var T:Point = new Point(-1, 0);
+        public static var B2:Point = new Point(2, 0);
+        public static var B:Point = new Point(-1, 0);
+        public static var R2:Point = new Point(0, 2);
+        public static var R:Point = new Point(0, 1);
+        public static var L2:Point = new Point(0, -2);
+        public static var L:Point = new Point(0, -1);
+        public static var M:Point = new Point(0, 0);
+        
+        public static function getPositionArrayByType(type:uint):Array
         {
             switch(type)
             {
-                case 0:                 return "T2,T,M,B,B2";
-                case 1:                 return "L2,L,M,R,R2";
-                case 2:                 return "L2,L,M,T,T2";
-                case 3:                 return "L2,L,M,B,B2";
-                case 4:                 return "R2,R,M,B,B2";
-                case 5:                 return "T2,T,M,R,R2";
-                case 6:                 return "L,T,M,R,B";
+                case 0:                 return new Array(T2, T, M, B, B2);
+                case 1:                 return new Array(L2, L, M, R, R2);
                     
-                case 7:                 return "L2,L,M,T,B";
-                case 8:                 return "T2,T,M,L,R";
-                case 9:                 return "T,B,M,R,R2";
-                case 10:                return "L,R,M,B,B2";
+                case 2:                 return new Array(L2, L, M, T, T2);
+                case 3:                 return new Array(L2, L, M, B, B2);
+                case 4:                 return new Array(R2, R, M, B, B2);
+                case 5:                 return new Array(T2, T, M, R, R2);
+                case 6:                 return new Array(L, T, M, R, B);
                     
-                case 11:                 return "T2,T,M,B";
-                case 12:                 return "T,M,B,B2";
-                case 13:                 return "L2,L,M,R";
-                case 14:               return "L,M,R,R2";
-                case 15:               return "T2,T,M";
-                case 16:               return "L2,L,M";
-                case 17:               return "M,B,B2";
-                case 18:               return "M,R,R2";
-                case 19:               return "T,M,B";
-                case 20:               return "L,M,R";
+                case 7:                 return new Array(L2, L, M, T, B);
+                case 8:                 return new Array(T2, T, M, L, R);
+                case 9:                 return new Array(T, B, M, R, R2);
+                case 10:               return new Array(L, R, M, B, B2);
+                    
+                case 11:               return new Array(T2, T, M, B);
+                case 12:               return new Array(T, M, B, B2);
+                case 13:               return new Array(L2, L, M, R);
+                case 14:               return new Array(L, M, R, R2);
+                    
+                case 15:               return new Array(T2, T, M);
+                case 16:               return new Array(L2, L, M);
+                case 17:               return new Array(M, B, B2);
+                case 18:               return new Array(M, R, R2);
+                case 19:               return new Array(T, M, B);
+                case 20:               return new Array(L, M, R);
                     
                 default:
                     return null;

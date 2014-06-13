@@ -4,15 +4,16 @@ package com.stintern.anipang.maingamescene.block.algorithm
     {
         private var _row:uint, _col:uint;
         private var _type:uint;
-        private var _removePos:String;
+        private var _removePos:Array;
         
         public static var TYPE_RESULT_5_BLOCKS_LINEAR:uint = 0;
         public static var TYPE_RESULT_5_BLOCKS_RIGHT_ANGLE:uint = 1;
         public static var TYPE_RESULT_4_BLOCKS_LEFT_RIGHT:uint = 2;
         public static var TYPE_RESULT_4_BLOCKS_UP_DOWN:uint = 3;
         public static var TYPE_RESULT_3_BLOCKS:uint = 4;
+        public static var TYPE_RESULT_EXCHANGE_SPECIAL_BLOCKS:uint = 5;
         
-        public function RemoveAlgoResult(row:uint, col:uint, type:uint, removePos:String)
+        public function RemoveAlgoResult(row:uint, col:uint, type:uint, removePos:Array)
         {
             switch( type )
             {
@@ -43,6 +44,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
                     _type = TYPE_RESULT_4_BLOCKS_UP_DOWN;
                     break;
                 
+                case RemoveShape.EXCHANGE_ARROWS:
+                case RemoveShape.EXCHANGE_HEART_ARROW:
+                case RemoveShape.EXCHANGE_HEARTS:
+                    _type = TYPE_RESULT_EXCHANGE_SPECIAL_BLOCKS;
+                    break;
+                
                 default:
                     _type = TYPE_RESULT_3_BLOCKS;
                     break;
@@ -68,7 +75,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
             return _type;
         }
         
-        public function get removePos():String
+        public function get removePos():Array
         {
             return _removePos;
         }
