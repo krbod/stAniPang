@@ -1,5 +1,6 @@
 package com.stintern.anipang.maingamescene.block
 {
+    import com.greensock.TweenLite;
     import com.stintern.anipang.maingamescene.block.algorithm.BlockLocater;
     import com.stintern.anipang.maingamescene.block.algorithm.ConnectedBlockFinder;
     import com.stintern.anipang.maingamescene.block.algorithm.RemoveAlgoResult;
@@ -8,7 +9,6 @@ package com.stintern.anipang.maingamescene.block
     
     import flash.utils.Dictionary;
     
-    import starling.animation.Tween;
     import starling.core.Starling;
     import starling.display.Image;
     import starling.display.Sprite;
@@ -95,12 +95,7 @@ package com.stintern.anipang.maingamescene.block
                 var result:Array = _connectedBlockFinder.process();
                 if( result == null )
                 {
-                    trace("연결된 블럭이 없습니다.");
-					debugging();
-					
-                   	recreateBoard();        
-					
-					debugging();
+                   	GameBoard.instance.recreateBoard(_blockArray, _blockLocater, _blockPainter);        
                 }
             }
         }
@@ -174,7 +169,6 @@ package com.stintern.anipang.maingamescene.block
 
         /**
          * 로드한 보드의 정보를 바탕으로 새로운 블럭들을 배치합니다. 
-         * @param board 보드 정보가 들어있는 2차원 벡터
          */
         public function createBlocks():void
         {
@@ -253,79 +247,6 @@ package com.stintern.anipang.maingamescene.block
             return block;
         }
 		
-		private function recreateBoard():void
-		{
-			var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray; 
-			var rowCount:uint = Resources.BOARD_ROW_COUNT;
-			var colCount:uint = Resources.BOARD_ROW_COUNT;
-			
-			// 보드를 재배열한 후에 특수블럭은 그대로 남아 있어야 되기 때문에
-			//기존에 있던 블록중에 특수 블럭의 타입을 저장
-			var dic:Dictionary = new Dictionary();
-			for(var i:uint = 0; i<rowCount; ++i)
-			{
-				for(var j:uint = 0; j<colCount; ++j)
-				{
-					var block:Block = _blockArray[i][j];
-					if( block == null )
-						return;
-					
-					if( block.type >= Resources.BLOCK_TYPE_SPECIAL_BLOCK_START && 
-						block.type <= Resources.BLOCK_TYPE_SPECIAL_BLOCK_END )
-					{
-						if( dic[type] == null )
-							dic[type] = 1;
-						else
-							dic[type] += 1;
-					}
-				}
-			}
-			
-			// 풀에 저장한 블록들을 바탕으로 보드를 재배열
-			for(i = 0; i<rowCount; ++i)
-			{
-				for(j = 0; j<colCount; ++j)
-				{
-					if(_blockArray[i][j] == null)
-						continue;
-					
-					// 새로운 타입을 생성
-					var type:uint = _blockLocater.makeNewType(board, i, j);
-					
-					// 저장해놓은 특수블럭과 같은 타입이면 특수블럭으로 생성
-					if( dic[type*10] != null && dic[type*10] > 0 )
-					{
-						type = type * 10;
-						dic[type*10]--;
-					}
-					else if( dic[type * 10 + 1] != null && dic[type * 10 + 1] > 0 )
-					{
-						type = type * 10 + 1;
-						dic[type*10+1]--;
-					}
-					else if( dic[type * 10 + 2] != null && dic[type * 10 + 2] > 0 )
-					{
-						type = type * 10 + 2;
-						dic[type*10+2]--;
-					}	
-					else if( dic[90] != null && dic[90] > 0 )
-					{
-						type = 90;
-					}
-						
-					
-					// 블럭의 이미지를 변경
-					_blockPainter.changeTexture(_blockArray[i][j], type);
-					_blockArray[i][j].type = type;
-					
-					//새롭게 생성한 타입으로 보드를 초기화
-					board[i][j] = _blockArray[i][j].type;
-				}
-			}
-			
-			dic = null;
-		}
-        
         public function registerBlock(block:Block):void
         {
             _blockPainter.addBlock(block.image);
@@ -377,23 +298,10 @@ package com.stintern.anipang.maingamescene.block
             var image1:Image = _blockArray[row1][col1].image;
             var image2:Image = _blockArray[row2][col2].image;
             
-            var tween:Tween = new Tween(image1, 0.1);
-            var tween2:Tween = new Tween(image2, 0.1);
+            TweenLite.to(image1, 0.15, {x:image2.x, y:image2.y, onComplete:onCompleteExchangeBlock});
+            TweenLite.to(image2, 0.15, {x:image1.x, y:image1.y, onComplete:onCompleteExchangeBlock});
             
-            tween.moveTo(image2.x, image2.y);
-            tween2.moveTo(image1.x, image1.y);
-            
-            Starling.juggler.add(tween);
-            Starling.juggler.add(tween2);
-            
-            tween.onStart = onStartExchangeBlock;
-            tween.onComplete = onCompleteExchangeBlock;
-            tween2.onComplete = onCompleteExchangeBlock;
-
-            function onStartExchangeBlock():void
-            {
-                _isBlockExchaning = true;
-            }
+            _isBlockExchaning = true;
             
             // 2개의 트윈이 모드 완료한 뒤에 블럭의 정보를 갱신
             var completeCount:uint = 0;
@@ -402,9 +310,6 @@ package com.stintern.anipang.maingamescene.block
                 ++completeCount;
                 if(completeCount == 2)
                     updateBlocks(row1, col1, row2, col2, isReturn);
-                
-                tween = null;
-                tween2 = null;
                 
                 // 블럭을 움직였을 경우에 연결된 블럭을 찾는 것을 리셋
                 _connectedBlockFinder.reset();
