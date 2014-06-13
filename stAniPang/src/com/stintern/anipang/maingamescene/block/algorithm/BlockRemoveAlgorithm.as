@@ -32,6 +32,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
         
         private var _positionArray:Array = new Array();
         
+        /**
+         * 터치한 블럭과 주위 블럭의 타입을 비교하여 다를 경우 제거 될수 없는 모양을 삭제합니다. 
+         * 예를 들어, 터치 블럭의 상,상단에 위치한 블럭의 타입이 다를 경우에  
+         * 'TTMBB', 'LLMTT', 'TTMRR', 'TTLMR', 'TTMB', 'TTM' 의 모양으로 제거가 가능하지 않습니다.
+         * 이런식으로 모든 주위 블럭을 체크하고 가능하지 않은 모양들을 삭제후 최 우선순위의 모양으로 블럭을 제거합니다.
+         */
         public function BlockRemoveAlgorithm()
         {
             // POS_OOO 가 관여하는 Shape 들 
@@ -53,6 +59,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
         {
             var result:Array = new Array();
             
+            // 유령블럭을 교환하는 지 확인
             if( lhs.type == Resources.BLOCK_TYPE_GHOST ||
                 rhs.type == Resources.BLOCK_TYPE_GHOST )
             {
@@ -70,6 +77,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
                 return result;
             }
             
+            // 일반 블럭 끼리 교환 하는 경우
             if( lhs.row < rhs.row )
             {
                 result.push(process(lhs, MOVED_UP));
@@ -143,6 +151,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
          */
         private function processExchangeSpecialBlocks(lhs:Block, rhs:Block):RemoveAlgoResult
         {
+            // 특수블럭의 타입을 확인
             switch(lhs.type % Resources.BLOCK_TYPE_PADDING)
             {
                 case Resources.BLOCK_TYPE_GOGGLE_INDEX:
@@ -157,8 +166,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
             }
         }
         
+        /**
+         * 유령블럭과 다른 블럭을 교체할 경우 교체되는 블럭의 타입을 바탕으로 이벤트가 발생합니다. 
+         */
         public function processExchangeWithGhost(lhs:Block, rhs:Block):RemoveAlgoResult
         {
+            // 유령블럭과 다른 블럭을 구분해서 저장
             var ghostBlock:Block, normalBlock:Block;
             if( lhs.type == Resources.BLOCK_TYPE_GHOST )
             {
@@ -171,11 +184,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
                 normalBlock = lhs;
             }
             
-            // 특수 블럭끼리 연결할 경우
+            // 유령블럭과 특수 블럭이 연결될 경우
             if( normalBlock.type >= Resources.BLOCK_TYPE_SPECIAL_BLOCK_START )
             {
                 return processExchangeGhostWithSpecial(ghostBlock, normalBlock);                
             }
+            // 유령블럭과 일반 동물 블럭이 연결될 경우
             else
             {
                 return processExchangeGhostWithNormal(ghostBlock, normalBlock);
@@ -183,22 +197,23 @@ package com.stintern.anipang.maingamescene.block.algorithm
         }
             
         /**
-         *  
-         * @param star
-         * @param normal
-         * @return 
-         * 
+         * 유령블럭과 일반 블럭이 만났을 때, 만난 블럭과 같은 타입의 모든 블럭들을 삭제합니다. 
          */
         private function processExchangeGhostWithNormal(ghost:Block, normal:Block):RemoveAlgoResult
         {
+            // 같은 타입의 모든 블럭들을 읽음
             var blocks:Array = BlockManager.instance.getBlocksByType(normal.type);
             
-            var positionArray:Array = new Array( new Point(0, 0) );
+            // 유령 블록을 중심으로 삭제할 블럭들의 상대좌표를 저장
+            var positionArray:Array = new Array( );
             var blockCount:uint = blocks.length;
             for(var i:uint=0; i<blockCount; ++i)
             {
                 positionArray.push( new Point(blocks[i].row - ghost.row, blocks[i].col - ghost.col) );
             }
+            
+            // 유령 블럭 자신도 없어져야 하기 때문에 저장
+            positionArray.push( new Point(0, 0));
             
             blocks.length = 0;
             blocks = null;
@@ -206,16 +221,22 @@ package com.stintern.anipang.maingamescene.block.algorithm
            return new RemoveAlgoResult(ghost.row, ghost.col, RemoveShape.EXCHANGE_GHOST_NORMAL, positionArray, true);
         }
         
+        /**
+         * 유령블럭과 특수블럭이 만났을 때, 보드내의 특수블럭과 같은 동물블럭들을 모두 특수블럭으로 바꾼 후 삭제합니다. 
+         */
         private function processExchangeGhostWithSpecial(ghost:Block, normal:Block):RemoveAlgoResult
         {
+            // 유령블럭끼리 만났을 경우
             if(normal.type == Resources.BLOCK_TYPE_GHOST)
             {
                 return null;
             }
             else
             {
+                // 특수블럭과 같은 동물인 블럭들을 저장
                 var blocks:Array = BlockManager.instance.getBlocksByType( uint(normal.type / Resources.BLOCK_TYPE_PADDING) );
                 
+                // 동물블럭들을 특수블럭으로 바꾸고 유령블럭을 중심으로 상대좌표를 저장
                 var positionArray:Array = new Array( );
                 var blockCount:uint = blocks.length;
                 for(var i:uint=0; i<blockCount; ++i)
@@ -234,11 +255,11 @@ package com.stintern.anipang.maingamescene.block.algorithm
                             BlockManager.instance.makeSpecialBlock(blocks[i].row, blocks[i].col, RemoveAlgoResult.TYPE_RESULT_4_BLOCKS_UP_DOWN);
                             break;
                     }
-                    //blocks[i].type = normal.type;
                     
                     positionArray.push( new Point(blocks[i].row - ghost.row, blocks[i].col - ghost.col) );
                 }
                 
+                // 유령 블럭 자신도 없어져야 하기 때문에 저장
                 positionArray.push(new Point(0, 0));
                 
                 blocks.length = 0;
@@ -248,6 +269,9 @@ package com.stintern.anipang.maingamescene.block.algorithm
             }
         }
         
+        /**
+         * 고글 특수 블럭과 다른 특수 블럭이 만났을 경우 
+         */
         private function processExchangeWithGoggle(lhs:Block, rhs:Block):RemoveAlgoResult
         {
             switch( rhs.type % Resources.BLOCK_TYPE_PADDING )
