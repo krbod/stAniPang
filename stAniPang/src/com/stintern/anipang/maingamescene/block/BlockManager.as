@@ -408,6 +408,7 @@ package com.stintern.anipang.maingamescene.block
                 
                 // 블럭을 움직였을 경우에 연결된 블럭을 찾는 것을 리셋
                 _connectedBlockFinder.reset();
+                _blockPainter.disposeHint();
             }
         }
         
@@ -486,7 +487,7 @@ package com.stintern.anipang.maingamescene.block
         
         public function callbackConnectedBlock(connectedBlock:Array):void
         {
-            trace(connectedBlock[0], connectedBlock[1], connectedBlock[2], connectedBlock[3], connectedBlock[4], connectedBlock[5] );      
+            _blockPainter.showHint(connectedBlock);
         }
         
         public function get blockPainter():BlockPainter

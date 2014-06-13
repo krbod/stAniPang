@@ -100,6 +100,7 @@ package com.stintern.anipang.utils
         public static var BLOCK_TYPE_ICE:uint = 94;
 
         
+        public static var BLOCK_TYPE_HINT:uint = 95;
         
         
         /** Texture Name */
@@ -144,6 +145,8 @@ package com.stintern.anipang.utils
         public static var TEXTURE_NAME_ICE:String = "ice";
         public static var TEXTURE_NAME_PANG:String = "pang";
         public static var TEXTURE_NAME_STAR:String = "star";
+        
+        public static var TEXTURE_NAME_HINT:String = "bubble";
             
         /** Game Enviroment */
 

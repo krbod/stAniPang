@@ -24,7 +24,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
         {
             _callback = callback;
             
-            _timer = new Timer(3000, 0);
+            _timer = new Timer(3000, -1);
             _timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
             
             _availableShape = new Array();
@@ -144,6 +144,10 @@ package com.stintern.anipang.maingamescene.block.algorithm
                 
                 if( tmp == tmp3 && tmp2 == tmp3 )
                 {
+                    result[0] += row;
+                    result[1] += col;
+                    result[2] += row;
+                    result[3] += col;
                     result.push(row, col);
                     return result;
                 }
