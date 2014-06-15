@@ -27,11 +27,7 @@ package com.stintern.anipang.maingamescene.block
             _container = new Sprite();
             addChild(_container);
             
-            // TextureAtlas 생성
-            _textureAtlas = new TextureAtlas(
-                    Texture.fromBitmap( AssetLoader.instance.getTextureBitmap( Resources.PATH_IMAGE_BLOCK_SPRITE_SHEET ) ), 
-                    AssetLoader.instance.loadXML( Resources.PATH_XML_BLOCK_SPRITE_SHEET )
-            );
+			_textureAtlas = AssetLoader.instance.loadTextureAtlas(Resources.IMAGE_NAME_BLOCK_SPRITE_SHEET);
             
             _hitImages = new Array();
             for(var i:uint=0; i<3; ++i)
@@ -39,8 +35,6 @@ package com.stintern.anipang.maingamescene.block
                 _hitImages.push( new Image(getTextureByType(Resources.BLOCK_TYPE_HINT)) );
                 _hitImages[i].touchable = false;
             }
-            
-            _textureWidth
         }
         
         public function addBlock(image:Image):void

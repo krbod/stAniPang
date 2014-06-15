@@ -1,14 +1,14 @@
 package com.stintern.anipang.utils
 {
-    import com.greensock.events.LoaderEvent;
-    import com.greensock.loading.ImageLoader;
-    import com.greensock.loading.LoaderMax;
-    
     import flash.display.Bitmap;
     import flash.filesystem.File;
     import flash.filesystem.FileMode;
     import flash.filesystem.FileStream;
     import flash.utils.Dictionary;
+    
+    import starling.textures.Texture;
+    import starling.textures.TextureAtlas;
+    import starling.utils.AssetManager;
 
     public class AssetLoader
     {
@@ -20,6 +20,8 @@ package com.stintern.anipang.utils
         public static var TEXTURE_CUBE_1:String = "res/texture/texture1.png";
         
         private var imgDictionary:Dictionary = new Dictionary();
+		
+		private var _assetManager:AssetManager;
         
         public function AssetLoader()
         {
@@ -37,8 +39,79 @@ package com.stintern.anipang.utils
             }
             return _instance;
         }
+		
+		public function init():void
+		{
+			_assetManager = new AssetManager();
+		}
+		
+		public function loadDirectory(onComplete:Function, onProgress:Function, ...dirs):void
+		{
+			for(var i:uint=0; i<dirs.length; ++i)
+			{
+				var appDir:File;
+				if( File.applicationDirectory.resolvePath(dirs[i]).exists )
+				{
+					appDir = File.applicationDirectory;
+				}
+				else if( File.applicationStorageDirectory.resolvePath(dirs[i]).exists )
+				{
+					appDir = File.applicationStorageDirectory;
+				}
+				_assetManager.enqueue(appDir.resolvePath(dirs[i]));	
+			}
+			
+			_assetManager.loadQueue(function (ratio:Number):void
+			{
+				if ( ratio == 1 )
+				{
+					onComplete();
+				}
+				else
+				{
+					if( onProgress != null )
+						onProgress(ratio);	
+				}
+				
+			});
+		}
+		
+		public function loadFile(filePath:String, onComplete:Function, onProgress:Function = null ):void
+		{
+			var file:File = File.applicationDirectory.resolvePath(filePath);
+			_assetManager.enqueue(file);
+			_assetManager.loadQueue(function (ratio:Number):void
+			{
+				if ( ratio == 1 )
+				{
+					onComplete();
+				}
+				else
+				{
+					trace(ratio);
+					if( onProgress != null )
+						onProgress(ratio);	
+				}
+				
+			});
+		}
+		
+		public function loadTextureAtlas(fileName:String):TextureAtlas
+		{
+			return _assetManager.getTextureAtlas(fileName);
+		}
+		
+		public function loadTexture(fileName:String):Texture
+		{
+			return _assetManager.getTexture(fileName);
+		}
+			
+		public function loadXML(fileName:String):XML
+		{
+			return _assetManager.getXml(fileName);
+		}
         
-        public function loadXML(path:String):XML
+        public function loadXMLDirectly(path:String):XML
         {
             var file:File = findFile(path);
             var fileStream:FileStream = new FileStream();
@@ -64,45 +137,6 @@ package com.stintern.anipang.utils
             return null;
         }
         
-        
-        public function loadTexture(path:Array, onComplete:Function, onProgress:Function = null):void
-        {
-            var queue:LoaderMax = new LoaderMax({name:"mainQueue", onProgress:progressHandler, onComplete:completeHandler, onError:errorHandler});
-            
-            var pathCount:uint = path.length;
-            for(var i:uint=0; i<pathCount; ++i)
-            {
-                queue.append(new ImageLoader(path[i], {name:path[i], estimatedBytes:106, container:this, alpha:0, width:512, height:256, scaleMode:"proportionalInside"}) );
-            }
-            
-            queue.load();
-            
-            function progressHandler(event:LoaderEvent):void 
-            {
-                if( onProgress != null )
-                    onProgress(event.target.progress);
-            }
-            
-            function completeHandler(event:LoaderEvent):void 
-            {
-                for(var i:uint=0; i<pathCount; ++i)
-                {
-                    imgDictionary[path[i]] = LoaderMax.getLoader(path[i]).rawContent;
-                }
-                
-                onComplete();
-            }
-            
-            function errorHandler(event:LoaderEvent):void 
-            {
-                trace("error occured with " + event.target + ": " + event.text);
-            }
-        }
-        
-        public function getTextureBitmap(imagePath:String):Bitmap
-        {
-            return imgDictionary[imagePath] as Bitmap;
-        }
         
     }
 }

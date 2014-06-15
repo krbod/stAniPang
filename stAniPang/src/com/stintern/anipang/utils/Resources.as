@@ -6,20 +6,33 @@ package com.stintern.anipang.utils
         public static var LAYER_MAIN_SCENE:String = "LAYER_MAIN_SCENE";
         public static var LAYER_MAIN_GAME:String = "LAYER_MAIN_GAME";
         public static var LAYER_COMPONENT:String = "LAYER_COMPONENT";
+		public static var LAYER_WORLD_MAP:String = "LAYER_WORLD_MAP";
         
         
         
         /** Directory Path */
         public static var PATH_LEVEL_XML:String = "res/dat/";
-        
-
-        /** Image Path */
-        public static var PATH_IMAGE_BLOCK_SPRITE_SHEET:String = "res/img/block_sprite_sheet.png";
+		public static var PATH_DIRECTORY_BLOCK_IMAGE:String = "res/img/blocks/";
+		public static var PATH_DIRECTORY_WORLD_MAP_IMAGE:String = "res/img/worldmaps/";
+		
+		/** Resource Name */
+		public static var IMAGE_NAME_BLOCK_SPRITE_SHEET:String = "block_sprite_sheet";
+		public static var XML_NAME_BLOCK_SPRITE_SHEET:String = "block_sprite_sheet";
+		
+		public static var WORLD_MAP_1_SPRITE_SHEET:String = "worldmap_1";
+		
+        public static var PATH_IMAGE_BLOCK_SPRITE_SHEET:String = "res/img/blocks/block_sprite_sheet";
         
         
         /** Image XML */
-        public static var PATH_XML_BLOCK_SPRITE_SHEET:String = "res/img/block_sprite_sheet.xml";
+        public static var PATH_XML_BLOCK_SPRITE_SHEET:String = "res/img/blocks/block_sprite_sheet.xml";
         
+		
+		/** World map */
+		public static var PATH_IMAGE_WORLD_MAP_1:String = "res/img/worldmaps/worldmap_1.png";
+		
+		public static var PATH_XML_WORLD_MAP_1:String = "res/img/worldmaps/worldmap_1.xml";
+		
         
         /** XML */
         
@@ -147,6 +160,11 @@ package com.stintern.anipang.utils
         public static var TEXTURE_NAME_STAR:String = "star";
         
         public static var TEXTURE_NAME_HINT:String = "bubble";
+		
+		
+		/** World Map */
+		public static var WORLD_MAP_BACKGROUND_NAME:String = "bkg";
+		
             
         /** Game Enviroment */
 

@@ -21,12 +21,9 @@ package com.stintern.anipang.maingamescene.layer
         private function init( event:Event ):void
         {
             removeEventListener(Event.ADDED_TO_STAGE, init);
-            
-            // 게임에서 사용할 텍스쳐들을 로드
-            AssetLoader.instance.loadTexture(
-                new Array(Resources.PATH_IMAGE_BLOCK_SPRITE_SHEET),
-                onComplete
-                );
+			
+			AssetLoader.instance.init();
+			AssetLoader.instance.loadDirectory(onComplete, null, Resources.PATH_DIRECTORY_BLOCK_IMAGE, Resources.PATH_DIRECTORY_WORLD_MAP_IMAGE);
           
             function onComplete():void
             {

@@ -46,7 +46,7 @@ package com.stintern.anipang.maingamescene
             _currentStageLevel = level;
             
             var filePath:String = Resources.PATH_LEVEL_XML + level.toString() + ".xml";
-            return _levelLoader.getStageInfo( AssetLoader.instance.loadXML(filePath) );
+            return _levelLoader.getStageInfo( AssetLoader.instance.loadXMLDirectly(filePath) );
         }
         
         public function get currentStageLevel():uint
