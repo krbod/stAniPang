@@ -12,8 +12,8 @@ package com.stintern.anipang.utils
         
         /** Directory Path */
         public static var PATH_LEVEL_XML:String = "res/dat/";
-		public static var PATH_DIRECTORY_BLOCK_IMAGE:String = "res/img/blocks/";
-		public static var PATH_DIRECTORY_WORLD_MAP_IMAGE:String = "res/img/worldmaps/";
+		public static var PATH_DIRECTORY_BLOCK:String = "res/img/blocks/";
+		public static var PATH_DIRECTORY_WORLD_MAP:String = "res/img/worldmaps/";
 		
 		/** Resource Name */
 		public static var IMAGE_NAME_BLOCK_SPRITE_SHEET:String = "block_sprite_sheet";
@@ -30,9 +30,9 @@ package com.stintern.anipang.utils
 		
 		/** World map */
 		public static var PATH_IMAGE_WORLD_MAP_1:String = "res/img/worldmaps/worldmap_1.png";
-		
 		public static var PATH_XML_WORLD_MAP_1:String = "res/img/worldmaps/worldmap_1.xml";
 		
+		public static var WORLD_MAP_NAME:String = "worldmap_";
         
         /** XML */
         
@@ -45,6 +45,12 @@ package com.stintern.anipang.utils
         // Mission Property        
         public static var MISSION_PROPERTY_SCORE:String = "score";
         
+		
+		// User Information
+		public static var XML_USER_INFO:String = "res/dat/userinfo.xml";
+		
+		// World map information
+		public static var XML_WORLD_MAP_INFO:String = "res/img/worldmaps/worldmapInfo.xml";
         
 
         /** Block Types */

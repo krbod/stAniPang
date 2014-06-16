@@ -23,7 +23,7 @@ package com.stintern.anipang.maingamescene.layer
             removeEventListener(Event.ADDED_TO_STAGE, init);
 			
 			AssetLoader.instance.init();
-			AssetLoader.instance.loadDirectory(onComplete, null, Resources.PATH_DIRECTORY_BLOCK_IMAGE, Resources.PATH_DIRECTORY_WORLD_MAP_IMAGE);
+			AssetLoader.instance.loadDirectory(onComplete, null, Resources.PATH_DIRECTORY_BLOCK, Resources.PATH_DIRECTORY_WORLD_MAP);
           
             function onComplete():void
             {
