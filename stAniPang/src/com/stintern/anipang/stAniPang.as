@@ -1,5 +1,6 @@
 package com.stintern.anipang
 {
+    import com.stintern.anipang.maingamescene.layer.MainGameScene;
     import com.stintern.anipang.worldmapscene.layer.WorldMapScene;
     
     import flash.display.Sprite;
@@ -21,7 +22,7 @@ package com.stintern.anipang
 			
             // create our Starling instance
             var viewPort:Rectangle = new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight);
-            mStarling = new Starling(WorldMapScene, stage, viewPort);
+            mStarling = new Starling(MainGameScene, stage, viewPort);
             
             // set anti-aliasing (higher the better quality but slower performance)
             mStarling.antiAliasing = 1;

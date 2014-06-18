@@ -69,6 +69,7 @@ package com.stintern.anipang.utils
 				}
 				else
 				{
+                    trace(ratio);
 					if( onProgress != null )
 						onProgress(ratio);	
 				}
