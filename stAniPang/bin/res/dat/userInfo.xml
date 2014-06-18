@@ -1,11 +1,51 @@
 <userInfo>
-	<currentStage>3</currentStage>
+	<currentStage>13</currentStage>
 	<stageClearInfo>
 		<stage level="1">
 			<star>2</star>
 			<score>3400</score>
 		</stage>
 		<stage level="2">
+			<star>1</star>
+			<score>2900</score>
+		</stage>
+		<stage level="3">
+			<star>2</star>
+			<score>3400</score>
+		</stage>
+		<stage level="4">
+			<star>1</star>
+			<score>2900</score>
+		</stage>
+		<stage level="5">
+			<star>2</star>
+			<score>3400</score>
+		</stage>
+		<stage level="6">
+			<star>1</star>
+			<score>2900</score>
+		</stage>
+		<stage level="7">
+			<star>2</star>
+			<score>3400</score>
+		</stage>
+		<stage level="8">
+			<star>1</star>
+			<score>2900</score>
+		</stage>
+		<stage level="9">
+			<star>2</star>
+			<score>3400</score>
+		</stage>
+		<stage level="10">
+			<star>1</star>
+			<score>2900</score>
+		</stage>
+		<stage level="11">
+			<star>2</star>
+			<score>3400</score>
+		</stage>
+		<stage level="12">
 			<star>1</star>
 			<score>2900</score>
 		</stage>
