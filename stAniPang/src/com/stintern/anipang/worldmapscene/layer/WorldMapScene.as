@@ -36,11 +36,15 @@ package com.stintern.anipang.worldmapscene.layer
 			UILoader.instance.loadUISheet(onComplete, onProgress, paths);
 			function onComplete():void
 			{
-				_worldMapLayer = new WorldMapLayer();
+				// 마지막 스테이지의 번호를 넘겨서 월드맵을 옮길 때 더이상 넘어가지 않도록 제한
+				var lastStagePath:String = _worldMapInfo.getPathByStage( _worldMapInfo.lastStage, true );
+				var lastStageOrder:uint = uint(lastStagePath.slice(lastStagePath.lastIndexOf("_")+1, lastStagePath.lastIndexOf(".")));
+				_worldMapLayer = new WorldMapLayer(
+					paths, 				// 월드맵을 구성할 미리로드한 이미지
+					_worldMapInfo.getWorldmapOrder( UserInfo.instance.currentStage),  // 현재 화면에 출력할 월드맵 이미지 번호
+					lastStageOrder		// 마지막 스테이지의 이미지 번호
+				);
 				addChild(_worldMapLayer);
-				
-				var fileName:String = (paths[0] as String).slice(paths[0].lastIndexOf("/")+1, paths[0].lastIndexOf("."));;
-				_worldMapLayer.onImageLoaded( fileName );
 			}
 			function onProgress(ratio:Number):void
 			{
@@ -58,17 +62,13 @@ package com.stintern.anipang.worldmapscene.layer
 		{
 			var paths:Array = new Array();
 			
-			// 현재 화면에 출력해야할 스프라이트 경로를 제일 먼저 저장
-			paths.push( _worldMapInfo.getPathByStage( stageNo, true ) );
-			paths.push( _worldMapInfo.getPathByStage( stageNo, false ) );
-			
 			var order:uint = _worldMapInfo.getWorldmapOrder( stageNo );
 			var lastOrder:uint = _worldMapInfo.getWorldmapOrder( _worldMapInfo.lastStage );
 			
 			// 앞 뒤로 2개씩 미리 로드
 			for(var i:int=order-2; i<=order+2; ++i)
 			{
-				if( i <= 0 || i == order)
+				if( i <= 0 )
 					continue;
 				
 				// 마지막 월드맵을 넘어서면 더이상 삽입 X 
@@ -81,5 +81,6 @@ package com.stintern.anipang.worldmapscene.layer
 			
 			return paths;
 		}
+		
 	}
 }

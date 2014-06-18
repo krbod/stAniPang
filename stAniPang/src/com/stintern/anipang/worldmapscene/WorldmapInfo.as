@@ -23,6 +23,8 @@ package com.stintern.anipang.worldmapscene
 			{
 				var elementName:String = "worldmap_" + (i+1);
 				_eachSpriteEndStage.push( xml.child(elementName).end );
+				
+				_lastStage = xml.child(elementName).end;
 			}
 		}
 		
@@ -37,9 +39,6 @@ package com.stintern.anipang.worldmapscene
 			var count:uint = _eachSpriteEndStage.length;
 			for(var i:uint=0; i<count; ++i)
 			{
-				if( _lastStage <= _eachSpriteEndStage[i] )
-					_lastStage = _eachSpriteEndStage[i];
-				
 				if( stage <= _eachSpriteEndStage[i] )
 					return i+1;
 			}

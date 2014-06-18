@@ -53,7 +53,7 @@ package com.stintern.anipang.utils
 			return _instance;
 		}
 		
-		public function loadAll(atlasFileName:String, container:Sprite, onTouch:Function):void
+		public function loadAll(atlasFileName:String, container:Sprite, onTouch:Function, x:Number, y:Number):void
 		{
 			var xml:XML = _xmlDictionary[atlasFileName];
 			var namelist:XMLList = xml.child("SubTexture").attribute("name");
@@ -66,6 +66,9 @@ package com.stintern.anipang.utils
 				
 				container.addChild( loadImage(atlasFileName, namelist[i], onTouch) );
 			}
+			
+			container.x += x;
+			container.y += y;
 		}
 		
 		public function loadUISheet(onComplete:Function, onProgress:Function, atlasPaths:Array):void
