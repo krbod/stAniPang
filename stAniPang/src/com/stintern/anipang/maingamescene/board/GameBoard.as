@@ -111,7 +111,7 @@ package com.stintern.anipang.maingamescene.board
                         continue;
                     
                     // 새로운 타입을 생성
-                    var type:uint = blockLocater.makeNewType(_stageInfo.boardArray, i, j);
+                    var type:uint = blockLocater.makeNewType(blockArray, i, j);
                     
                     // 저장해놓은 특수블럭과 같은 타입이면 특수블럭으로 생성
                     if( dic[type*10] != null && dic[type*10] > 0 )

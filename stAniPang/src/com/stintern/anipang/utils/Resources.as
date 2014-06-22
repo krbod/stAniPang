@@ -57,6 +57,8 @@ package com.stintern.anipang.utils
 		// World map information
 		public static var XML_WORLD_MAP_INFO:String = "res/img/worldmaps/worldmapInfo.xml";
         
+		/** Board Types */
+		public static var BOARD_TYPE_ANIMAL:uint = 0;
 
         /** Block Types */
 

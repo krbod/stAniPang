@@ -1,5 +1,7 @@
 package com.stintern.anipang.maingamescene.block.algorithm
 {
+    import com.stintern.anipang.maingamescene.block.Block;
+    import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
     
@@ -47,12 +49,14 @@ package com.stintern.anipang.maingamescene.block.algorithm
             // 연결된 블럭을 이미 찾았을 경우에는 다시 찾지 않음
             if( !_findRequired )
                 return _result;
+			
+			BlockManager.instance.blockArray
                 
-            var boardArray:Vector.<Vector.<uint>> = GameBoard.instance.boardArray; 
-            var rowCount:uint = boardArray.length;
+            var blockArray:Vector.<Vector.<Block>> = BlockManager.instance.blockArray
+            var rowCount:uint = blockArray.length;
             for(var i:uint=0; i<rowCount; ++i)
             {
-                var colCount:uint = boardArray[i].length;
+                var colCount:uint = blockArray[i].length;
                 for(var j:uint=0; j<colCount; ++j)
                 {                 
                     for(var k:uint=0; k<REMOVE_SHAPE_COUNT; ++k)
@@ -60,42 +64,46 @@ package com.stintern.anipang.maingamescene.block.algorithm
                         _availableShape[k] = true;
                     }
                     
-                    var value:uint = boardArray[i][j];
+					if(blockArray[i][j] == null )
+						continue;
+					
+					var type:uint = getAnimalType(blockArray[i][j].type);
 					
 					// 동물인지 확인
-					if( value > Resources.BLOCK_TYPE_END )
+					if( type > Resources.BLOCK_TYPE_END )
 						continue;
 					
                     
                     // LT 확인
-                    if( i-1 < 0 ||  j-1 < 0 || boardArray[i-1][j-1] != value )
+					var tmp:uint;
+                    if( i-1 < 0 ||  j-1 < 0 || blockArray[i-1][j-1] == null || getAnimalType(blockArray[i-1][j-1].type) != type )
                     {
                         for(k=0; k<_LTIndex.length; ++k)
                             _availableShape[ _LTIndex[k] ] = false;
                     }
                     
                     // RT 확인
-                    if( i-1 < 0 || j+1 > colCount-1 || boardArray[i-1][j+1] != value )
+                    if( i-1 < 0 || j+1 > colCount-1 || blockArray[i-1][j+1] == null || getAnimalType(blockArray[i-1][j+1].type) != type )
                     {
                         for( k=0; k<_RTIndex.length; ++k)
                             _availableShape[ _RTIndex[k] ] = false;
                     }
                     
                     // LB 확인
-                    if( i+1 > rowCount-1 || j-1 < 0 || boardArray[i+1][j-1] != value )
+                    if( i+1 > rowCount-1 || j-1 < 0 || blockArray[i+1][j-1] == null || getAnimalType(blockArray[i+1][j-1].type) != type )
                     {
                         for( k=0; k<_LBIndex.length; ++k)
                             _availableShape[ _LBIndex[k] ] = false;
                     }    
                     
                     // RB 확인
-                    if( i+1 > rowCount-1 || j+1 > colCount-1 || boardArray[i+1][j+1] != value )
+                    if( i+1 > rowCount-1 || j+1 > colCount-1 || blockArray[i+1][j+1] == null || getAnimalType(blockArray[i+1][j+1].type) != type )
                     {
                         for( k=0; k<_RBIndex.length; ++k)
                             _availableShape[ _RBIndex[k] ] = false;
                     } 
                     
-                    var result:Array = checkConnectedBlock(boardArray, i, j);
+                    var result:Array = checkConnectedBlock(blockArray, i, j);
                     if( result != null )
                     {
                         _timer.start();
@@ -111,8 +119,20 @@ package com.stintern.anipang.maingamescene.block.algorithm
             _timer.stop();
             return null;
         }
+		
+		private function getAnimalType(type:uint):uint
+		{
+			if( type >= 10 )
+			{
+				return uint(type * 0.1);
+			}
+			else
+			{
+				return type;
+			}
+		}
         
-        private function checkConnectedBlock(boardArray:Vector.<Vector.<uint>>, row:uint, col:uint):Array
+        private function checkConnectedBlock(blockArray:Vector.<Vector.<Block>>, row:uint, col:uint):Array
         {
 			var rowCount:uint = GameBoard.instance.rowCount;
 			var colCount:uint = GameBoard.instance.colCount;
@@ -123,6 +143,8 @@ package com.stintern.anipang.maingamescene.block.algorithm
                     continue;
                 
                 var result:Array = ConnectedShape.getShapeIndiceAt(i);
+				
+				// 다른 블럭들의 좌표가 보드를 벗어나면 다른 모양을 찾음
                 if( row+result[0] < 0 ||  row+result[2] > rowCount-1)
                 {
                     result = null;
@@ -135,15 +157,22 @@ package com.stintern.anipang.maingamescene.block.algorithm
                     continue;
                 }
                 
-                var tmp:uint = boardArray[row+result[0]][col+result[1]];
+				if( blockArray[row+result[0]][col+result[1]] == null )
+					continue;
+				
+                var tmp:uint = blockArray[row+result[0]][col+result[1]].type;
                 if( tmp >= 10 )
                     tmp = (uint)(tmp * 0.1);
                 
-                var tmp2:uint = boardArray[row+result[2]][col+result[3]];
+				
+				if( blockArray[row+result[2]][col+result[3]] == null )
+					continue;
+				
+                var tmp2:uint = blockArray[row+result[2]][col+result[3]].type;
                 if( tmp2 >= 10 )
                     tmp2 = (uint)(tmp2 * 0.1);
-                
-                var tmp3:uint = boardArray[row][col];
+				
+                var tmp3:uint = blockArray[row][col].type;
                 if( tmp3 >= 10 )
                     tmp3 = (uint)(tmp3 * 0.1);
                 

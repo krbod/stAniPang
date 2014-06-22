@@ -4,6 +4,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
     {
         public static var SHAPE_COUNT:uint = 16;
         
+		/**
+		 * 연결될 수 있는 모양의 다른 블럭들의 상대좌표를 리턴합니다. 
+		 * @param shapeNo 연결될 수 있는 모양의 번호
+		 * @return Array(x1, y1, x2, y2);
+		 * 
+		 */
         public static function getShapeIndiceAt(shapeNo:uint):Array
         {
             switch( shapeNo )

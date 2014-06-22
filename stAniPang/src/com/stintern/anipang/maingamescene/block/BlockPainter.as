@@ -13,6 +13,9 @@ package com.stintern.anipang.maingamescene.block
     import starling.textures.Texture;
     import starling.textures.TextureAtlas;
 
+	/**
+	 * 블럭 및 힌트를 그리는 일을 수행합니다. 
+	 */
     public class BlockPainter extends Sprite
     {
         private var _container:Sprite;
@@ -46,6 +49,9 @@ package com.stintern.anipang.maingamescene.block
             _container.removeChild(image);
         }
         
+		/**
+		 * 블럭 벡터를 매개변수로 받아서 블럭들을 한번에 그립니다. 
+		 */
         public function drawBlocks(blocks:Vector.<Vector.<Block>>):void
         {
             var rowCount:uint = blocks.length;
@@ -63,6 +69,10 @@ package com.stintern.anipang.maingamescene.block
             
         }
         
+		/**
+		 * 블럭의 현재위치를 기준으로 블럭을 그리게 되고 블럭의 위치가 이전위치과 다르면
+		 * TweenLite 를 이용해서 블럭을 이동시킵니다.
+		 */
         private function drawBlock(block:Block):void
         {
             if( !block.drawRequired )
@@ -89,6 +99,11 @@ package com.stintern.anipang.maingamescene.block
             }
         }
         
+		/**
+		 * 블럭의 텍스쳐를 교환합니다. 
+		 * @param block 텍스쳐를 교환할 블럭
+		 * @param type 교환할 텍스쳐의 타입
+		 */
         public function changeTexture(block:Block, type:uint):void
         {
             _container.removeChild(block.image);
@@ -102,6 +117,10 @@ package com.stintern.anipang.maingamescene.block
             _container.addChild(block.image);
         }
         
+		/**
+		 * 힌트를 표시합니다. 
+		 * @param positions 힌트를 표시할 인덱스 포지션 배열
+		 */
         public function showHint(positions:Array):void
         {
             for(var i:uint=0; i<3; ++i)
@@ -117,6 +136,9 @@ package com.stintern.anipang.maingamescene.block
             positions = null;
         }
         
+		/**
+		 * 힌트들을 제거합니다. 
+		 */
         public function disposeHint():void
         {
             for(var i:uint=0; i<3; ++i)
@@ -125,6 +147,13 @@ package com.stintern.anipang.maingamescene.block
             }
         }
         
+		/**
+		 * 블럭의 배열 인덱스를 바탕으로 실제 스크린 좌표를 반환합니다. 
+		 * @param row row Index
+		 * @param col col Index
+		 * @param texture 블럭 텍스쳐
+		 * @return Point 좌표
+		 */
         private function getBlockPosition(row:uint, col:uint, texture:Texture):Point
         {
 			return new Point(
@@ -133,7 +162,10 @@ package com.stintern.anipang.maingamescene.block
 			);
         }
         
-        public function setBlockImage(image:Image, row:uint, col:uint):void
+		/**
+		 * 블럭의 인덱스를 바탕으로 이미지에 좌표를 입력합니다. 
+		 */
+        public function setImagePosition(image:Image, row:uint, col:uint):void
         {
             var pos:Point = getBlockPosition(row, col, image.texture);
             image.x = pos.x;
@@ -142,6 +174,10 @@ package com.stintern.anipang.maingamescene.block
             pos = null;
         }
         
+		/**
+		 * 블럭의 타입을 바탕으로 텍스쳐를 반환합니다. 
+		 * @param type 반환할 텍스쳐의 타입
+		 */
         public function getTextureByType(type:uint):Texture
         {
             switch(type)

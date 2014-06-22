@@ -79,16 +79,18 @@ package com.stintern.anipang.maingamescene.block
         {
             // 다음 블럭의 위치를 확인하고 옮겨야 하면 블럭 정보를 변경
             moveBlocks();
-
+			
 			// 1행에 있던 블럭들이 내려간 자리로 새로운 블럭을 생성
 			fillWithNewBlocks();
-            
+            			
             // 변경된 블럭의 정보를 바탕으로 블럭을 새로 그림
             _blockPainter.drawBlocks(_blockArray);
-            
+            						
             // 블럭이 낙하한 뒤 연결된 블럭이 있는 지 확인
             if( _movingBlockCount == 0 )
             {
+				debugging();
+				
                 // 낙하한 뒤 새로운 보드에서 연결된 블럭이 있으면 삭제
                 _blockRemover.removeConnectedBlocks();
 
@@ -96,7 +98,7 @@ package com.stintern.anipang.maingamescene.block
                 var result:Array = _connectedBlockFinder.process();
                 if( result == null )
                 {
-                   	GameBoard.instance.recreateBoard(_blockArray, _blockLocater, _blockPainter);        
+                   	GameBoard.instance.recreateBoard(_blockArray, _blockLocater, _blockPainter);     
                 }
             }
         }
@@ -237,7 +239,8 @@ package com.stintern.anipang.maingamescene.block
             block.row = row;
             block.col = col;
             
-            GameBoard.instance.boardArray[block.row][block.col] = block.type;
+            //GameBoard.instance.boardArray[block.row][block.col] = block.type;
+			GameBoard.instance.boardArray[block.row][block.col] = Resources.BOARD_TYPE_ANIMAL;
             _blockArray[block.row][block.col] = block;
             
             // 다음 프레임 때 BlockPainter 에 의해서 갱신된 위치로 블럭을 Tween
@@ -253,27 +256,28 @@ package com.stintern.anipang.maingamescene.block
             var rowCount:uint = GameBoard.instance.rowCount;
             var colCount:uint = GameBoard.instance.colCount;
             
+			_blockArray.length = rowCount;
             for(var i:uint = 0; i<rowCount; ++i)
             {
-                var colVector:Vector.<Block> = new Vector.<Block>();
+				_blockArray[i] = new Vector.<Block>();
+				_blockArray[i].length = colCount
                 for(var j:uint = 0; j<colCount; ++j)
                 {
                     // 보드 정보를 보고 블럭의 타입을 받아옴
-                    board[i][j] = getTypeOfBlock(board, i, j);
+                    var type:uint = getTypeOfBlock(board, i, j);
                     
-                    var block:Block = createBlock(board[i][j]);	//보드가 빈공간이면  null을 반환
+                    var block:Block = createBlock(type);	//보드가 빈공간이면  null을 반환
                     if(block != null)	
                     {
 						block.row = i;
 						block.col = j;
                         
                         // 블럭 이미지 위치를 설정
-                        _blockPainter.setBlockImage(block.image, i, j);
+                        _blockPainter.setImagePosition(block.image, i, j);
                     }
                     
-                    colVector.push(  block );
+					_blockArray[i][j] = block;
                 }
-                _blockArray.push( colVector );
             }
         }
         
@@ -286,7 +290,7 @@ package com.stintern.anipang.maingamescene.block
                     return GameBoard.TYPE_OF_CELL_EMPTY;
                     
                 case GameBoard.TYPE_OF_CELL_NONE:
-                    return _blockLocater.makeNewType(board, row, col);
+                    return _blockLocater.makeNewType(BlockManager.instance.blockArray, row, col);
                     
                 default:
                     return board[row][col];

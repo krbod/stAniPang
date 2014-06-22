@@ -400,7 +400,8 @@ package com.stintern.anipang.maingamescene.block.algorithm
 
         private function checkDuplication(row:uint, col:uint, movedDirection:uint):void
         {
-            var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
+            //var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
+			var blockArray:Vector.<Vector.<Block>> = BlockManager.instance.blockArray;
 			var rowCount:uint = GameBoard.instance.rowCount;
 			var colCount:uint = GameBoard.instance.colCount;
             
@@ -409,12 +410,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
             {
                 // 옮겨진 블럭과 2개 위쪽으로 떨어진 블럭이 옮겨진 블럭과 같지 않을 경우
                 // 가능하지 않은 모양들을 제거
-                if(row < 2  ||  !check2Value(board, row, col, -2, 0) )
+                if(row < 2  ||  !check2Value(blockArray, row, col, -2, 0) )
                 {
                     removeAvailableFunction(POS_TTX);
                 }
                 
-                if( row < 1 || !check2Value(board, row, col, -1, 0) )
+                if( row < 1 || !check2Value(blockArray, row, col, -1, 0) )
                 {
                     removeAvailableFunction(POS_TX);
                 }
@@ -424,12 +425,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
 
             if( movedDirection != MOVED_RIGHT )
             {
-                if( col < 2 || !check2Value(board, row, col, 0, -2) )
+                if( col < 2 || !check2Value(blockArray, row, col, 0, -2) )
                 {
                     removeAvailableFunction(POS_LLX);
                 }
                   
-                if( col < 1 || !check2Value(board, row, col, 0, -1) )
+                if( col < 1 || !check2Value(blockArray, row, col, 0, -1) )
                 {
                     removeAvailableFunction(POS_LX);
                 }
@@ -437,12 +438,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
             
             if( movedDirection != MOVED_UP )
             {
-                if( row > rowCount-2 ||  !check2Value(board, row, col, 1, 0) )
+                if( row > rowCount-2 ||  !check2Value(blockArray, row, col, 1, 0) )
                 {
                     removeAvailableFunction(POS_BX);
                 }
                 
-                if( row > rowCount-3 || !check2Value(board, row, col, 2, 0) )
+                if( row > rowCount-3 || !check2Value(blockArray, row, col, 2, 0) )
                 {
                     removeAvailableFunction(POS_BBX);
                 }
@@ -450,12 +451,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
 
             if( movedDirection != MOVED_LEFT )
             {
-                if( col > colCount-2 || !check2Value(board, row, col, 0, 1) )
+                if( col > colCount-2 || !check2Value(blockArray, row, col, 0, 1) )
                 {
                     removeAvailableFunction(POS_RX);
                 }
                 
-                if( col > colCount-3 || !check2Value(board, row, col, 0, 2 ) )
+                if( col > colCount-3 || !check2Value(blockArray, row, col, 0, 2 ) )
                 {
                     removeAvailableFunction(POS_RRX);
                 }
@@ -463,12 +464,15 @@ package com.stintern.anipang.maingamescene.block.algorithm
             
         }
         
-        private function check2Value(board:Vector.<Vector.<uint>>, row:uint, col:uint, rowAlpha:int, colAlpha:int):Boolean
+        private function check2Value(blockArray:Vector.<Vector.<Block>>, row:uint, col:uint, rowAlpha:int, colAlpha:int):Boolean
         {
             var tmp1:uint, tmp2:uint;
             
-            board[row+rowAlpha][col+colAlpha] < 10 ? tmp1 = board[row + rowAlpha][col + colAlpha] : tmp1 = uint(board[row + rowAlpha][col + colAlpha] / Resources.BLOCK_TYPE_PADDING);
-            board[row][col] < 10 ? tmp2 = board[row][col] : tmp2 = uint(board[row][col] / Resources.BLOCK_TYPE_PADDING);
+			if( blockArray[row+rowAlpha][col+colAlpha] == null || blockArray[row][col] == null )
+				return false;
+			
+			blockArray[row+rowAlpha][col+colAlpha].type < 10 ? tmp1 = blockArray[row + rowAlpha][col + colAlpha].type : tmp1 = uint(blockArray[row + rowAlpha][col + colAlpha].type / Resources.BLOCK_TYPE_PADDING);
+			blockArray[row][col].type < 10 ? tmp2 = blockArray[row][col].type : tmp2 = uint(blockArray[row][col].type / Resources.BLOCK_TYPE_PADDING);
             
             if( tmp1 == tmp2 )
             {
