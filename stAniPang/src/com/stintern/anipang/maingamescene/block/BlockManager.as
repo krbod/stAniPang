@@ -239,8 +239,7 @@ package com.stintern.anipang.maingamescene.block
             block.row = row;
             block.col = col;
             
-            //GameBoard.instance.boardArray[block.row][block.col] = block.type;
-			GameBoard.instance.boardArray[block.row][block.col] = Resources.BOARD_TYPE_ANIMAL;
+			GameBoard.instance.boardArray[block.row][block.col] = GameBoard.TYPE_OF_CELL_ANIMAL;
             _blockArray[block.row][block.col] = block;
             
             // 다음 프레임 때 BlockPainter 에 의해서 갱신된 위치로 블럭을 Tween
@@ -289,7 +288,7 @@ package com.stintern.anipang.maingamescene.block
                 case GameBoard.TYPE_OF_CELL_EMPTY:
                     return GameBoard.TYPE_OF_CELL_EMPTY;
                     
-                case GameBoard.TYPE_OF_CELL_NONE:
+                case GameBoard.TYPE_OF_CELL_ANIMAL:
                     return _blockLocater.makeNewType(BlockManager.instance.blockArray, row, col);
                     
                 default:

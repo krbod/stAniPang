@@ -17,7 +17,7 @@ package com.stintern.anipang.maingamescene.board
         
         private var _stageInfo:StageInfo; 
         
-        public static var TYPE_OF_CELL_NONE:uint = 0;      // 동물만 있는 공간
+        public static var TYPE_OF_CELL_ANIMAL:uint = 0;      // 동물만 있는 공간
 
         public static var TYPE_OF_CELL_EMPTY:uint = 100;     // 아무 것도 없는 공간
         public static var TYPE_OF_CELL_ICE:uint = 200;

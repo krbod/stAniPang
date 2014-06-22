@@ -67,8 +67,8 @@ package com.stintern.anipang.maingamescene.block.algorithm
 			if( blockArray[_row][_col-2] == null || blockArray[_row][_col-1] == null)
 				return -1;
 			
-            var first:uint = blockArray[_row][_col-2].type;
-            var second:uint = blockArray[_row][_col-1].type;
+            var first:uint = getAnimalType(blockArray[_row][_col-2].type);
+            var second:uint = getAnimalType(blockArray[_row][_col-1].type);
             if( first == second )
                 return first
             
@@ -80,8 +80,8 @@ package com.stintern.anipang.maingamescene.block.algorithm
 			if( blockArray[_row-2][_col] == null || blockArray[_row-1][_col] == null )
 				return -1;
 			
-            var first:uint = blockArray[_row-2][_col].type;
-            var second:uint = blockArray[_row-1][_col].type;
+            var first:uint = getAnimalType(blockArray[_row-2][_col].type);
+            var second:uint = getAnimalType(blockArray[_row-1][_col].type);
             if( first == second )
                 return first
             
@@ -101,5 +101,17 @@ package com.stintern.anipang.maingamescene.block.algorithm
             
             return result;
         }
+		
+		private function getAnimalType(type:uint):uint
+		{
+			if( type >= 10 )
+			{
+				return uint(type * 0.1);
+			}
+			else
+			{
+				return type;
+			}
+		}
     }
 }
