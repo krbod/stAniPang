@@ -16,8 +16,14 @@ package com.stintern.anipang.worldmapscene.layer
 		
 		public function WorldMapScene()
 		{
-			super();
+			this.name = Resources.SCENE_WORLD_MAP;
+			
 			addEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		
+		public override function dispose():void
+		{
+			
 		}
 		
 		private function init( event:Event ):void

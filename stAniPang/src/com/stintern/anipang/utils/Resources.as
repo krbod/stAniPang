@@ -2,8 +2,11 @@ package com.stintern.anipang.utils
 {
     public class Resources
     {
+		/** Scene name */
+		public static var SCENE_WORLD_MAP:String = "SCENE_WORLD_MAP";
+		public static var SCENE_MAIN_GAME:String = "SCENE_MAIN_GAME";
+		
         /** Layer name */
-        public static var LAYER_MAIN_SCENE:String = "LAYER_MAIN_SCENE";
         public static var LAYER_MAIN_GAME:String = "LAYER_MAIN_GAME";
         public static var LAYER_COMPONENT:String = "LAYER_COMPONENT";
 		public static var LAYER_WORLD_MAP:String = "LAYER_WORLD_MAP";
@@ -11,7 +14,7 @@ package com.stintern.anipang.utils
         
         
         /** Directory Path */
-        public static var PATH_LEVEL_XML:String = "res/dat/";
+        public static var PATH_LEVEL_XML:String = "res/dat/stage/";
 		public static var PATH_DIRECTORY_BLOCK:String = "res/img/blocks/";
 		public static var PATH_DIRECTORY_WORLD_MAP:String = "res/img/worldmaps/";
 		

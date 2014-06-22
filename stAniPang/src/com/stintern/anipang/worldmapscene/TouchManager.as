@@ -1,7 +1,10 @@
 package com.stintern.anipang.worldmapscene
 {
-	import com.stintern.anipang.utils.Resources;
+	import com.stintern.anipang.SceneManager;
+	import com.stintern.anipang.maingamescene.LevelManager;
+	import com.stintern.anipang.maingamescene.layer.MainGameScene;
 	
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -10,6 +13,7 @@ package com.stintern.anipang.worldmapscene
 	public class TouchManager
 	{
 		private var _isTouched:Boolean;
+		private var _isMoved:Boolean;
 		private var _touchMoveCallback:Function;
 		
 		public function TouchManager(touchMoveCallback:Function)
@@ -34,15 +38,29 @@ package com.stintern.anipang.worldmapscene
 						if( !_isTouched )
 							return;
 						
-						if( (event.target as DisplayObject).name == Resources.WORLD_MAP_BACKGROUND_NAME )
-						{
-							_touchMoveCallback(touch.globalY - touch.previousGlobalY);
-						}
-						
+						_touchMoveCallback(touch.globalY - touch.previousGlobalY);
+						_isMoved = true;
 						break;
 					
 					case TouchPhase.ENDED :
 						_isTouched = false;
+					
+						if( _isMoved )
+						{
+							_isMoved = false;	
+						}
+						else
+						{
+							var stageName:String = ((event.target as DisplayObject).name ); 
+							var stage:uint = uint(stageName.slice(stageName.lastIndexOf("_")+1, stageName.length));
+
+							LevelManager.instance.currentStageLevel = stage;
+							
+							var mainGameScene:MainGameScene = new MainGameScene();
+							
+							(Starling.current.root as SceneManager).pushScene(mainGameScene);
+						}
+						
 						break;
 				}
 			}

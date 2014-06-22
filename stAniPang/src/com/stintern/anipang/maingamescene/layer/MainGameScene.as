@@ -13,7 +13,7 @@ package com.stintern.anipang.maingamescene.layer
         
         public function MainGameScene()
         {
-            this.name = Resources.LAYER_MAIN_SCENE;
+            this.name = Resources.SCENE_MAIN_GAME;
             
             addEventListener(Event.ADDED_TO_STAGE, init);
         }

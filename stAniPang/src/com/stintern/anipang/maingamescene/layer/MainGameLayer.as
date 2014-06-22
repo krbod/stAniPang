@@ -36,7 +36,7 @@ package com.stintern.anipang.maingamescene.layer
         public function loadStage():void
         {
             // 현재 스테이지 레벨을 읽음
-            var stageLevel:uint = LevelManager.instance.getCurrentLevel();
+            var stageLevel:uint = LevelManager.instance.currentStageLevel;
             
             // 스테이지 레벨에 맞도록 게임 보드를 초기화
             GameBoard.instance.initBoard(stageLevel);

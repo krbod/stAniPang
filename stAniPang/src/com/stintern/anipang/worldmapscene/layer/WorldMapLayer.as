@@ -1,10 +1,12 @@
 package com.stintern.anipang.worldmapscene.layer
 {
+	import com.stintern.anipang.userinfo.UserInfo;
 	import com.stintern.anipang.utils.Resources;
 	import com.stintern.anipang.utils.UILoader;
 	import com.stintern.anipang.worldmapscene.TouchManager;
 	
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	
 	public class WorldMapLayer extends Sprite
@@ -41,6 +43,9 @@ package com.stintern.anipang.worldmapscene.layer
 			// 맨 아랫부분과 윗부분의 좌표를 저장후 더이상 안 움직이도록 제한
 			_startPoint = (1-currentStageOrder) * Starling.current.stage.stageHeight;
 			_endPoint = (lastStageOrder - currentStageOrder) * Starling.current.stage.stageHeight;
+			
+			// 클리어한 스테이지는 회색 스테이지 버튼을 Invisible
+			initStageButton();
 		}
 		
 		/**
@@ -86,6 +91,46 @@ package com.stintern.anipang.worldmapscene.layer
 			else
 			{
 				_worldContainer.y += distance;
+			}
+		}
+		
+		/**
+		 * 클리어한 버튼은 활성화상태로 두고 아직 클리어하지 못한 스테이지는
+		 * 버튼을 비활성화 상태로 둡니다. 
+		 */
+		private function initStageButton():void
+		{
+			var currentStage:uint = UserInfo.instance.currentStage;
+			for(var i:uint=1; i<=currentStage; ++i)
+			{
+				var image:DisplayObject = getChildByName(_worldContainer, "Button_Unclear_" + i );
+				image.visible = false;
+			}
+		}
+		
+		/**
+		 * 부모 Sprite 객체로 부터 자식까지 name 을 가진 객체를 찾아 리턴합니다.  
+		 */
+		private function getChildByName(parent:Sprite, name):DisplayObject
+		{
+			if( parent == null )
+				return null;
+			
+			var displayObject:DisplayObject = parent.getChildByName(name);
+			if( displayObject == null )
+			{
+				var childrenCount:uint = parent.numChildren;
+				for(var i:uint=0; i<childrenCount; ++i)
+				{
+					var object:DisplayObject = getChildByName(( parent.getChildAt(i) as Sprite), name);
+					if( object != null )
+						return object;
+				}
+				return null;
+			}
+			else
+			{
+				return displayObject;
 			}
 		}
 		
