@@ -6,6 +6,9 @@ package com.stintern.anipang.maingamescene
         private var _moveLimit:uint;
         private var _missionType:String;
         private var _mission:uint;
+		
+		private var _rowCount:uint;
+		private var _colCount:uint;
         
         public function StageInfo()
         {
@@ -52,9 +55,28 @@ package com.stintern.anipang.maingamescene
             return _mission;
         }
         public function set mission(mission:uint):void
-       {
+        {
             _mission = mission;
         }
+		
+		public function get rowCount():uint
+		{
+			return _rowCount;
+		}
+		public function set rowCount(rowCount:uint):void
+		{
+			_rowCount = rowCount;
+		}
+		
+		public function get colCount():uint
+		{
+			return _colCount;
+		}
+		public function set colCount(colCount:uint):void
+		{
+			_colCount = colCount;
+		}
+			
     }
     
 }

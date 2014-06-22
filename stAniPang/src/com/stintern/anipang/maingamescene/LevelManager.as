@@ -58,6 +58,5 @@ package com.stintern.anipang.maingamescene
             _currentStageLevel = level;
         }
 
-        
     }
 }

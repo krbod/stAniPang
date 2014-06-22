@@ -157,7 +157,7 @@ package com.stintern.anipang.maingamescene.block
          */
         private function removeHorizontal(row:uint, col:uint):void
         {
-            var colCount:uint = Resources.BOARD_ROW_COUNT;
+			var colCount:uint = GameBoard.instance.colCount;
             for(var i:uint=0; i<colCount; ++i)
             {
                 if( _blockArray[row][i] == null )
@@ -179,8 +179,8 @@ package com.stintern.anipang.maingamescene.block
         
         private function removeVertical(row:uint, col:uint):void
         {
-            var colCount:uint = Resources.BOARD_ROW_COUNT;
-            for(var i:uint=0; i<colCount; ++i)
+			var rowCount:uint = GameBoard.instance.rowCount;
+            for(var i:uint=0; i<rowCount; ++i)
             {
                 if( _blockArray[i][col] == null )
                     continue;
@@ -200,6 +200,9 @@ package com.stintern.anipang.maingamescene.block
         
         private function removeHexagon(row:uint, col:uint):void
         {
+			var rowCount:uint = GameBoard.instance.rowCount;
+			var colCount:uint = GameBoard.instance.colCount;
+			
             // 맨 윗줄의 블럭 하나 삭제
             if( row >= 2 )
             {
@@ -212,7 +215,7 @@ package com.stintern.anipang.maingamescene.block
                 if( row -1 < 0 )
                     break;
                 
-                if( col+i < 0 || col + i >= Resources.BOARD_COL_COUNT )
+                if( col+i < 0 || col + i >= colCount )
                     continue;
                 
                 processRemove(-1, i);
@@ -221,7 +224,7 @@ package com.stintern.anipang.maingamescene.block
             // 세 번째 줄의 블럭 5개 삭제
             for(i=-2; i<=2; ++i)
             {
-                if( col+i < 0 || col + i >= Resources.BOARD_COL_COUNT )
+                if( col+i < 0 || col + i >= colCount )
                     continue;
                 
                 if( i == 0 )
@@ -233,17 +236,17 @@ package com.stintern.anipang.maingamescene.block
             // 4번째 줄의 블럭 3개 삭제
             for( i=-1; i<=1; ++i)
             {
-                if( row + 1 >= Resources.BOARD_ROW_COUNT )
+                if( row + 1 >= rowCount )
                     break;
                 
-                if( col+i < 0 || col + i >= Resources.BOARD_COL_COUNT )
+                if( col+i < 0 || col + i >= colCount )
                     continue;
                 
                 processRemove(1, i);
             }
             
             // 5번째 줄의 블럭 1개 삭제
-            if( row  + 2 <= Resources.BOARD_ROW_COUNT - 1 )
+            if( row  + 2 <= rowCount - 1 )
             {
                 processRemove(2, 0);
             }

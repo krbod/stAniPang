@@ -12,9 +12,15 @@ package com.stintern.anipang.utils
         {
             var stageInfo:StageInfo = new StageInfo();
             
+			// 게임 보드 사이즈 설정
+			var rowCount:XMLList = xml.child(Resources.ELEMENT_NAME_OF_ROW_COUNT);
+			stageInfo.rowCount = rowCount[0];    
+			var colCount:XMLList = xml.child(Resources.ELEMENT_NAME_OF_COL_COUNT);
+			stageInfo.colCount = colCount[0];    
+			
             // 게임 보드 2차월 배열 설정
             var boardInfo:XMLList = xml.child(Resources.ELEMENT_NAME_OF_BOARD_INFO);
-            stageInfo.boardArray = getBoardInfo(boardInfo[0]);    
+            stageInfo.boardArray = getBoardInfo(boardInfo[0], rowCount[0], colCount[0]);    
             
             // 블럭 이동 제한 설정
             var moveLimit:XMLList = xml.child(Resources.ELEMENT_NAME_OF_MOVE_LIMIT);
@@ -27,13 +33,11 @@ package com.stintern.anipang.utils
             return stageInfo; 
         }
         
-        private function getBoardInfo(boardString:String):Vector.<Vector.<uint>>
+        private function getBoardInfo(boardString:String, rowCount:uint, colCount:uint):Vector.<Vector.<uint>>
         {
             var tmpArray:Array = boardString.split(",");
             
             var resultBoard:Vector.<Vector.<uint>> = new Vector.<Vector.<uint>>();
-            var rowCount:uint = Resources.BOARD_ROW_COUNT;
-            var colCount:uint = Resources.BOARD_COL_COUNT;
             
             for(var i:uint=0; i<rowCount; ++i)
             {

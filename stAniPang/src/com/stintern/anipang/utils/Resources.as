@@ -44,6 +44,8 @@ package com.stintern.anipang.utils
         public static var ELEMENT_NAME_OF_BOARD_INFO:String = "board";
         public static var ELEMENT_NAME_OF_MOVE_LIMIT:String = "move_limit";
         public static var ELEMENT_NAME_OF_MISSION:String = "misson";
+		public static var ELEMENT_NAME_OF_ROW_COUNT:String = "row";
+		public static var ELEMENT_NAME_OF_COL_COUNT:String = "col";
         
         // Mission Property        
         public static var MISSION_PROPERTY_SCORE:String = "score";

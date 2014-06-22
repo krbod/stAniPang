@@ -61,9 +61,6 @@ package com.stintern.anipang.maingamescene.board
          */
         public function recreateBoard(blockArray:Vector.<Vector.<Block>>, blockLocater:BlockLocater, blockPainter:BlockPainter):void
         {
-            var rowCount:uint = Resources.BOARD_ROW_COUNT;
-            var colCount:uint = Resources.BOARD_ROW_COUNT;
-            
             // 보드를 재배열한 후에 특수블럭은 그대로 남아 있어야 되기 때문에
             //기존에 있던 블록중에 특수 블럭의 타입을 저장
             var dictionary:Dictionary = storeSpecialBlocks(blockArray);
@@ -75,8 +72,8 @@ package com.stintern.anipang.maingamescene.board
         
         private function storeSpecialBlocks(blockArray:Vector.<Vector.<Block>>):Dictionary
         {
-            var rowCount:uint = Resources.BOARD_ROW_COUNT;
-            var colCount:uint = Resources.BOARD_ROW_COUNT;
+			var rowCount:uint = GameBoard.instance.rowCount;
+			var colCount:uint = GameBoard.instance.colCount;
             
             var dic:Dictionary = new Dictionary();
             for(var i:uint = 0; i<rowCount; ++i)
@@ -103,8 +100,8 @@ package com.stintern.anipang.maingamescene.board
         
         private function relocateBoard(dic:Dictionary, blockArray:Vector.<Vector.<Block>>, blockLocater:BlockLocater, blockPainter:BlockPainter):void
         {
-            var rowCount:uint = Resources.BOARD_ROW_COUNT;
-            var colCount:uint = Resources.BOARD_ROW_COUNT;
+			var rowCount:uint = GameBoard.instance.rowCount;
+			var colCount:uint = GameBoard.instance.colCount;
             
             for(var i:uint = 0; i<rowCount; ++i)
             {
@@ -147,13 +144,19 @@ package com.stintern.anipang.maingamescene.board
             }
         }
         
-        
-        
-        
-        
         public function get boardArray():Vector.<Vector.<uint>>
         {
             return _stageInfo.boardArray;
         }
+		
+		public function get rowCount():uint
+		{
+			return _stageInfo.rowCount;
+		}
+		
+		public function get colCount():uint
+		{
+			return _stageInfo.colCount;
+		}
     }
 }

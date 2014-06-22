@@ -116,7 +116,7 @@ package com.stintern.anipang.maingamescene.block
                 {
                     // 블럭이 null (비어있는 칸)이거나 맨 아랫줄이면 낙하시키지 않음
                     var block:Block = _blockArray[i][j];    
-                    if(block == null || block.row == Resources.BOARD_ROW_COUNT - 1)
+                    if(block == null || block.row == GameBoard.instance.rowCount - 1)
                     {
                         continue;
                     }
@@ -178,7 +178,7 @@ package com.stintern.anipang.maingamescene.block
 			}
 			else
 			{
-				if( col+1 > Resources.BOARD_COL_COUNT-1 )
+				if( col+1 > GameBoard.instance.colCount - 1 )
 					return false;
 				
 				if( boardArray[row+1][col+1] != GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
@@ -250,8 +250,8 @@ package com.stintern.anipang.maingamescene.block
         public function createBlocks():void
         {
             var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray; 
-            var rowCount:uint = Resources.BOARD_ROW_COUNT;
-            var colCount:uint = Resources.BOARD_ROW_COUNT;
+            var rowCount:uint = GameBoard.instance.rowCount;
+            var colCount:uint = GameBoard.instance.colCount;
             
             for(var i:uint = 0; i<rowCount; ++i)
             {
@@ -347,7 +347,7 @@ package com.stintern.anipang.maingamescene.block
         private function nextPosAvailable(row:int, col:int):Boolean
         {
             // 보드 밖이면 FALSE
-            if( row < 0 || col < 0 || row >= Resources.BOARD_ROW_COUNT || col >= Resources.BOARD_COL_COUNT )
+            if( row < 0 || col < 0 || row >= GameBoard.instance.rowCount || col >= GameBoard.instance.colCount )
                 return false;
             
             switch( GameBoard.instance.boardArray[row][col] )
@@ -514,8 +514,9 @@ package com.stintern.anipang.maingamescene.block
         public function debugging(block:Block=null):void
         {
             var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray; 
-            var rowCount:uint = Resources.BOARD_ROW_COUNT;
-            var colCount:uint = Resources.BOARD_ROW_COUNT;
+			
+			var rowCount:uint = GameBoard.instance.rowCount;
+			var colCount:uint = GameBoard.instance.colCount;
             
             trace("");
             trace("board");

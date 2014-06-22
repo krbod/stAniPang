@@ -16,6 +16,7 @@ package com.stintern.anipang.utils
     import starling.display.Image;
     import starling.display.Sprite;
     import starling.events.TouchEvent;
+    import starling.text.TextField;
     import starling.textures.Texture;
     import starling.textures.TextureAtlas;
 
@@ -61,8 +62,11 @@ package com.stintern.anipang.utils
 			var count:uint = namelist.length();
 			for(var i:uint=0; i<count; ++i)
 			{
+				// 스테이지 레이블은 TextField 를 사용
 				if( namelist[i].toString().slice(0, 5)  == "label" )
+				{
 					continue;
+				}
 				
 				container.addChild( loadImage(atlasFileName, namelist[i], onTouch) );
 			}

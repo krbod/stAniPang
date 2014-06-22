@@ -401,6 +401,8 @@ package com.stintern.anipang.maingamescene.block.algorithm
         private function checkDuplication(row:uint, col:uint, movedDirection:uint):void
         {
             var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
+			var rowCount:uint = GameBoard.instance.rowCount;
+			var colCount:uint = GameBoard.instance.colCount;
             
             // 아래로 옮겨진 블럭의 경우에는 위쪽 블럭들을 검사할 필요가 없음
             if( movedDirection != MOVED_DOWN )
@@ -435,12 +437,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
             
             if( movedDirection != MOVED_UP )
             {
-                if( row > Resources.BOARD_ROW_COUNT-2 ||  !check2Value(board, row, col, 1, 0) )
+                if( row > rowCount-2 ||  !check2Value(board, row, col, 1, 0) )
                 {
                     removeAvailableFunction(POS_BX);
                 }
                 
-                if( row > Resources.BOARD_ROW_COUNT-3 || !check2Value(board, row, col, 2, 0) )
+                if( row > rowCount-3 || !check2Value(board, row, col, 2, 0) )
                 {
                     removeAvailableFunction(POS_BBX);
                 }
@@ -448,12 +450,12 @@ package com.stintern.anipang.maingamescene.block.algorithm
 
             if( movedDirection != MOVED_LEFT )
             {
-                if( col > Resources.BOARD_COL_COUNT-2 || !check2Value(board, row, col, 0, 1) )
+                if( col > colCount-2 || !check2Value(board, row, col, 0, 1) )
                 {
                     removeAvailableFunction(POS_RX);
                 }
                 
-                if( col > Resources.BOARD_COL_COUNT-3 || !check2Value(board, row, col, 0, 2 ) )
+                if( col > colCount-3 || !check2Value(board, row, col, 0, 2 ) )
                 {
                     removeAvailableFunction(POS_RRX);
                 }

@@ -19,6 +19,8 @@ package com.stintern.anipang.maingamescene.block.algorithm
         private var _RTIndex:Array = new Array(7, 8, 13, 14);
         private var _LBIndex:Array = new Array(4, 11, 12, 15);
         private var _RBIndex:Array = new Array(6, 9, 14, 15);
+		
+		private var REMOVE_SHAPE_COUNT:uint = 16; 
         
         public function ConnectedBlockFinder(callback:Function)
         {
@@ -28,7 +30,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
             _timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
             
             _availableShape = new Array();
-            for(var i:uint=0; i<16; ++i)
+            for(var i:uint=0; i<REMOVE_SHAPE_COUNT; ++i)
             {
                 _availableShape.push(true);
             }
@@ -53,12 +55,17 @@ package com.stintern.anipang.maingamescene.block.algorithm
                 var colCount:uint = boardArray[i].length;
                 for(var j:uint=0; j<colCount; ++j)
                 {                 
-                    for(var k:uint=0; k<16; ++k)
+                    for(var k:uint=0; k<REMOVE_SHAPE_COUNT; ++k)
                     {
                         _availableShape[k] = true;
                     }
                     
                     var value:uint = boardArray[i][j];
+					
+					// 동물인지 확인
+					if( value > Resources.BLOCK_TYPE_END )
+						continue;
+					
                     
                     // LT 확인
                     if( i-1 < 0 ||  j-1 < 0 || boardArray[i-1][j-1] != value )
@@ -107,19 +114,22 @@ package com.stintern.anipang.maingamescene.block.algorithm
         
         private function checkConnectedBlock(boardArray:Vector.<Vector.<uint>>, row:uint, col:uint):Array
         {
-            for(var i:uint=0; i<16; ++i)
+			var rowCount:uint = GameBoard.instance.rowCount;
+			var colCount:uint = GameBoard.instance.colCount;
+			
+            for(var i:uint=0; i<REMOVE_SHAPE_COUNT; ++i)
             {
                 if( !_availableShape[i] )
                     continue;
                 
                 var result:Array = ConnectedShape.getShapeIndiceAt(i);
-                if( row+result[0] < 0 ||  row+result[2] > Resources.BOARD_ROW_COUNT-1)
+                if( row+result[0] < 0 ||  row+result[2] > rowCount-1)
                 {
                     result = null;
                     continue;
                 }
                 
-                if( col+result[1] < 0 || col+result[3] > Resources.BOARD_COL_COUNT-1 )
+                if( col+result[1] < 0 || col+result[3] > colCount-1 )
                 {
                     result = null;
                     continue;
