@@ -1,15 +1,18 @@
 package com.stintern.anipang.maingamescene.board
 {
+    import com.stintern.anipang.SceneManager;
     import com.stintern.anipang.maingamescene.LevelManager;
     import com.stintern.anipang.maingamescene.StageInfo;
     import com.stintern.anipang.maingamescene.block.Block;
     import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.block.BlockPainter;
     import com.stintern.anipang.maingamescene.block.algorithm.BlockLocater;
+    import com.stintern.anipang.maingamescene.layer.PanelLayer;
     import com.stintern.anipang.utils.Resources;
     
     import flash.utils.Dictionary;
     
+    import starling.core.Starling;
     import starling.display.Image;
 
     public class GameBoard
@@ -164,6 +167,10 @@ package com.stintern.anipang.maingamescene.board
             {
                 case GameBoard.TYPE_OF_CELL_ICE:
                     BlockManager.instance.blockPainter.removeBoardImageAt(row, col);
+					
+					// 상단 패널의  얼음 남은 갯수 업데이트
+					var panelLayer:PanelLayer = ( (Starling.current.root as SceneManager).getLayerByName(Resources.LAYER_COMPONENT) as PanelLayer);
+					panelLayer.updateLeftIce();
                     break;
             }
             

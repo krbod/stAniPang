@@ -26,6 +26,7 @@ package com.stintern.anipang.maingamescene
         {
             var stageInfo:StageInfo = LevelManager.instance.stageInfo;
             _stepLimit = stageInfo.moveLimit;
+			_leftStepCount = _stepLimit;
             
             _missionType = stageInfo.missionType;
             _missionGoal = stageInfo.mission;
@@ -97,15 +98,20 @@ package com.stintern.anipang.maingamescene
         {
             return _currentScore >= _missionGoal ? true : false;  
         }
+		
+		public function updateCurrentScore():void
+		{
+			_currentScore += 200;
+		}
         
         public function set currentScore(score:uint):void
         {
             _currentScore = score;
         }
            
-        public function step():void
+        public function step():int
         {
-            --_leftStepCount;
+            return --_leftStepCount;
         }
     }
 }

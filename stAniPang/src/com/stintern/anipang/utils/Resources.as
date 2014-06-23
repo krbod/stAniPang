@@ -48,6 +48,15 @@ package com.stintern.anipang.utils
 		public static var PATH_XML_WORLD_MAP_1:String = "res/img/worldmaps/worldmap_1.xml";
 		
 		public static var WORLD_MAP_NAME:String = "worldmap_";
+		
+		
+		/** Mission Clear */
+		public static var PATH_IMAGE_MISSION_CLEAR:String = "res/img/missionclear/missionclear.png";
+		public static var PATH_IMAGE_MISSION_CLEAR_TEXTURE_NAME:String = "missionclear";		
+		
+		public static var PATH_IMAGE_MISSION_FAILED:String = "res/img/missionclear/missionFailed.png";
+		public static var PATH_IMAGE_MISSION_FAILED_TEXTURE_NAME:String = "missionFailed";
+		
         
         /** XML */
         
@@ -208,6 +217,9 @@ package com.stintern.anipang.utils
         public static var STAGE_INFO_STAR_LEFT:String = STAGE_INFO_STAR + "1";
         public static var STAGE_INFO_STAR_MIDDLE:String = STAGE_INFO_STAR + "2";
         public static var STAGE_INFO_STAR_RIGHT:String = STAGE_INFO_STAR + "3";
+		
+		/** Game Panel */
+		public static var GAME_PANEL_MISSION:String = "mission";
 		
             
         /** Game Enviroment */

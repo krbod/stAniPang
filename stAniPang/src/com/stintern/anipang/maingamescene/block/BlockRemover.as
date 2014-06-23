@@ -1,11 +1,15 @@
 package com.stintern.anipang.maingamescene.block
 {
+    import com.stintern.anipang.SceneManager;
     import com.stintern.anipang.maingamescene.block.algorithm.BlockRemoveAlgorithm;
     import com.stintern.anipang.maingamescene.block.algorithm.RemoveAlgoResult;
     import com.stintern.anipang.maingamescene.board.GameBoard;
+    import com.stintern.anipang.maingamescene.layer.PanelLayer;
     import com.stintern.anipang.utils.Resources;
     
     import flash.geom.Point;
+    
+    import starling.core.Starling;
 
     public class BlockRemover
     {
@@ -114,6 +118,12 @@ package com.stintern.anipang.maingamescene.block
             
             // Board 정보 갱신
             GameBoard.instance.updateBoard(row, col, true);
+			
+			// 점수 갱신
+			var panelLayer:PanelLayer = ( (Starling.current.root as SceneManager).getLayerByName(Resources.LAYER_COMPONENT) as PanelLayer);
+			panelLayer.updateCurrentScore();
+			
+			BlockManager.instance.missoinChecker.updateCurrentScore();
         }
         
         /**

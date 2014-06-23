@@ -52,5 +52,9 @@ package com.stintern.anipang
             pushScene(scene);
         }
             
+		public function getLayerByName(name:String):Sprite
+		{
+			return currentScene.getChildByName(name) as Sprite;
+		}
 	}
 }

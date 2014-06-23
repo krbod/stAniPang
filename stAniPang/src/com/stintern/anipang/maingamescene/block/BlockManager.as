@@ -1,11 +1,14 @@
 package com.stintern.anipang.maingamescene.block
 {
     import com.greensock.TweenLite;
+    import com.stintern.anipang.SceneManager;
     import com.stintern.anipang.maingamescene.MissionChecker;
     import com.stintern.anipang.maingamescene.block.algorithm.BlockLocater;
     import com.stintern.anipang.maingamescene.block.algorithm.ConnectedBlockFinder;
     import com.stintern.anipang.maingamescene.block.algorithm.RemoveAlgoResult;
     import com.stintern.anipang.maingamescene.board.GameBoard;
+    import com.stintern.anipang.maingamescene.layer.MissionClearLayer;
+    import com.stintern.anipang.maingamescene.layer.PanelLayer;
     import com.stintern.anipang.utils.Resources;
     
     import starling.core.Starling;
@@ -31,6 +34,7 @@ package com.stintern.anipang.maingamescene.block
         private var _missionChecker:MissionChecker;
         
         private var _movingBlockCount:uint = 0;
+		private var _requiredStepBlocks:Boolean;
         
         public function BlockManager()
         {
@@ -75,6 +79,8 @@ package com.stintern.anipang.maingamescene.block
             _connectedBlockFinder = new ConnectedBlockFinder(callbackConnectedBlock);
             
             _missionChecker = new MissionChecker();
+			
+			_requiredStepBlocks = true;
         }
         
         /**
@@ -82,6 +88,9 @@ package com.stintern.anipang.maingamescene.block
          */
         public function stepBlocks():void
         {
+			if( !_requiredStepBlocks )
+				return;
+			
             // 다음 블럭의 위치를 확인하고 옮겨야 하면 블럭 정보를 변경
             moveBlocks();
 			
@@ -98,7 +107,8 @@ package com.stintern.anipang.maingamescene.block
                 _blockRemover.removeConnectedBlocks();
 
                 // 미션을 클리어했으면 게임 종료
-                //checkMissionClear();
+                if( checkMissionClear() )
+					return;
                 
                 // 블럭을 하나 옮기면 연결될 블럭이 있는 지 확인 후 없으면 보드를 재배열
                 var result:Array = _connectedBlockFinder.process();
@@ -445,11 +455,15 @@ package com.stintern.anipang.maingamescene.block
             {
                 exchangeBlock(lhs, rhs, true);
             }
-//            else
-//            {
-//                // 블럭을 옮길 수 있는 횟수를 하나 줄임
-//                _missionChecker.step();
-//            }
+            else
+            {
+                // 블럭을 옮길 수 있는 횟수를 하나 줄임
+                var leftStep:int = _missionChecker.step();
+				
+				// 상단에 패널의 남은 이동 업데이트
+				var panelLayerL:PanelLayer = ( (Starling.current.root as SceneManager).getLayerByName(Resources.LAYER_COMPONENT) as PanelLayer);
+				panelLayerL.updateLeftStep(leftStep);
+            }
         }
             
         /**
@@ -520,18 +534,25 @@ package com.stintern.anipang.maingamescene.block
             return result;
         }
         
-        private function checkMissionClear():void
+        private function checkMissionClear():Boolean
         {
             switch( _missionChecker.check() )
             {
                 case MissionChecker.MISSION_RESULT_SUCCESS:
-                    break;
+					(Starling.current.root as SceneManager).currentScene.addChild( new MissionClearLayer(true) );
+					_requiredStepBlocks = false;
+					return true;
                 
                 case MissionChecker.MISSION_RESULT_FAILURE:
-                    break;
+					(Starling.current.root as SceneManager).currentScene.addChild( new MissionClearLayer(false) );
+					_requiredStepBlocks = false;
+                    return false;
                 
                 case MissionChecker.MISSION_RESULT_KEEP_PLAYING:
-                    break;
+					return false;
+					
+				default:
+					return false;
             }
         }
         
@@ -565,6 +586,11 @@ package com.stintern.anipang.maingamescene.block
         {
             _movingBlockCount = count;
         }
+		
+		public function get missoinChecker():MissionChecker
+		{
+			return _missionChecker;
+		}
 
         //DEBUGGING
         public function debugging(block:Block=null):void
