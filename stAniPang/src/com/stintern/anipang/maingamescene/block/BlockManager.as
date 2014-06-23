@@ -125,7 +125,8 @@ package com.stintern.anipang.maingamescene.block
                         continue;
                         
                     // 아래가 블록으로 채워져야하는 칸이면 낙하
-                    if( boardArray[block.row+1][block.col] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
+                    if( boardArray[block.row+1][block.col] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED ||
+                        boardArray[block.row+1][block.col] == GameBoard.TYPE_OF_CELL_ICE_AND_NEED_TO_BE_FILLED )
                     {
                         moveBlock(block, block.row+1, block.col);
                     }
@@ -161,7 +162,8 @@ package com.stintern.anipang.maingamescene.block
 					return false;
 				
 				// 대각선에 다른 블럭이 있을 경우 옮기지 않음
-				if( boardArray[row+1][col-1] != GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
+				if( boardArray[row+1][col-1] != GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED  ||
+                    boardArray[row+1][col-1] == GameBoard.TYPE_OF_CELL_ICE_AND_NEED_TO_BE_FILLED )
 					return false;
 				
 				// 왼쪽에 보드 정보를 확인하고 블럭을 옮겨야 하면 옮김
@@ -181,7 +183,8 @@ package com.stintern.anipang.maingamescene.block
 				if( col+1 > GameBoard.instance.colCount - 1 )
 					return false;
 				
-				if( boardArray[row+1][col+1] != GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
+				if( boardArray[row+1][col+1] != GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED || 
+                    boardArray[row+1][col+1] != GameBoard.TYPE_OF_CELL_ICE_AND_NEED_TO_BE_FILLED )
 					return false;
 				
 				switch( boardArray[row][col+1] )
@@ -208,7 +211,8 @@ package com.stintern.anipang.maingamescene.block
 			for(var i:uint=0; i<colCount; ++i)
 			{
                 // 맨 윗행이 채워져야하는 공간이면 새로운 블럭을 생성하여 배치함
-				if( boardArray[0][i] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED )
+				if( boardArray[0][i] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED || 
+                    boardArray[0][i] == GameBoard.TYPE_OF_CELL_ICE_AND_NEED_TO_BE_FILLED )
 				{
 					var block:Block = createBlock( uint(Math.random() * Resources.BLOCK_TYPE_COUNT) + Resources.BLOCK_TYPE_START);	
 					block.row = 0;
@@ -217,7 +221,7 @@ package com.stintern.anipang.maingamescene.block
 					block.image.x = i * block.image.texture.width + Starling.current.stage.stageWidth  * 0.5 - block.image.texture.width * 4;
 					block.image.y = block.image.texture.height * -1 + Starling.current.stage.stageHeight  * 0.5 - block.image.texture.height * 4;
 
-                    boardArray[0][i] = block.type;
+                    boardArray[0][i] = GameBoard.TYPE_OF_CELL_ANIMAL;
                     _blockArray[block.row][block.col] = block;
                     
                     block.drawRequired = true;
@@ -230,15 +234,34 @@ package com.stintern.anipang.maingamescene.block
          */
         private function moveBlock(block:Block, row:uint, col:uint):void
         {
+            var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray; 
+            
             // 정보 갱신
-            GameBoard.instance.boardArray[block.row][block.col] = GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED
-            _blockArray[block.row][block.col] = null
+            if(board[block.row][block.col] == GameBoard.TYPE_OF_CELL_ICE )
+            {
+                board[block.row][block.col] = GameBoard.TYPE_OF_CELL_ICE_AND_NEED_TO_BE_FILLED;
+            }
+            else
+            {
+                board[block.row][block.col] = GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED;
+            }
+            
+            _blockArray[block.row][block.col] = null;
             
             block.row = row;
             block.col = col;
             
-			GameBoard.instance.boardArray[block.row][block.col] = GameBoard.TYPE_OF_CELL_ANIMAL;
-            _blockArray[block.row][block.col] = block;
+            // 옮겨갼 위치가 얼음이 아닐경우에는 게임 보드 정보를 동물로 변경
+            if( board[row][col] == GameBoard.TYPE_OF_CELL_ICE_AND_NEED_TO_BE_FILLED )
+            {
+                board[row][col] = GameBoard.TYPE_OF_CELL_ICE;
+            }
+            else if( board[row][col] != GameBoard.TYPE_OF_CELL_ICE )
+            {
+                board[row][col] = GameBoard.TYPE_OF_CELL_ANIMAL;
+            }
+                
+            _blockArray[row][col] = block;
             
             // 다음 프레임 때 BlockPainter 에 의해서 갱신된 위치로 블럭을 Tween
             block.drawRequired = true;
@@ -428,10 +451,6 @@ package com.stintern.anipang.maingamescene.block
             var tmp:Block = _blockArray[lhs.row][lhs.col];
             _blockArray[lhs.row][lhs.col] = _blockArray[rhs.row][rhs.col];
             _blockArray[rhs.row][rhs.col] = tmp;
-            
-            // Board 정보 갱신
-            GameBoard.instance.boardArray[lhs.row][lhs.col] = lhs.type;
-            GameBoard.instance.boardArray[rhs.row][rhs.col] = rhs.type;
         }
         
         public function makeSpecialBlock(row:uint, col:uint, type:uint):void
@@ -455,7 +474,7 @@ package com.stintern.anipang.maingamescene.block
                     break;
             }
             
-            GameBoard.instance.boardArray[row][col] = _blockArray[row][col].type
+            GameBoard.instance.updateBoard(row, col, false);
             _blockPainter.changeTexture(_blockArray[row][col], _blockArray[row][col].type);
         }
         

@@ -3,6 +3,7 @@ package com.stintern.anipang.maingamescene.board
     import com.stintern.anipang.maingamescene.LevelManager;
     import com.stintern.anipang.maingamescene.StageInfo;
     import com.stintern.anipang.maingamescene.block.Block;
+    import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.block.BlockPainter;
     import com.stintern.anipang.maingamescene.block.algorithm.BlockLocater;
     import com.stintern.anipang.utils.Resources;
@@ -23,7 +24,10 @@ package com.stintern.anipang.maingamescene.board
         public static var TYPE_OF_CELL_ANIMAL:uint = 0;      // 동물만 있는 공간
 
         public static var TYPE_OF_CELL_EMPTY:uint = 100;     // 아무 것도 없는 공간
+        
         public static var TYPE_OF_CELL_ICE:uint = 200;
+        public static var TYPE_OF_CELL_ICE_AND_NEED_TO_BE_FILLED:uint = 201;
+        
         public static var TYPE_OF_CELL_BOX:uint = 300;
         public static var TYPE_OF_CELL_NEED_TO_BE_FILLED:uint = 400;  // 기존에 블럭이 없어지거나 해서 채워져야할 공간
         
@@ -149,11 +153,23 @@ package com.stintern.anipang.maingamescene.board
                     // 블럭의 이미지를 변경
                     blockPainter.changeTexture(blockArray[i][j], type);
                     blockArray[i][j].type = type;
-                    
-                    //새롭게 생성한 타입으로 보드를 초기화
-                    _stageInfo.boardArray[i][j] = blockArray[i][j].type;
                 }
             }
+        }
+
+        public function updateBoard(row:uint, col:uint, requiredToBeFilled:Boolean):void
+        {
+            // Board 에 이미지 정보 갱신( 얼음 제거 .. )
+            switch(boardArray[row][col])
+            {
+                case GameBoard.TYPE_OF_CELL_ICE:
+                    BlockManager.instance.blockPainter.removeBoardImageAt(row, col);
+                    break;
+            }
+            
+            // Board 정보 갱신
+            if( requiredToBeFilled )
+                boardArray[row][col] = GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED;
         }
         
         public function get boardArray():Vector.<Vector.<uint>>

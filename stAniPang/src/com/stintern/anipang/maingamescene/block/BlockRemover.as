@@ -113,10 +113,7 @@ package com.stintern.anipang.maingamescene.block
             disposeBlock(row, col);
             
             // Board 정보 갱신
-            GameBoard.instance.boardArray[row][col] = GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED;
-            
-            // Board 에 이미지 정보 갱신( 얼음 제거 .. )
-            BlockManager.instance.blockPainter.removeBoardImageAt(row, col);
+            GameBoard.instance.updateBoard(row, col, true);
         }
         
         /**
