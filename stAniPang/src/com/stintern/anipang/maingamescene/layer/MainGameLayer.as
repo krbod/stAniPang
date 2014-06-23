@@ -3,6 +3,7 @@ package com.stintern.anipang.maingamescene.layer
     import com.stintern.anipang.maingamescene.LevelManager;
     import com.stintern.anipang.maingamescene.block.Block;
     import com.stintern.anipang.maingamescene.block.BlockManager;
+    import com.stintern.anipang.maingamescene.block.BlockPainter;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
     
@@ -40,6 +41,9 @@ package com.stintern.anipang.maingamescene.layer
             
             // 스테이지 레벨에 맞도록 게임 보드를 초기화
             GameBoard.instance.initBoard(stageLevel);
+            
+            // 보드 배경을 그림
+            BlockManager.instance.drawBoard();
             
             // 블럭들을 배치
             BlockManager.instance.createBlocks();

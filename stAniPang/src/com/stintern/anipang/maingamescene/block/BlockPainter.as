@@ -2,6 +2,7 @@ package com.stintern.anipang.maingamescene.block
 {
     import com.greensock.TweenLite;
     import com.greensock.easing.Linear;
+    import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.AssetLoader;
     import com.stintern.anipang.utils.Resources;
     
@@ -174,6 +175,37 @@ package com.stintern.anipang.maingamescene.block
             pos = null;
         }
         
+        public function drawBoard():void
+        {
+            var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
+            var rowCount:uint = board.length;
+            for(var i:uint=0; i<rowCount; ++i)
+            {
+                var colCount:uint = board[i].length;
+                for(var j:uint=0; j<colCount; ++j)
+                {
+                    drawBoardAt(i, j, board[i][j]);
+                }
+            }
+            
+        }
+        
+        private function drawBoardAt( i, j, type:uint ):void
+        {
+            var texture:Texture = getTextureByType(type);
+            if(texture == null)
+                return;
+            
+            var image:Image = new Image(texture);
+            var pos:Point = getBlockPosition(i, j, texture);
+            image.x = pos.x;
+            image.y = pos.y;
+            
+            _container.addChild(image);
+        }
+            
+        
+        
 		/**
 		 * 블럭의 타입을 바탕으로 텍스쳐를 반환합니다. 
 		 * @param type 반환할 텍스쳐의 타입
@@ -261,11 +293,13 @@ package com.stintern.anipang.maingamescene.block
                     return _textureAtlas.getTexture(Resources.TEXTURE_NAME_STAR);
                 case Resources.BLOCK_TYPE_BOX_CROSS:
                     return _textureAtlas.getTexture(Resources.TEXTURE_NAME_BOX_CROSS);
-                case Resources.BLOCK_TYPE_ICE:
-                    return _textureAtlas.getTexture(Resources.TEXTURE_NAME_ICE);
-                       
                 case Resources.BLOCK_TYPE_HINT:
                     return _textureAtlas.getTexture(Resources.TEXTURE_NAME_HINT);
+                    
+                    
+                /** 게임 보드 관련 */
+                case GameBoard.TYPE_OF_CELL_ICE:
+                    return _textureAtlas.getTexture(Resources.TEXTURE_NAME_ICE);
                     
                 default:
                     return null;

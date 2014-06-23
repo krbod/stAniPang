@@ -1,7 +1,5 @@
 package com.stintern.anipang
 {
-    import com.stintern.anipang.worldmapscene.layer.WorldMapScene;
-    
     import flash.display.Sprite;
     import flash.display.StageAlign;
     import flash.display.StageScaleMode;

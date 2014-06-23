@@ -88,9 +88,7 @@ package com.stintern.anipang.maingamescene.block
             						
             // 블럭이 낙하한 뒤 연결된 블럭이 있는 지 확인
             if( _movingBlockCount == 0 )
-            {
-				debugging();
-				
+            {				
                 // 낙하한 뒤 새로운 보드에서 연결된 블럭이 있으면 삭제
                 _blockRemover.removeConnectedBlocks();
 
@@ -289,6 +287,7 @@ package com.stintern.anipang.maingamescene.block
                     return GameBoard.TYPE_OF_CELL_EMPTY;
                     
                 case GameBoard.TYPE_OF_CELL_ANIMAL:
+                case GameBoard.TYPE_OF_CELL_ICE:
                     return _blockLocater.makeNewType(BlockManager.instance.blockArray, row, col);
                     
                 default:
@@ -488,6 +487,12 @@ package com.stintern.anipang.maingamescene.block
             
             return result;
         }
+        
+        public function drawBoard():void
+        {
+            _blockPainter.drawBoard();
+        }
+        
         
         public function callbackConnectedBlock(connectedBlock:Array):void
         {
