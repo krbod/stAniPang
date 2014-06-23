@@ -49,5 +49,9 @@
 			<star>1</star>
 			<score>2900</score>
 		</stage>
+		<stage level="13">
+			<star>0</star>
+			<score>0</score>
+		</stage>
 	</stageClearInfo>
 </userInfo>

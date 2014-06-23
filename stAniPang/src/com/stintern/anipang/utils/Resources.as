@@ -10,25 +10,31 @@ package com.stintern.anipang.utils
         public static var LAYER_MAIN_GAME:String = "LAYER_MAIN_GAME";
         public static var LAYER_COMPONENT:String = "LAYER_COMPONENT";
 		public static var LAYER_WORLD_MAP:String = "LAYER_WORLD_MAP";
-        
+        public static var LAYER_STAGE_INFO:String = "LAYER_STAGE_INFO";
+
         
         
         /** Directory Path */
         public static var PATH_LEVEL_XML:String = "res/dat/stage/";
-		public static var PATH_DIRECTORY_BLOCK:String = "res/img/blocks/";
 		public static var PATH_DIRECTORY_WORLD_MAP:String = "res/img/worldmaps/";
 		
+        
 		/** Resource Name */
-		public static var IMAGE_NAME_BLOCK_SPRITE_SHEET:String = "block_sprite_sheet";
-		public static var XML_NAME_BLOCK_SPRITE_SHEET:String = "block_sprite_sheet";
+        public static var WORLD_MAP_1_SPRITE_SHEET:String = "worldmap_1";;
 		
-		public static var WORLD_MAP_1_SPRITE_SHEET:String = "worldmap_1";
-		
+        
+        /** Block Sprite Sheet */
+        public static var PATH_DIRECTORY_BLOCK:String = "res/img/blocks/";
+        public static var ATALS_NAME_BLOCK:String = "block_sprite_sheet"
         public static var PATH_IMAGE_BLOCK_SPRITE_SHEET:String = "res/img/blocks/block_sprite_sheet";
-        
-        
-        /** Image XML */
         public static var PATH_XML_BLOCK_SPRITE_SHEET:String = "res/img/blocks/block_sprite_sheet.xml";
+        
+        
+        /** Stage Info Sprite Sheet */
+        public static var PATH_DIRECTORY_STAGE_INFO:String = "res/img/stageInfo/";
+        public static var ATALS_NAME_STAGE_INFO:String = "stageInfo"
+        public static var PATH_STAGE_INFO_SPRITE_SHEET:String = "res/img/stageInfo/stageInfo.png";
+        public static var PATH_XML_STAGE_INFO_SHEET:String = "res/img/stageInfo/stageInfo.xml";
         
 		
 		/** World map */
@@ -56,6 +62,16 @@ package com.stintern.anipang.utils
 		
 		// World map information
 		public static var XML_WORLD_MAP_INFO:String = "res/img/worldmaps/worldmapInfo.xml";
+        
+        
+        /** Stage Mission */
+        public static var MISSION_ICE:String = "동물 친구들을 위해\n모든 빙판을 제거해주세요!";
+        public static var MISSION_SCORE_HEAD:String = "동물 친구들을 위해\n";
+        public static var MISSION_SCORE_TAIL:String = "점을 달성해주세요!";
+
+        public static var MISSION_TYPE_SCORE:String = "score";
+        public static var MISSION_TYPE_ICE:String = "ice";
+        
         
 		/** Board Types */
 		public static var BOARD_TYPE_ANIMAL:uint = 0;
@@ -177,6 +193,15 @@ package com.stintern.anipang.utils
 		
 		/** World Map */
 		public static var WORLD_MAP_BACKGROUND_NAME:String = "bkg";
+        public static var STAGE_INFO_BACKGROUND_NAME:String = "bkg";
+        public static var STAGE_INFO_START_BUTTON:String = "startButton";
+        public static var STAGE_INFO_START_BUTTON_CLCIEKD:String = "startButton_clicked";
+        public static var STAGE_INFO_CLOSE_BUTTON:String = "closeButton";
+        public static var STAGE_INFO_CLOSE_BUTTON_CLCIEKD:String = "closeButton_clicked";
+        public static var STAGE_INFO_STAR:String = "star_";
+        public static var STAGE_INFO_STAR_LEFT:String = STAGE_INFO_STAR + "1";
+        public static var STAGE_INFO_STAR_MIDDLE:String = STAGE_INFO_STAR + "2";
+        public static var STAGE_INFO_STAR_RIGHT:String = STAGE_INFO_STAR + "3";
 		
             
         /** Game Enviroment */

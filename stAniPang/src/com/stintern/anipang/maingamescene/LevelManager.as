@@ -13,6 +13,8 @@ package com.stintern.anipang.maingamescene
         private var _currentStageLevel:uint;
         private var _levelLoader:LevelLoader = null;
         
+        private var _stageInfo:StageInfo;
+        
         public function LevelManager()
         {
             if (!_creatingSingleton){
@@ -36,7 +38,7 @@ package com.stintern.anipang.maingamescene
             return 1;   //TEST
         }
         
-        public function loadStageInfo(level:uint):StageInfo
+        public function loadStageInfo(level:uint):void
         {
             if( _levelLoader == null )
             {
@@ -46,7 +48,7 @@ package com.stintern.anipang.maingamescene
             _currentStageLevel = level;
             
             var filePath:String = Resources.PATH_LEVEL_XML + level.toString() + ".xml";
-            return _levelLoader.getStageInfo( AssetLoader.instance.loadXMLDirectly(filePath) );
+            _stageInfo =  _levelLoader.getStageInfo( AssetLoader.instance.loadXMLDirectly(filePath) );
         }
         
         public function get currentStageLevel():uint
@@ -56,6 +58,11 @@ package com.stintern.anipang.maingamescene
         public function set currentStageLevel(level:uint):void
         {
             _currentStageLevel = level;
+        }
+        
+        public function get stageInfo():StageInfo
+        {
+            return _stageInfo;
         }
 
     }

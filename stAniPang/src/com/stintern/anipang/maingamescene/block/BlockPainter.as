@@ -31,7 +31,7 @@ package com.stintern.anipang.maingamescene.block
             _container = new Sprite();
             addChild(_container);
             
-			_textureAtlas = AssetLoader.instance.loadTextureAtlas(Resources.IMAGE_NAME_BLOCK_SPRITE_SHEET);
+			_textureAtlas = AssetLoader.instance.loadTextureAtlas(Resources.ATALS_NAME_BLOCK);
             
             _hitImages = new Array();
             for(var i:uint=0; i<3; ++i)

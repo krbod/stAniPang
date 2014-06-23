@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:8a444e7a8c40a9ade77ed1cc2c89cbee:35504a38bb4f0592d3de49e6c2b72e00:14f80cb32836f7d216ce68344eec0a03$ -->
+<TextureAtlas imagePath="stageInfo_middle.png">
+    <SubTexture name="ready" x="115" y="858" width="289" height="102"/>
+    <SubTexture name="ready_clicked" x="115" y="754" width="289" height="102"/>
+    <SubTexture name="stageInfo" x="2" y="2" width="500" height="750"/>
+    <SubTexture name="star_1" x="406" y="754" width="95" height="111"/>
+    <SubTexture name="star_2" x="2" y="754" width="111" height="123"/>
+    <SubTexture name="star_3" x="406" y="867" width="94" height="110"/>
+</TextureAtlas>

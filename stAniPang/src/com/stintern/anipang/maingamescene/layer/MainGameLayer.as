@@ -1,9 +1,7 @@
 package com.stintern.anipang.maingamescene.layer
 {
-    import com.stintern.anipang.maingamescene.LevelManager;
     import com.stintern.anipang.maingamescene.block.Block;
     import com.stintern.anipang.maingamescene.block.BlockManager;
-    import com.stintern.anipang.maingamescene.block.BlockPainter;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
     
@@ -36,11 +34,8 @@ package com.stintern.anipang.maingamescene.layer
          */
         public function loadStage():void
         {
-            // 현재 스테이지 레벨을 읽음
-            var stageLevel:uint = LevelManager.instance.currentStageLevel;
-            
             // 스테이지 레벨에 맞도록 게임 보드를 초기화
-            GameBoard.instance.initBoard(stageLevel);
+            GameBoard.instance.initBoard();
             
             // 보드 배경을 그림
             BlockManager.instance.drawBoard();

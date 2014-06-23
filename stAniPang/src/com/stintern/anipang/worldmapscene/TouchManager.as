@@ -3,6 +3,8 @@ package com.stintern.anipang.worldmapscene
 	import com.stintern.anipang.SceneManager;
 	import com.stintern.anipang.maingamescene.LevelManager;
 	import com.stintern.anipang.maingamescene.layer.MainGameScene;
+	import com.stintern.anipang.utils.Resources;
+	import com.stintern.anipang.worldmapscene.layer.StageInfoLayer;
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -56,9 +58,9 @@ package com.stintern.anipang.worldmapscene
 
 							LevelManager.instance.currentStageLevel = stage;
 							
-							var mainGameScene:MainGameScene = new MainGameScene();
-							
-							(Starling.current.root as SceneManager).pushScene(mainGameScene);
+							var stageInfoLayer:StageInfoLayer= new StageInfoLayer();
+                            stageInfoLayer.name = Resources.LAYER_STAGE_INFO;
+                            (Starling.current.root as SceneManager).currentScene.addChild(stageInfoLayer);
 						}
 						
 						break;

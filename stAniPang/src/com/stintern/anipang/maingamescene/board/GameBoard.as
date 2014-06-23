@@ -56,10 +56,10 @@ package com.stintern.anipang.maingamescene.board
         /**
          *  스테이지 레벨에 맞는 보드 정보를 입력합니다.
          */
-        public function initBoard(level:uint):void
+        public function initBoard():void
         {
             // 레벨에 맞는 보드 정보를 불러옵니다.
-            _stageInfo = LevelManager.instance.loadStageInfo(level);
+            _stageInfo = LevelManager.instance.stageInfo;
             
             // 보드 이미지 정보를 저장(얼음, 박스 .. )
             _boardImage = new Vector.<Vector.<Image>>();

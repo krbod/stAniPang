@@ -1,0 +1,10 @@
+<TextureAtlas imagePath="stageInfo.png">
+  <SubTexture name="startButton_clicked" x="2" y="858" width="290" height="102" left="97" top="626.4" registrationX="97" registrationY="626.45" anchorX="0" anchorY="0.999509803921568" frameWidth="500" frameHeight="750" kind="-1"/>
+  <SubTexture name="bkg" x="2" y="2" width="500" height="750" left="-2" top="0" registrationX="-2" registrationY="0" anchorX="0" anchorY="1" frameWidth="500" frameHeight="750" kind="-1"/>
+  <SubTexture name="startButton" x="2" y="754" width="290" height="102" left="97" top="626.4" registrationX="97" registrationY="626.45" anchorX="0" anchorY="0.999509803921568" frameWidth="500" frameHeight="750" kind="-1"/>
+  <SubTexture name="star_2" x="293" y="754" width="112" height="124" left="188" top="160" registrationX="188" registrationY="160" anchorX="0" anchorY="1" frameWidth="500" frameHeight="750" kind="-1"/>
+  <SubTexture name="star_1" x="406" y="754" width="96" height="112" left="93" top="182" registrationX="93" registrationY="182" anchorX="0" anchorY="1" frameWidth="500" frameHeight="750" kind="-1"/>
+  <SubTexture name="star_3" x="293" y="879" width="94" height="110" left="298" top="181" registrationX="298" registrationY="181" anchorX="0" anchorY="1" frameWidth="500" frameHeight="750" kind="-1"/>
+  <SubTexture name="closeButton_clicked" x="389" y="879" width="60" height="66" left="439" top="0" registrationX="439" registrationY="0" anchorX="0" anchorY="1" frameWidth="500" frameHeight="750" kind="-1"/>
+  <SubTexture name="closeButton" x="389" y="947" width="60" height="66" left="439" top="0" registrationX="439" registrationY="0" anchorX="0" anchorY="1" frameWidth="500" frameHeight="750" kind="-1"/>
+</TextureAtlas>

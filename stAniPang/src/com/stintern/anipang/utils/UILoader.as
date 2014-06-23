@@ -16,7 +16,6 @@ package com.stintern.anipang.utils
     import starling.display.Image;
     import starling.display.Sprite;
     import starling.events.TouchEvent;
-    import starling.text.TextField;
     import starling.textures.Texture;
     import starling.textures.TextureAtlas;
 
@@ -200,7 +199,7 @@ package com.stintern.anipang.utils
 			image.x = _registrationPointDictionary[atlasPath][name].x;
 			image.y = _registrationPointDictionary[atlasPath][name].y;
 			
-			if( onClick != null )
+			if( onClick != null && name.slice(name.lastIndexOf("_")+1, name.length) != "clicked" )
 			{
 				image.addEventListener(TouchEvent.TOUCH, onClick);
 			}
@@ -213,6 +212,11 @@ package com.stintern.anipang.utils
 		{
 			return path.slice(path.lastIndexOf("/")+1, path.lastIndexOf("."));
 		}
+        
+        public function getTexture(atlasName:String, textureName:String):Texture
+        {
+            return _textureAtlasDictionary[atlasName].getTexture(textureName);
+        }
         
     }
 }

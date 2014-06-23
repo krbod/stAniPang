@@ -1,6 +1,5 @@
 package com.stintern.anipang.utils
 {
-    import flash.display.Bitmap;
     import flash.filesystem.File;
     import flash.filesystem.FileMode;
     import flash.filesystem.FileStream;
@@ -42,11 +41,13 @@ package com.stintern.anipang.utils
 		
 		public function init():void
 		{
-			_assetManager = new AssetManager();
 		}
 		
 		public function loadDirectory(onComplete:Function, onProgress:Function, ...dirs):void
 		{
+            if( _assetManager == null )
+                _assetManager = new AssetManager();
+                
 			for(var i:uint=0; i<dirs.length; ++i)
 			{
 				var appDir:File;

@@ -55,5 +55,16 @@ package com.stintern.anipang.userinfo
 		{
 			return _currentStage;
 		}
+        
+        public function getStarCountAt(stage:uint):uint
+        {
+            return _stageStarCount[stage-1];
+        }
+        
+        public function getScoreAt(stage:uint):uint
+        {
+            return _stageScore[stage-1];
+        }
+        
 	}
 }
