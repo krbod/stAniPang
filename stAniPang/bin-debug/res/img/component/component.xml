@@ -1,0 +1,12 @@
+<TextureAtlas imagePath="component.png">
+  <atlasItem name="closeButton_clicked" x="648" y="2" width="96" height="96" left="601" top="29.6" registrationX="601.1" registrationY="29.6" anchorX="0.0010416666666669034" anchorY="1" frameWidth="720" frameHeight="1080" kind="-1"/>
+  <atlasItem name="closeButton" x="746" y="2" width="92" height="92" left="601.8" top="29" registrationX="601.85" registrationY="29.1" anchorX="0.0005434782608703066" anchorY="0.9989130434782609" frameWidth="720" frameHeight="1080" kind="-1"/>
+  <atlasItem name="mission" x="2" y="161" width="562" height="114" left="24.6" top="20.4" registrationX="24.6" registrationY="20.55" anchorX="0" anchorY="0.9986749116607775" frameWidth="720" frameHeight="1080" kind="-1"/>
+  <atlasItem name="itembar" x="2" y="2" width="644" height="158" left="34.8" top="909.4" registrationX="34.8" registrationY="909.55" anchorX="0" anchorY="0.9990445859872613" frameWidth="720" frameHeight="1080" kind="-1"/>
+  <atlasItem name="googlepang_clicked" x="910" y="2" width="68" height="68" left="488" top="973" registrationX="488.05" registrationY="973.15" anchorX="0.0007462686567165876" anchorY="0.9977941176470592" frameWidth="720" frameHeight="1080" kind="-1"/>
+  <atlasItem name="gogglepang" x="910" y="72" width="68" height="68" left="487" top="971.8" registrationX="487.15" registrationY="971.9" anchorX="0.0022388059701489143" anchorY="0.9985294117647056" frameWidth="720" frameHeight="1080" kind="-1"/>
+  <atlasItem name="clickpang_clicked" x="633" y="161" width="66" height="68" left="391.6" top="971.8" registrationX="391.65" registrationY="971.8" anchorX="0.0007575757575750686" anchorY="1" frameWidth="720" frameHeight="1080" kind="-1"/>
+  <atlasItem name="clickpang" x="565" y="161" width="66" height="68" left="391.6" top="971.8" registrationX="391.65" registrationY="971.8" anchorX="0.0007575757575750686" anchorY="1" frameWidth="720" frameHeight="1080" kind="-1"/>
+  <atlasItem name="changepang_clicked" x="840" y="72" width="68" height="68" left="574" top="971.8" registrationX="574.15" registrationY="971.95" anchorX="0.002205882352940842" anchorY="0.9977941176470575" frameWidth="720" frameHeight="1080" kind="-1"/>
+  <atlasItem name="changepang" x="840" y="2" width="68" height="68" left="574" top="971.8" registrationX="574.15" registrationY="971.95" anchorX="0.002205882352940842" anchorY="0.9977941176470575" frameWidth="720" frameHeight="1080" kind="-1"/>
+</TextureAtlas>

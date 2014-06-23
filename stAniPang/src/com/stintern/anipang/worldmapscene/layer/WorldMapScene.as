@@ -23,7 +23,10 @@ package com.stintern.anipang.worldmapscene.layer
 		
 		public override function dispose():void
 		{
-			
+			for(var i:uint=0; i<numChildren; ++i)
+            {
+                getChildAt(i).dispose();
+            }
 		}
 		
 		private function init( event:Event ):void

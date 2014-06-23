@@ -1,6 +1,7 @@
 package com.stintern.anipang.maingamescene.block
 {
     import com.greensock.TweenLite;
+    import com.stintern.anipang.maingamescene.MissionChecker;
     import com.stintern.anipang.maingamescene.block.algorithm.BlockLocater;
     import com.stintern.anipang.maingamescene.block.algorithm.ConnectedBlockFinder;
     import com.stintern.anipang.maingamescene.block.algorithm.RemoveAlgoResult;
@@ -26,6 +27,8 @@ package com.stintern.anipang.maingamescene.block
         
         private var _blockPainter:BlockPainter;                     // 블럭들을 그리는 객체
         private var _isBlockExchaning:Boolean = false;      // 블럭을 교환하고 있을 때 다른 블럭을 교환할 수 없게 하기 위해
+        
+        private var _missionChecker:MissionChecker;
         
         private var _movingBlockCount:uint = 0;
         
@@ -70,6 +73,8 @@ package com.stintern.anipang.maingamescene.block
             
             //  블럭을 옮기면 연결될 블럭을 찾는 객체 생성 
             _connectedBlockFinder = new ConnectedBlockFinder(callbackConnectedBlock);
+            
+            _missionChecker = new MissionChecker();
         }
         
         /**
@@ -92,6 +97,9 @@ package com.stintern.anipang.maingamescene.block
                 // 낙하한 뒤 새로운 보드에서 연결된 블럭이 있으면 삭제
                 _blockRemover.removeConnectedBlocks();
 
+                // 미션을 클리어했으면 게임 종료
+                //checkMissionClear();
+                
                 // 블럭을 하나 옮기면 연결될 블럭이 있는 지 확인 후 없으면 보드를 재배열
                 var result:Array = _connectedBlockFinder.process();
                 if( result == null )
@@ -437,6 +445,11 @@ package com.stintern.anipang.maingamescene.block
             {
                 exchangeBlock(lhs, rhs, true);
             }
+//            else
+//            {
+//                // 블럭을 옮길 수 있는 횟수를 하나 줄임
+//                _missionChecker.step();
+//            }
         }
             
         /**
@@ -506,6 +519,22 @@ package com.stintern.anipang.maingamescene.block
             
             return result;
         }
+        
+        private function checkMissionClear():void
+        {
+            switch( _missionChecker.check() )
+            {
+                case MissionChecker.MISSION_RESULT_SUCCESS:
+                    break;
+                
+                case MissionChecker.MISSION_RESULT_FAILURE:
+                    break;
+                
+                case MissionChecker.MISSION_RESULT_KEEP_PLAYING:
+                    break;
+            }
+        }
+        
         
         public function drawBoard():void
         {

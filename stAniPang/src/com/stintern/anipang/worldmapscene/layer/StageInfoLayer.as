@@ -22,7 +22,7 @@ package com.stintern.anipang.worldmapscene.layer
     
     public class StageInfoLayer extends Sprite
     {
-        [Embed(source = "HUHappy.ttf", fontName = "HUHappy",
+        [Embed(source = "../../HUHappy.ttf", fontName = "HUHappy",
 			        mimeType = "application/x-font", fontWeight="Bold",
 			        fontStyle="Bold", advancedAntiAliasing = "true",
 			        embedAsCFF="false")]
@@ -57,7 +57,7 @@ package com.stintern.anipang.worldmapscene.layer
             _container = new Sprite();
             addChild(_container);
             
-            AssetLoader.instance.loadDirectory(onComplete, null, Resources.PATH_DIRECTORY_BLOCK, Resources.PATH_DIRECTORY_STAGE_INFO);
+            AssetLoader.instance.loadDirectory(onComplete, null, Resources.PATH_DIRECTORY_STAGE_INFO);
             
             function onComplete():void
             {
@@ -195,10 +195,7 @@ package com.stintern.anipang.worldmapscene.layer
                             switch( _clickedButton.name )
                             {
                                 case Resources.STAGE_INFO_START_BUTTON:
-                                    this.dispose();
-                                    (Starling.current.root as SceneManager).currentScene.removeChild(this);
-                                    
-                                    (Starling.current.root as SceneManager).pushScene( new MainGameScene );
+                                    (Starling.current.root as SceneManager).replaceScene( new MainGameScene );
                                     break;
                                 
                                 case Resources.STAGE_INFO_CLOSE_BUTTON:

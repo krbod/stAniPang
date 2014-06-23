@@ -36,6 +36,12 @@ package com.stintern.anipang.utils
         public static var PATH_STAGE_INFO_SPRITE_SHEET:String = "res/img/stageInfo/stageInfo.png";
         public static var PATH_XML_STAGE_INFO_SHEET:String = "res/img/stageInfo/stageInfo.xml";
         
+        
+        /** Game Panel Sprite Sheet */
+        public static var PATH_DIRECTORY_PANEL:String = "res/img/panel/";
+        public static var ATALS_NAME_PANEL:String = "panel"
+        public static var PATH_PANEL_SPRITE_SHEET:String = "res/img/panel/panel.png";
+        public static var PATH_XML_PANEL_SHEET:String = "res/img/panel/panel.xml";
 		
 		/** World map */
 		public static var PATH_IMAGE_WORLD_MAP_1:String = "res/img/worldmaps/worldmap_1.png";

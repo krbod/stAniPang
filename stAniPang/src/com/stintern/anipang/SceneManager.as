@@ -41,5 +41,16 @@ package com.stintern.anipang
 		{
 			return _sceneArray[_sceneArray.length-1];
 		}
+        
+        public function replaceScene(scene:Sprite):void
+        {
+            removeChild(currentScene);
+            currentScene.dispose();
+            
+            _sceneArray.pop();
+            
+            pushScene(scene);
+        }
+            
 	}
 }

@@ -15,9 +15,6 @@ package com.stintern.anipang.utils
         private static var _instance:AssetLoader;
         private static var _creatingSingleton:Boolean = false;
         
-        public static var TEXTURE_CUBE_0:String = "res/texture/texture0.png";
-        public static var TEXTURE_CUBE_1:String = "res/texture/texture1.png";
-        
         private var imgDictionary:Dictionary = new Dictionary();
 		
 		private var _assetManager:AssetManager;

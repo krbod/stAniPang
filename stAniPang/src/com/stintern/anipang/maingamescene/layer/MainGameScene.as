@@ -8,7 +8,7 @@ package com.stintern.anipang.maingamescene.layer
     
     public class MainGameScene extends Sprite
     {
-        private var _componentLayer:ComponentLayer;
+        private var _componentLayer:PanelLayer;
         private var _mainGameLayer:MainGameLayer;
         
         public function MainGameScene()
@@ -26,11 +26,11 @@ package com.stintern.anipang.maingamescene.layer
           
             function onComplete():void
             {
-                _componentLayer = new ComponentLayer();
+                _componentLayer = new PanelLayer();
                 _mainGameLayer = new MainGameLayer();
                 
-                addChild( _componentLayer );
                 addChild( _mainGameLayer );
+                addChild( _componentLayer );
             }
         }
     }
