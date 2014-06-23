@@ -175,7 +175,11 @@ package com.stintern.anipang.maingamescene.block
             pos = null;
         }
         
-        public function drawBoard():void
+        /**
+         * 보드의 정보에 따라 보드를 그립니다.
+         * (얼음이나 박스를 그림)
+         */
+        public function initBoard():void
         {
             var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
             var rowCount:uint = board.length;
@@ -184,13 +188,16 @@ package com.stintern.anipang.maingamescene.block
                 var colCount:uint = board[i].length;
                 for(var j:uint=0; j<colCount; ++j)
                 {
-                    drawBoardAt(i, j, board[i][j]);
+                    initBoardAt(i, j, board[i][j]);
                 }
             }
-            
         }
         
-        private function drawBoardAt( i, j, type:uint ):void
+        /**
+         * 보드의 특정 인덱스의 타입을 보고 이미지를 생성해서
+         * 화면에 그립니다. 
+         */
+        private function initBoardAt( i, j, type:uint ):void
         {
             var texture:Texture = getTextureByType(type);
             if(texture == null)
@@ -201,10 +208,24 @@ package com.stintern.anipang.maingamescene.block
             image.x = pos.x;
             image.y = pos.y;
             
+            GameBoard.instance.boardImageArray[i][j] = image;
+            
             _container.addChild(image);
         }
-            
         
+        /**
+         * 게임 보드에서 특정 인덱스에 있는 이미지를 삭제하고 화면에 그리지 않습니다. 
+         */
+        public function removeBoardImageAt(i, j):void
+        {
+            if( GameBoard.instance.boardImageArray[i][j] == null )
+                return;
+            
+            var image:Image = GameBoard.instance.boardImageArray[i][j];
+            _container.removeChild(image);
+            
+            image.dispose();
+        }
         
 		/**
 		 * 블럭의 타입을 바탕으로 텍스쳐를 반환합니다. 

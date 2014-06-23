@@ -8,6 +8,8 @@ package com.stintern.anipang.maingamescene.board
     import com.stintern.anipang.utils.Resources;
     
     import flash.utils.Dictionary;
+    
+    import starling.display.Image;
 
     public class GameBoard
     {
@@ -15,8 +17,9 @@ package com.stintern.anipang.maingamescene.board
         private static var _instance:GameBoard;
         private static var _creatingSingleton:Boolean = false;
         
+        private var _boardImage:Vector.<Vector.<Image>>;
         private var _stageInfo:StageInfo; 
-        
+                
         public static var TYPE_OF_CELL_ANIMAL:uint = 0;      // 동물만 있는 공간
 
         public static var TYPE_OF_CELL_EMPTY:uint = 100;     // 아무 것도 없는 공간
@@ -53,6 +56,15 @@ package com.stintern.anipang.maingamescene.board
         {
             // 레벨에 맞는 보드 정보를 불러옵니다.
             _stageInfo = LevelManager.instance.loadStageInfo(level);
+            
+            // 보드 이미지 정보를 저장(얼음, 박스 .. )
+            _boardImage = new Vector.<Vector.<Image>>();
+            _boardImage.length = _stageInfo.rowCount;
+            for(var i:uint=0; i<_stageInfo.rowCount; ++i)
+            {
+                _boardImage[i] = new Vector.<Image>();
+                _boardImage[i].length = _stageInfo.colCount;
+            }
         }
         
         
@@ -148,7 +160,12 @@ package com.stintern.anipang.maingamescene.board
         {
             return _stageInfo.boardArray;
         }
-		
+
+        public function get boardImageArray():Vector.<Vector.<Image>>
+        {
+            return _boardImage;
+        }
+        
 		public function get rowCount():uint
 		{
 			return _stageInfo.rowCount;

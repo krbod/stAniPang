@@ -38,7 +38,7 @@ package com.stintern.anipang.maingamescene.block
             
             for(var i:uint=0; i<2; ++i)
             {
-                // 블럭 제거 알고리즘의 결과를 바탕으로 블럭들을 제거
+                // 블럭 제거 알고리즘의 결과를 바탕으로 상태 업데이트
                 removeBlockWithRemoveResult( result[i] as RemoveAlgoResult );
             }
             
@@ -114,6 +114,9 @@ package com.stintern.anipang.maingamescene.block
             
             // Board 정보 갱신
             GameBoard.instance.boardArray[row][col] = GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED;
+            
+            // Board 에 이미지 정보 갱신( 얼음 제거 .. )
+            BlockManager.instance.blockPainter.removeBoardImageAt(row, col);
         }
         
         /**

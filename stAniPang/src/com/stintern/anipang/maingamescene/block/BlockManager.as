@@ -490,7 +490,7 @@ package com.stintern.anipang.maingamescene.block
         
         public function drawBoard():void
         {
-            _blockPainter.drawBoard();
+            _blockPainter.initBoard();
         }
         
         
@@ -550,6 +550,7 @@ package com.stintern.anipang.maingamescene.block
                 }
                 trace( str );
             }
+            
         }
 
     }
