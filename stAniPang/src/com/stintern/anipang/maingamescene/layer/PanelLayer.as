@@ -238,16 +238,20 @@ package com.stintern.anipang.maingamescene.layer
                         animateItemButton(button, true);
                         
                         if( _clickedButton != "" )
+                        {
                             animateItemButton(_clickedButton, false);
+                        }
                         
                         _clickedButton = button;
                         
-                        notifyBlockManager(_clickedButton);
+                        notifyBlockManager(_clickedButton, true);
                     }
                     else
                     {
                         animateItemButton(button, false);
                         _clickedButton = "";
+                        
+                        notifyBlockManager(_clickedButton, false);
                     }
                     
                 
@@ -257,18 +261,20 @@ package com.stintern.anipang.maingamescene.layer
             
         }
         
-        private function notifyBlockManager(button:String):void
+        private function notifyBlockManager(button:String, isClicked:Boolean):void
         {
             switch(button)
             {
                 case Resources.GAME_PANEL_CLICK_PANG_BUTTON:
-                    BlockManager.instance.clickPangClicked = true;
+                    BlockManager.instance.clickPangClicked = isClicked;
                     break;
                 
                 case Resources.GAME_PANEL_GOGGLE_PANG_BUTTON:
+                    BlockManager.instance.gogglePangClicked = isClicked;
                     break;
                 
                 case Resources.GAME_PANEL_CHANGE_PANG_BUTTON:
+                    BlockManager.instance.changePangClicked = isClicked;
                     break;
                 
             }

@@ -1,10 +1,5 @@
 package com.stintern.anipang.maingamescene.block
 {
-    import com.stintern.anipang.SceneManager;
-    import com.stintern.anipang.maingamescene.layer.PanelLayer;
-    import com.stintern.anipang.utils.Resources;
-    
-    import starling.core.Starling;
     import starling.display.DisplayObject;
     import starling.display.Image;
     import starling.events.Touch;
@@ -24,10 +19,9 @@ package com.stintern.anipang.maingamescene.block
 		private var _distanceX:int, _distanceY:int;
         private var _callbackMove:Function;     // 블럭을 터치할 때 불려지는 콜백함수 저장
         
-        public var isMoving:Boolean = false;
-        // 출력 여부
+        private var _isMoving:Boolean = false;
         private var _requiredRedraw:Boolean;    // 블럭이 옮겨진 후 재 출력해야 할지 여부
-        
+                
         public function Block()
         {
         }
@@ -110,15 +104,8 @@ package com.stintern.anipang.maingamescene.block
 					case TouchPhase.ENDED :
 						_isTouch = false;
                         
-                        // 클릭팡 아이템 사용
-                        if( BlockManager.instance.clickPangClicked )
-                        {
-                            BlockManager.instance.removeBlockAt(_row, _col);
-                            
-                            BlockManager.instance.clickPangClicked = false;
-                            var panelLayer:PanelLayer = (Starling.current.root as SceneManager).getLayerByName(Resources.LAYER_PANEL) as PanelLayer;
-                            panelLayer.animateItemButton(Resources.GAME_PANEL_CLICK_PANG_BUTTON, false);
-                        }
+                        // 아이템을 사용했는 지 확인
+                        ItemController.instance.checkItemUsed(this);
                         
                         //debugging
                         if( _image.name == "DEBUGGING" )
@@ -157,6 +144,15 @@ package com.stintern.anipang.maingamescene.block
         public function set image(image:Image):void
         {
             _image = image;
+        }
+        
+        public function get isMoving():Boolean
+        {
+            return _isMoving;
+        }
+        public function set isMoving(isMoving:Boolean):void
+        {
+            _isMoving = isMoving;
         }
 		
 		public function get row():uint

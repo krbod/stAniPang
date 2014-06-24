@@ -33,7 +33,11 @@ package com.stintern.anipang.maingamescene.block
         
         private var _missionChecker:MissionChecker;
         
+        // Item 
         private var _clickPangClicked:Boolean;
+        private var _gogglePangClicked:Boolean;
+        private var _changePangClicked:Boolean;
+        
         private var _movingBlockCount:uint = 0;
 		private var _requiredStepBlocks:Boolean;
         
@@ -481,7 +485,7 @@ package com.stintern.anipang.maingamescene.block
             _blockArray[rhs.row][rhs.col] = tmp;
         }
         
-        public function makeSpecialBlock(row:uint, col:uint, type:uint):void
+        public function makeSpecialBlock(row:uint, col:uint, type:uint, requiredUpdateBoard = true):void
         {
             switch( type )
             {
@@ -502,7 +506,9 @@ package com.stintern.anipang.maingamescene.block
                     break;
             }
             
-            GameBoard.instance.updateBoard(row, col, false);
+            if( requiredUpdateBoard )
+                GameBoard.instance.updateBoard(row, col, false);
+            
             _blockPainter.changeTexture(_blockArray[row][col], _blockArray[row][col].type);
         }
         
@@ -574,6 +580,12 @@ package com.stintern.anipang.maingamescene.block
             _blockRemover.removeBlockAt(row, col);
         }
         
+        public function resetConnectedBlockFinder():void
+        {
+            _connectedBlockFinder.reset();
+            _blockPainter.disposeHint();
+        }
+        
         public function get blockArray():Vector.<Vector.<Block>>
         {
             return _blockArray;
@@ -606,6 +618,26 @@ package com.stintern.anipang.maingamescene.block
         public function set clickPangClicked(isClicked:Boolean):void
         {
             _clickPangClicked = isClicked;
+        }
+        
+        public function get gogglePangClicked():Boolean
+        {
+            return _gogglePangClicked;
+        }
+        
+        public function set gogglePangClicked(isClicked:Boolean):void
+        {
+            _gogglePangClicked = isClicked;
+        }
+        
+        public function get changePangClicked():Boolean
+        {
+            return _changePangClicked;
+        }
+        
+        public function set changePangClicked(isClicked:Boolean):void
+        {
+            _changePangClicked = isClicked;
         }
 
         //DEBUGGING
