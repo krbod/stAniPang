@@ -120,7 +120,7 @@ package com.stintern.anipang.maingamescene.block
             GameBoard.instance.updateBoard(row, col, true);
 			
 			// 점수 갱신
-			var panelLayer:PanelLayer = ( (Starling.current.root as SceneManager).getLayerByName(Resources.LAYER_COMPONENT) as PanelLayer);
+			var panelLayer:PanelLayer = ( (Starling.current.root as SceneManager).getLayerByName(Resources.LAYER_PANEL) as PanelLayer);
 			panelLayer.updateCurrentScore();
 			
 			BlockManager.instance.missoinChecker.updateCurrentScore();

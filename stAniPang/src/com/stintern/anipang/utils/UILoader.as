@@ -199,7 +199,7 @@ package com.stintern.anipang.utils
 			image.x = _registrationPointDictionary[atlasPath][name].x;
 			image.y = _registrationPointDictionary[atlasPath][name].y;
 			
-			if( onClick != null && name.slice(name.lastIndexOf("_")+1, name.length) != "clicked" )
+			if( onClick != null /*&& name.slice(name.lastIndexOf("_")+1, name.length) != "clicked" */)
 			{
 				image.addEventListener(TouchEvent.TOUCH, onClick);
 			}

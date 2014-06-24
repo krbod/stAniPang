@@ -169,7 +169,7 @@ package com.stintern.anipang.maingamescene.board
                     BlockManager.instance.blockPainter.removeBoardImageAt(row, col);
 					
 					// 상단 패널의  얼음 남은 갯수 업데이트
-					var panelLayer:PanelLayer = ( (Starling.current.root as SceneManager).getLayerByName(Resources.LAYER_COMPONENT) as PanelLayer);
+					var panelLayer:PanelLayer = ( (Starling.current.root as SceneManager).getLayerByName(Resources.LAYER_PANEL) as PanelLayer);
 					panelLayer.updateLeftIce();
                     break;
             }

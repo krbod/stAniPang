@@ -33,6 +33,7 @@ package com.stintern.anipang.maingamescene.block
         
         private var _missionChecker:MissionChecker;
         
+        private var _clickPangClicked:Boolean;
         private var _movingBlockCount:uint = 0;
 		private var _requiredStepBlocks:Boolean;
         
@@ -461,7 +462,7 @@ package com.stintern.anipang.maingamescene.block
                 var leftStep:int = _missionChecker.step();
 				
 				// 상단에 패널의 남은 이동 업데이트
-				var panelLayerL:PanelLayer = ( (Starling.current.root as SceneManager).getLayerByName(Resources.LAYER_COMPONENT) as PanelLayer);
+				var panelLayerL:PanelLayer = ( (Starling.current.root as SceneManager).getLayerByName(Resources.LAYER_PANEL) as PanelLayer);
 				panelLayerL.updateLeftStep(leftStep);
             }
         }
@@ -568,6 +569,11 @@ package com.stintern.anipang.maingamescene.block
             _blockPainter.showHint(connectedBlock);
         }
         
+        public function removeBlockAt(row:uint, col:uint):void
+        {
+            _blockRemover.removeBlockAt(row, col);
+        }
+        
         public function get blockArray():Vector.<Vector.<Block>>
         {
             return _blockArray;
@@ -591,6 +597,16 @@ package com.stintern.anipang.maingamescene.block
 		{
 			return _missionChecker;
 		}
+        
+        public function get clickPangClicked():Boolean
+        {
+            return _clickPangClicked;
+        }
+          
+        public function set clickPangClicked(isClicked:Boolean):void
+        {
+            _clickPangClicked = isClicked;
+        }
 
         //DEBUGGING
         public function debugging(block:Block=null):void

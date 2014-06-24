@@ -1,5 +1,10 @@
 package com.stintern.anipang.maingamescene.block
 {
+    import com.stintern.anipang.SceneManager;
+    import com.stintern.anipang.maingamescene.layer.PanelLayer;
+    import com.stintern.anipang.utils.Resources;
+    
+    import starling.core.Starling;
     import starling.display.DisplayObject;
     import starling.display.Image;
     import starling.events.Touch;
@@ -104,6 +109,16 @@ package com.stintern.anipang.maingamescene.block
 					
 					case TouchPhase.ENDED :
 						_isTouch = false;
+                        
+                        // 클릭팡 아이템 사용
+                        if( BlockManager.instance.clickPangClicked )
+                        {
+                            BlockManager.instance.removeBlockAt(_row, _col);
+                            
+                            BlockManager.instance.clickPangClicked = false;
+                            var panelLayer:PanelLayer = (Starling.current.root as SceneManager).getLayerByName(Resources.LAYER_PANEL) as PanelLayer;
+                            panelLayer.animateItemButton(Resources.GAME_PANEL_CLICK_PANG_BUTTON, false);
+                        }
                         
                         //debugging
                         if( _image.name == "DEBUGGING" )

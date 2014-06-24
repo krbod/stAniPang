@@ -8,7 +8,7 @@ package com.stintern.anipang.utils
 		
         /** Layer name */
         public static var LAYER_MAIN_GAME:String = "LAYER_MAIN_GAME";
-        public static var LAYER_COMPONENT:String = "LAYER_COMPONENT";
+        public static var LAYER_PANEL:String = "LAYER_COMPONENT";
 		public static var LAYER_WORLD_MAP:String = "LAYER_WORLD_MAP";
         public static var LAYER_STAGE_INFO:String = "LAYER_STAGE_INFO";
 
@@ -220,6 +220,11 @@ package com.stintern.anipang.utils
 		
 		/** Game Panel */
 		public static var GAME_PANEL_MISSION:String = "mission";
+        public static var GAME_PANEL_CLICK_PANG_BUTTON:String = "clickpang";
+        public static var GAME_PANEL_GOGGLE_PANG_BUTTON:String = "gogglepang";
+        public static var GAME_PANEL_CHANGE_PANG_BUTTON:String = "changepang";
+        public static var GAME_PANEL_PAUSE_BUTTON:String = "closeButton";
+        public static var GAME_PANEL_PAUSE_BUTTON_CLICKED:String = "closeButton_clicked";
 		
             
         /** Game Enviroment */
