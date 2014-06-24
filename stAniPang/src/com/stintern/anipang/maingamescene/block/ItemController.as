@@ -27,6 +27,10 @@ package com.stintern.anipang.maingamescene.block
         private var _gogglePangActivated:Boolean;
         private var _gogglePangImages:Array;
         
+        // 체인지팡 관련
+        private var _firstBlock:Block;
+        private var _secondBlock:Block;
+        
         private var _activeBlock:Block;
             
         public function ItemController()
@@ -66,7 +70,7 @@ package com.stintern.anipang.maingamescene.block
             }
             else if( BlockManager.instance.changePangClicked )
             {
-                
+                processChangePang();
             }
         }
         
@@ -100,7 +104,7 @@ package com.stintern.anipang.maingamescene.block
             _gogglePangActivated = false;
             
             BlockManager.instance.gogglePangClicked = false;
-            panelLayer.animateItemButton(Resources.GAME_PANEL_GOGGLE_PANG_BUTTON, false);
+            panelLayer.deactivate(Resources.GAME_PANEL_GOGGLE_PANG_BUTTON);
         }
         
         private function activateGogglePang():void
@@ -181,6 +185,38 @@ package com.stintern.anipang.maingamescene.block
                 TweenLite.to(image, 0.5, {scaleX:1.0, scaleY:1.0, onComplete:scaleUp});
             }
             
+        }
+        
+        private function processChangePang():void
+        {
+            if( _firstBlock == null )
+            {
+                _firstBlock = _activeBlock;
+                animateItemButton(_firstBlock.image, true);
+            }
+            else if( _firstBlock != null && _activeBlock == _firstBlock ) // 처음에 선택한 블럭을 다시 선택하는 경우 체인지팡 아이템을 취소
+            {
+                deactivate();
+            }
+            else
+            {
+                _secondBlock = _activeBlock;
+                BlockManager.instance.exchangeBlock(_firstBlock, _secondBlock, false, deactivate);
+            }
+            
+            
+            function deactivate():void
+            {
+                animateItemButton(_firstBlock.image, false);
+                
+                _firstBlock = null;
+                _secondBlock = null;
+                
+                BlockManager.instance.changePangClicked = false;
+                
+                var panelLayer:PanelLayer = (Starling.current.root as SceneManager).getLayerByName(Resources.LAYER_PANEL) as PanelLayer;
+                panelLayer.deactivate(Resources.GAME_PANEL_CHANGE_PANG_BUTTON);
+            }
         }
         
     }

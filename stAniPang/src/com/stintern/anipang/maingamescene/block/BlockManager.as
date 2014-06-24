@@ -11,6 +11,8 @@ package com.stintern.anipang.maingamescene.block
     import com.stintern.anipang.maingamescene.layer.PanelLayer;
     import com.stintern.anipang.utils.Resources;
     
+    import flash.events.FullScreenEvent;
+    
     import starling.core.Starling;
     import starling.display.Image;
     import starling.display.Sprite;
@@ -419,7 +421,7 @@ package com.stintern.anipang.maingamescene.block
          * @param col2 이동할 위치의 col Index
          * @param isReturn 교환한 후 연결되는 블럭이 없어서 다시 돌아오는 경우에는 true, 그렇지 않으면 false
          */
-        private function exchangeBlock(lhs:Block, rhs:Block, isReturn:Boolean):void
+        public function exchangeBlock(lhs:Block, rhs:Block, isReturn:Boolean, onComplete:Function=null):void
         {
             var image1:Image = lhs.image;
             var image2:Image = rhs.image;
@@ -440,6 +442,9 @@ package com.stintern.anipang.maingamescene.block
                 // 블럭을 움직였을 경우에 연결된 블럭을 찾는 것을 리셋
                 _connectedBlockFinder.reset();
                 _blockPainter.disposeHint();
+                
+                if( completeCount == 2 && onComplete != null )
+                    onComplete();
             }
         }
         
@@ -458,7 +463,9 @@ package com.stintern.anipang.maingamescene.block
             // 삭제될 블럭이 있으면 삭제하고 없으면 블럭을 다시 원위치
             if( !_blockRemover.removeBlocks(lhs, rhs) )
             {
-                exchangeBlock(lhs, rhs, true);
+                // 체인지 팡으로 블럭을 옮긴 경우 연결되는 블럭이 없더라도 다시 돌아가지 않음
+                if( !changePangClicked )
+                    exchangeBlock(lhs, rhs, true);
             }
             else
             {

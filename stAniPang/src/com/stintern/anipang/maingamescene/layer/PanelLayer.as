@@ -237,6 +237,7 @@ package com.stintern.anipang.maingamescene.layer
                     {
                         animateItemButton(button, true);
                         
+                        // 다른 아이템을 클릭했을 경우 다른 아이템의 애니메이션을 취소
                         if( _clickedButton != "" )
                         {
                             animateItemButton(_clickedButton, false);
@@ -303,6 +304,12 @@ package com.stintern.anipang.maingamescene.layer
                 TweenLite.to(image, 0.5, {scaleX:1.0, scaleY:1.0, onComplete:scaleUp});
             }
                 
+        }
+        
+        public function deactivate(buttonName:String):void
+        {
+            animateItemButton(buttonName, false);
+            _clickedButton = "";
         }
             
     }
