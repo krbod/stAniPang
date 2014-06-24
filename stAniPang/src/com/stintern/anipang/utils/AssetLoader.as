@@ -18,6 +18,7 @@ package com.stintern.anipang.utils
         private var imgDictionary:Dictionary = new Dictionary();
 		
 		private var _assetManager:AssetManager;
+        private var _scaleFactor:int;
         
         public function AssetLoader()
         {
@@ -36,15 +37,15 @@ package com.stintern.anipang.utils
             return _instance;
         }
 		
-		public function init():void
+		public function init(scaleFactor:int):void
 		{
+            //_assetManager = new AssetManager(scaleFactor);
+            _assetManager = new AssetManager();
+            _scaleFactor = scaleFactor;
 		}
 		
 		public function loadDirectory(onComplete:Function, onProgress:Function, ...dirs):void
 		{
-            if( _assetManager == null )
-                _assetManager = new AssetManager();
-                
 			for(var i:uint=0; i<dirs.length; ++i)
 			{
 				var appDir:File;
@@ -120,6 +121,11 @@ package com.stintern.anipang.utils
             return xmlNode;
         }
         
+        public function removeTexture(name):void
+        {
+            _assetManager.removeTexture(name);
+        }
+        
         /**
          * 디바이스 내부 저장소를 확인하여 File 객체를 리턴합니다. 
          */
@@ -134,6 +140,11 @@ package com.stintern.anipang.utils
                 return file;
             
             return null;
+        }
+        
+        public function get scaleFactor():int
+        {
+            return _scaleFactor;
         }
         
         

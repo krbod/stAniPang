@@ -2,6 +2,24 @@ package com.stintern.anipang.utils
 {
     public class Resources
     {
+        private static var _scaleFactor:int;
+        private static var SD_DIR:String = "res/img_sd/";
+        private static var HD_DIR:String = "res/img_hd/";
+        
+        public static function setScaleFactor(scaleFactor:int):void
+        {
+            _scaleFactor = scaleFactor;
+        }
+        
+        public static function getDir(name:String):String
+        {
+            return _scaleFactor == 1 ? SD_DIR + name : HD_DIR + name;
+        }
+        public static function getAsset(name:String):String
+        {
+            return _scaleFactor == 1 ? SD_DIR + name : HD_DIR + name;
+        }
+        
 		/** Scene name */
 		public static var SCENE_WORLD_MAP:String = "SCENE_WORLD_MAP";
 		public static var SCENE_MAIN_GAME:String = "SCENE_MAIN_GAME";
@@ -25,21 +43,21 @@ package com.stintern.anipang.utils
         
         /** Block Sprite Sheet */
         public static var PATH_DIRECTORY_BLOCK:String = "res/img/blocks/";
-        public static var ATALS_NAME_BLOCK:String = "block_sprite_sheet"
+        public static var ATALS_NAME_BLOCK:String = "block_sprite_sheet";
         public static var PATH_IMAGE_BLOCK_SPRITE_SHEET:String = "res/img/blocks/block_sprite_sheet";
         public static var PATH_XML_BLOCK_SPRITE_SHEET:String = "res/img/blocks/block_sprite_sheet.xml";
         
         
         /** Stage Info Sprite Sheet */
         public static var PATH_DIRECTORY_STAGE_INFO:String = "res/img/stageInfo/";
-        public static var ATALS_NAME_STAGE_INFO:String = "stageInfo"
+        public static var ATALS_NAME_STAGE_INFO:String = "stageInfo";
         public static var PATH_STAGE_INFO_SPRITE_SHEET:String = "res/img/stageInfo/stageInfo.png";
         public static var PATH_XML_STAGE_INFO_SHEET:String = "res/img/stageInfo/stageInfo.xml";
         
         
         /** Game Panel Sprite Sheet */
         public static var PATH_DIRECTORY_PANEL:String = "res/img/panel/";
-        public static var ATALS_NAME_PANEL:String = "panel"
+        public static var ATALS_NAME_PANEL:String = "panel";
         public static var PATH_PANEL_SPRITE_SHEET:String = "res/img/panel/panel.png";
         public static var PATH_XML_PANEL_SHEET:String = "res/img/panel/panel.xml";
 		
@@ -57,6 +75,31 @@ package com.stintern.anipang.utils
 		public static var PATH_IMAGE_MISSION_FAILED:String = "res/img/missionclear/missionFailed.png";
 		public static var PATH_IMAGE_MISSION_FAILED_TEXTURE_NAME:String = "missionFailed";
 		
+
+        
+        
+        
+        
+        
+        
+        
+        
+        /** Start Scene */
+        public static var PATH_DIRECTORY_START_SCENE:String = "login/";
+        public static var PATH_IMAGE_START_SCENE_BACKGROUND_TEXTURE_NAME:String = "background";
+        public static var PATH_IMAGE_FACEBOOK_LOGIN_TEXTURE_NAME:String = "facebook_login";
+        public static var PATH_IMAGE_FACEBOOK_LOGIN_CLICKED_TEXTURE_NAME:String = "facebook_login_clicked";
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         /** XML */
         

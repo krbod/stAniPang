@@ -7,7 +7,6 @@ package com.stintern.anipang.worldmapscene.layer
 	import com.stintern.anipang.worldmapscene.WorldmapInfo;
 	
 	import starling.display.Sprite;
-	import starling.events.Event;
 	
 	public class WorldMapScene extends Sprite
 	{
@@ -17,8 +16,8 @@ package com.stintern.anipang.worldmapscene.layer
 		public function WorldMapScene()
 		{
 			this.name = Resources.SCENE_WORLD_MAP;
-			
-			addEventListener(Event.ADDED_TO_STAGE, init);
+
+            init();
 		}
 		
 		public override function dispose():void
@@ -29,7 +28,7 @@ package com.stintern.anipang.worldmapscene.layer
             }
 		}
 		
-		private function init( event:Event ):void
+		private function init():void
 		{
 			// 월드맵에 대한 정보를 로드
 			_worldMapInfo = new WorldmapInfo();

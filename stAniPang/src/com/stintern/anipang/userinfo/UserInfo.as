@@ -1,5 +1,7 @@
 package com.stintern.anipang.userinfo
 {
+    import starling.display.Image;
+
 	public class UserInfo
 	{
 		// 싱글톤 관련
@@ -10,7 +12,10 @@ package com.stintern.anipang.userinfo
 		
 		private var _stageScore:Vector.<uint>;
 		private var _stageStarCount:Vector.<uint>;
-		
+        
+        private var _userImage:Image;
+        private var _userName:String;
+		    
 		public function UserInfo()
 		{
 			if (!_creatingSingleton){
@@ -66,5 +71,22 @@ package com.stintern.anipang.userinfo
             return _stageScore[stage-1];
         }
         
+        public function get userImage():Image
+        {
+            return _userImage;
+        }
+        public function set userImage(image:Image):void
+        {
+            _userImage = image;
+        }
+        
+        public function get userName():String
+        {
+            return _userName;
+        }
+        public function set userName(name:String):void
+        {
+            _userName = name;
+        }
 	}
 }
