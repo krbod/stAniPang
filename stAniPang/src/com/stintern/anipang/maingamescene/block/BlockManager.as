@@ -1,7 +1,7 @@
 package com.stintern.anipang.maingamescene.block
 {
     import com.greensock.TweenLite;
-    import com.stintern.anipang.SceneManager;
+    import com.stintern.anipang.scenemanager.SceneManager;
     import com.stintern.anipang.maingamescene.MissionChecker;
     import com.stintern.anipang.maingamescene.block.algorithm.BlockLocater;
     import com.stintern.anipang.maingamescene.block.algorithm.ConnectedBlockFinder;

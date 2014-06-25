@@ -1,5 +1,5 @@
 <worldmapInfo>
-	<spriteCount>3</spriteCount>
+	<spriteCount>7</spriteCount>
 	<worldmap_1>
 		<end>10</end>
 	</worldmap_1>
@@ -9,4 +9,16 @@
 	<worldmap_3>
 		<end>30</end>
 	</worldmap_3>
+	<worldmap_4>
+		<end>40</end>
+	</worldmap_4>
+	<worldmap_5>
+		<end>50</end>
+	</worldmap_5>
+	<worldmap_6>
+		<end>60</end>
+	</worldmap_6>
+	<worldmap_7>
+		<end>70</end>
+	</worldmap_7>
 </worldmapInfo>

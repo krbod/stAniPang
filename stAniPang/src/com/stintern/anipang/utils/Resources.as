@@ -107,6 +107,11 @@ package com.stintern.anipang.utils
         public static var MISSION_FAiLURE_STRING_TYPE_ICE:String = "모든 얼음을 제거하진 못했어요";
         public static var MISSION_FAiLURE_STRING_TYPE_SCORE:String = "점수를 넘기지 못했어요";
 
+		
+		/** Loading Layer */
+		public static var PATH_IMAGE_LOADING:String = "loading.png";
+		public static var PATH_IMAGE_LOADING_TEXTURE_NAME:String = "loading";
+		
         
         /** XML */
         
@@ -288,6 +293,8 @@ package com.stintern.anipang.utils
 		public static var PADDING_TOP:uint = 200;
         
         public static var LEFT_RIGHT_PADDING:uint = 20; 
+		
+		public static var WORLD_MAP_CONTAINER_DEQUE_SIZE:uint = 5;
 
     }
 }

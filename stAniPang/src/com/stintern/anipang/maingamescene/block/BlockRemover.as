@@ -1,6 +1,6 @@
 package com.stintern.anipang.maingamescene.block
 {
-    import com.stintern.anipang.SceneManager;
+    import com.stintern.anipang.scenemanager.SceneManager;
     import com.stintern.anipang.maingamescene.block.algorithm.BlockRemoveAlgorithm;
     import com.stintern.anipang.maingamescene.block.algorithm.RemoveAlgoResult;
     import com.stintern.anipang.maingamescene.board.GameBoard;

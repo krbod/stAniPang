@@ -1,7 +1,7 @@
 package com.stintern.anipang.maingamescene.block
 {
     import com.greensock.TweenLite;
-    import com.stintern.anipang.SceneManager;
+    import com.stintern.anipang.scenemanager.SceneManager;
     import com.stintern.anipang.maingamescene.block.algorithm.RemoveAlgoResult;
     import com.stintern.anipang.maingamescene.layer.PanelLayer;
     import com.stintern.anipang.utils.Resources;

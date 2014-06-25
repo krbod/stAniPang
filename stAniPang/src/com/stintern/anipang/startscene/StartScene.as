@@ -6,9 +6,10 @@ package com.stintern.anipang.startscene
     import com.stintern.ane.BackButtonANE;
     import com.stintern.ane.FacebookANE;
     import com.stintern.ane.events.ANEResultEvent;
-    import com.stintern.anipang.SceneManager;
+    import com.stintern.anipang.scenemanager.SceneManager;
     import com.stintern.anipang.userinfo.UserInfo;
     import com.stintern.anipang.utils.AssetLoader;
+    import com.stintern.anipang.utils.LoadingLayer;
     import com.stintern.anipang.utils.Resources;
     import com.stintern.anipang.worldmapscene.layer.WorldMapScene;
     
@@ -43,6 +44,8 @@ package com.stintern.anipang.startscene
         
         private var _facebookANE:FacebookANE;
 		private var _backButtonANE:BackButtonANE;
+		
+		private var _loadingSprite:LoadingLayer;
         
         public function StartScene()
         {
@@ -73,7 +76,7 @@ package com.stintern.anipang.startscene
             _facebookANE.addEventListener(ANEResultEvent.EVENT_USER_NAME, onUserNameLoaded);
             
             // 배경화면 및 버튼 초기화
-            initComponents();
+            initUI();
             
 			_backButtonANE = new BackButtonANE();
             NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
@@ -125,6 +128,7 @@ package com.stintern.anipang.startscene
 			
 			function onInited():void
 			{
+				_loadingSprite.stop();
 				(Starling.current.root as SceneManager).replaceScene(worldMapScene);
 			}
         }
@@ -134,7 +138,10 @@ package com.stintern.anipang.startscene
             UserInfo.instance.userName = event.aneResult;
         }
         
-        private function initComponents():void
+		/**
+		 * UI 를 초기화합니다. 
+		 */
+        private function initUI():void
         {
             AssetLoader.instance.loadDirectory(onComplete, null, Resources.getAsset(Resources.PATH_DIRECTORY_START_SCENE));        
             
@@ -181,7 +188,18 @@ package com.stintern.anipang.startscene
                     case TouchPhase.ENDED :
                         if( event.target == _loginImage )
                         {
-                            _facebookANE.getUserInfo();
+							// 로딩 화면을 활성화
+							_loadingSprite = new LoadingLayer();
+							_loadingSprite.init(onInited);
+							function onInited():void
+							{
+								addChild(_loadingSprite);
+								_loadingSprite.start();
+								
+								_facebookANE.getUserInfo();
+							}
+							
+							
                         }
                         
                         _loginImageClicked.visible = false;
@@ -204,64 +222,6 @@ package com.stintern.anipang.startscene
         private function errorHandler(event:LoaderEvent):void 
         {
             trace("error occured with " + event.target + ": " + event.text);
-        }
-        
-        private function loadTexture(path:String, onComplete:Function, onProgress=null ):void
-        {
-            var file:File = findFile(path);
-            var fileStream:FileStream = new FileStream(); 
-            fileStream.open(file, FileMode.READ);
-            
-            var bytes:ByteArray = new ByteArray();
-            fileStream.readBytes(bytes);
-            
-            fileStream.close();
-            
-            var loader:Loader = new Loader();
-            loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoaderComplete);
-            loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onLoaderProgress);
-            loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
-            loader.loadBytes(bytes);
-            
-            function onLoaderProgress(event:ProgressEvent):void
-            {
-                trace(event.bytesLoaded/event.bytesTotal * 100);
-                if( onProgress != null )
-                {
-                    onProgress(event.bytesLoaded/event.bytesTotal * 100);
-                }
-            }
-            
-            function onLoaderComplete(event:Event):void
-            {
-                trace("onLoaderComplete : " + path);
-                
-                //_assetMap[path] = LoaderInfo(event.target).content as Bitmap;
-                
-                onComplete( LoaderInfo(event.target).content as Bitmap );
-            }
-            
-            function ioErrorHandler(event:IOErrorEvent):void
-            {
-                trace("Image Load error: " + event.target + " _ " + event.text );                  
-            }
-        }
-        
-        
-        /**
-         * 디바이스 내부 저장소를 확인하여 File 객체를 리턴합니다. 
-         */
-        private function findFile(path:String):File
-        {
-            var file:File = File.applicationDirectory.resolvePath(path);
-            if( file.exists )
-                return file;
-            
-            file = File.applicationStorageDirectory.resolvePath(path);
-            if( file.exists )
-                return file;
-            
-            return null;
         }
 
     }

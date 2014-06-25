@@ -1,8 +1,7 @@
 package com.stintern.anipang.worldmapscene
 {
-	import com.stintern.anipang.SceneManager;
+	import com.stintern.anipang.scenemanager.SceneManager;
 	import com.stintern.anipang.maingamescene.LevelManager;
-	import com.stintern.anipang.maingamescene.layer.MainGameScene;
 	import com.stintern.anipang.utils.Resources;
 	import com.stintern.anipang.worldmapscene.layer.StageInfoLayer;
 	

@@ -1,7 +1,7 @@
 package com.stintern.anipang.maingamescene.layer
 {
 	import com.stintern.ane.FacebookANE;
-	import com.stintern.anipang.SceneManager;
+	import com.stintern.anipang.scenemanager.SceneManager;
 	import com.stintern.anipang.utils.Resources;
 	import com.stintern.anipang.utils.UILoader;
 	import com.stintern.anipang.worldmapscene.layer.WorldMapScene;

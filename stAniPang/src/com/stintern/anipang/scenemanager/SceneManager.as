@@ -1,4 +1,4 @@
-package com.stintern.anipang
+package com.stintern.anipang.scenemanager
 {
 	import com.stintern.anipang.startscene.StartScene;
 	import com.stintern.anipang.worldmapscene.layer.WorldMapScene;
@@ -15,6 +15,8 @@ package com.stintern.anipang
 			worldMapScene.init();
 			
 			init(worldMapScene);
+			
+			//init(new StartScene);
 		}
 		
 		public function init(firstScene:Sprite):void

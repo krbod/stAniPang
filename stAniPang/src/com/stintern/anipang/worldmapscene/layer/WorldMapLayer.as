@@ -6,6 +6,7 @@ package com.stintern.anipang.worldmapscene.layer
 	import com.stintern.anipang.utils.Resources;
 	import com.stintern.anipang.utils.UILoader;
 	import com.stintern.anipang.worldmapscene.TouchManager;
+	import com.stintern.anipang.worldmapscene.WorldMapContainer;
 	import com.stintern.anipang.worldmapscene.WorldmapInfo;
 	
 	import flash.geom.Point;
@@ -23,7 +24,7 @@ package com.stintern.anipang.worldmapscene.layer
 		private var _touchManager:TouchManager;
 		private var _worldContainer:Sprite;
 		
-		private var _container:Vector.<Sprite>;
+		private var _container:WorldMapContainer;
 		
 		private var _startPoint:int;
 		private var _endPoint:int;
@@ -47,7 +48,7 @@ package com.stintern.anipang.worldmapscene.layer
 			_worldContainer = new Sprite();
 			addChild(_worldContainer);
 			
-			_container = new Vector.<Sprite>();
+			_container = new WorldMapContainer(Resources.WORLD_MAP_CONTAINER_DEQUE_SIZE);
 			_touchManager = new TouchManager(onTouchMove);
 			
 			// 화면 중앙에 위치해야할 이미지의 번호와 미리 로드한 이미지들 가운데 맨 아래에 위치하는 이미지 번호와의 간격을 계산해서
@@ -88,15 +89,19 @@ package com.stintern.anipang.worldmapscene.layer
 		/**
 		 * 스프라이트 시트에 있는 이미지들을 모두 로드해서 화면에 출력합니다. 
 		 */
-		public function loadImage( flieName:String, x:Number, y:Number ):void
+		public function loadImage( fileName:String, x:Number, y:Number ):void
 		{
 			var sprite:Sprite = new Sprite();
-			UILoader.instance.loadAll(flieName, sprite, _touchManager.onTouch, x, y);
+			UILoader.instance.loadAll(fileName, sprite, _touchManager.onTouch, x, y);
 			
+			sprite.name = fileName;
 			_worldContainer.addChild(sprite);
-			_container.push(sprite);
+			_container.pushBack(sprite);
 		}
 		
+		private var _distance:int = 0;
+		private var _alreadyPrevMapLoaded:Boolean = false;
+		private var _alreadyNextMapLoaded:Boolean = false;
 		private function onTouchMove(distance:int):void
 		{
 			// 맨 아랫부분
@@ -112,6 +117,107 @@ package com.stintern.anipang.worldmapscene.layer
 			else
 			{
 				_worldContainer.y += distance;
+			}
+			
+			_distance += distance;
+			updateWorldMapContainer();			
+		}
+		
+		/**
+		 * 화면 해상도의 절반을 움직였을 때 새로운 이미지를 미리 로드합니다.  
+		 */
+		private function updateWorldMapContainer():void
+		{
+			//화면을 상단으로 옮기는 경우
+			if( _distance >= Starling.current.viewPort.height * 0.5 && !_alreadyNextMapLoaded )
+			{
+				_alreadyNextMapLoaded = true;
+				loadNextWorldMap();
+			}
+			if( _distance >= Starling.current.viewPort.height )
+			{
+				_distance = 0;
+				_alreadyNextMapLoaded = false;
+			}
+			
+			// 화면을 하단으로 옮기는 경우
+			if( _distance <= Starling.current.viewPort.height * -0.5 && !_alreadyPrevMapLoaded )
+			{
+				_alreadyPrevMapLoaded = true;
+				loadPreviousWorldMap();
+			}
+			if( _distance <= Starling.current.viewPort.height * -1 )
+			{
+				_distance = 0;
+				_alreadyPrevMapLoaded = false;
+			}
+		}
+		
+		private function loadNextWorldMap():void
+		{
+			var lastSpriteName:String = _container.getLastSprite().name;
+			var newSpriteOrder:uint = uint(lastSpriteName.charAt(lastSpriteName.length-1)) + 1;
+			
+			var lastStagePath:String = _worldMapInfo.getPathByStage( _worldMapInfo.lastStage, true );
+			var lastStageOrder:uint = uint(lastStagePath.slice(lastStagePath.lastIndexOf("_")+1, lastStagePath.lastIndexOf(".")));
+			if( newSpriteOrder > lastStageOrder)
+				return;
+			
+			var newSpriteName:String = lastSpriteName.substr(0, lastSpriteName.length-1)  + newSpriteOrder;
+			
+			var spriteFilePath:String = Resources.getAsset(Resources.PATH_DIRECTORY_WORLD_MAP) + newSpriteName + ".png";
+			var xmlFilePath:String = Resources.getAsset(Resources.PATH_DIRECTORY_WORLD_MAP) + newSpriteName + ".xml";
+			
+			UILoader.instance.loadUISheet(onComplete, null, new Array(spriteFilePath, xmlFilePath));
+			function onComplete():void
+			{
+				var sprite:Sprite = new Sprite();
+				sprite.name = newSpriteName;
+				
+				var x:int = _container.getLastSprite().x;
+				var y:int = _container.getLastSprite().y - Starling.current.viewPort.height;
+				UILoader.instance.loadAll(newSpriteName, sprite, _touchManager.onTouch, x, y);
+				
+				_worldContainer.addChild(sprite);
+				
+				if(_container.length == Resources.WORLD_MAP_CONTAINER_DEQUE_SIZE)
+				{
+					_worldContainer.removeChild( _container.popFront() );
+				}
+				
+				_container.pushBack(sprite);
+			}
+		}
+		
+		private function loadPreviousWorldMap():void
+		{
+			var firstSpriteName:String = _container.getSpriteAt(0).name;
+			var newSpriteOrder:uint = uint(firstSpriteName.charAt(firstSpriteName.length-1)) - 1;
+			if( newSpriteOrder == 0 )
+				return;
+			
+			var newSpriteName:String = firstSpriteName.substr(0, firstSpriteName.length-1) + newSpriteOrder;
+			var spriteFilePath:String = Resources.getAsset(Resources.PATH_DIRECTORY_WORLD_MAP) + newSpriteName + ".png";
+			var xmlFilePath:String = Resources.getAsset(Resources.PATH_DIRECTORY_WORLD_MAP) + newSpriteName + ".xml";
+			
+			UILoader.instance.loadUISheet(onComplete, null, new Array(spriteFilePath, xmlFilePath));
+			function onComplete():void
+			{
+				var sprite:Sprite = new Sprite();
+				sprite.name = newSpriteName;
+				
+				var x:int = _container.getSpriteAt(0).x;
+				var y:int = _container.getSpriteAt(0).y + Starling.current.viewPort.height;
+				UILoader.instance.loadAll(newSpriteName, sprite, _touchManager.onTouch, x, y);
+				
+				_worldContainer.addChild(sprite);
+				
+				if(_container.length == Resources.WORLD_MAP_CONTAINER_DEQUE_SIZE)
+				{
+					_worldContainer.removeChild( _container.popBack() );
+				}
+				
+				_container.pushFront(sprite);
 			}
 		}
 		

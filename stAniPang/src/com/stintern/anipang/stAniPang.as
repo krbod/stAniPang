@@ -12,6 +12,7 @@ package com.stintern.anipang
     import starling.core.Starling;
     import starling.utils.RectangleUtil;
     import starling.utils.ScaleMode;
+    import com.stintern.anipang.scenemanager.SceneManager;
     
     [SWF(frameRate="60")]
     public class stAniPang extends Sprite

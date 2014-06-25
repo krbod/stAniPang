@@ -1,6 +1,6 @@
 package com.stintern.anipang.maingamescene.board
 {
-    import com.stintern.anipang.SceneManager;
+    import com.stintern.anipang.scenemanager.SceneManager;
     import com.stintern.anipang.maingamescene.LevelManager;
     import com.stintern.anipang.maingamescene.StageInfo;
     import com.stintern.anipang.maingamescene.block.Block;

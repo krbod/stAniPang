@@ -2,7 +2,7 @@ package com.stintern.anipang.worldmapscene.layer
 {
     import com.greensock.TweenLite;
     import com.greensock.easing.Back;
-    import com.stintern.anipang.SceneManager;
+    import com.stintern.anipang.scenemanager.SceneManager;
     import com.stintern.anipang.maingamescene.LevelManager;
     import com.stintern.anipang.maingamescene.layer.MainGameScene;
     import com.stintern.anipang.userinfo.UserInfo;
@@ -201,9 +201,7 @@ package com.stintern.anipang.worldmapscene.layer
                                     break;
                                 
                                 case Resources.STAGE_INFO_CLOSE_BUTTON:
-                                    this.dispose();
-                                    (Starling.current.root as SceneManager).currentScene.removeChild(this);
-                                    
+									closeLayer();
                                     break;
                             }
                         }
@@ -212,6 +210,17 @@ package com.stintern.anipang.worldmapscene.layer
                 }	// end of switch
             } // end of if(touch)
         }
+		
+		private function closeLayer():void
+		{
+			TweenLite.to(_container, 0.5, {scaleX:0.01, scaleY:0.01, onComplete:onCompleteClose, ease:Back.easeIn});
+		}
+		
+		private function onCompleteClose():void
+		{
+			this.dispose();
+			(Starling.current.root as SceneManager).currentScene.removeChild(this);	
+		}
         
     }
 }
