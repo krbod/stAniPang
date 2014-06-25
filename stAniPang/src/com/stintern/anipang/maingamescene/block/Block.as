@@ -106,12 +106,6 @@ package com.stintern.anipang.maingamescene.block
                         
                         // 아이템을 사용했는 지 확인
                         ItemController.instance.checkItemUsed(this);
-                        
-                        //debugging
-                        if( _image.name == "DEBUGGING" )
-                        {
-                            BlockManager.instance.debugging(this);
-                        }
 						break;
 				}
 			}

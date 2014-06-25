@@ -143,6 +143,15 @@ package com.stintern.anipang.maingamescene.block.algorithm
                     continue;
                 
                 var result:Array = ConnectedShape.getShapeIndiceAt(i);
+ 				
+				//모양은 일치하나 블럭이 옮길 수 없는 자리인 경우
+				if( row+result[4] >= 0 && row+result[4] < rowCount &&
+					col+result[5] >= 0 && col+result[5] < colCount && 
+					GameBoard.instance.boardArray[ row+result[4] ][ col+result[5] ] == GameBoard.TYPE_OF_CELL_EMPTY )
+				{
+					result = null;
+					continue;
+				}			
 				
 				// 다른 블럭들의 좌표가 보드를 벗어나면 다른 모양을 찾음
                 if( row+result[0] < 0 ||  row+result[2] > rowCount-1)
@@ -187,7 +196,8 @@ package com.stintern.anipang.maingamescene.block.algorithm
                     result[1] += col;
                     result[2] += row;
                     result[3] += col;
-                    result.push(row, col);
+                    result[4] = row;
+					result[5] = col;
                     return result;
                 }
             }

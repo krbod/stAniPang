@@ -38,12 +38,6 @@ package com.stintern.anipang.maingamescene.layer
             BlockManager.instance.createBlocks();
             
             addEventListener(Event.ENTER_FRAME, gameLoop);
-            
-            //Debugging
-            var b:Block = BlockManager.instance.createBlock(1);
-            b.image.x = 50;
-            b.image.y = 50;
-            b.image.name = "DEBUGGING";
 			
 			if( onInited != null )
 				onInited();

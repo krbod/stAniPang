@@ -1,7 +1,6 @@
 package com.stintern.anipang.maingamescene.block
 {
     import com.greensock.TweenLite;
-    import com.stintern.anipang.scenemanager.SceneManager;
     import com.stintern.anipang.maingamescene.MissionChecker;
     import com.stintern.anipang.maingamescene.block.algorithm.BlockLocater;
     import com.stintern.anipang.maingamescene.block.algorithm.ConnectedBlockFinder;
@@ -10,6 +9,7 @@ package com.stintern.anipang.maingamescene.block
     import com.stintern.anipang.maingamescene.layer.MissionClearLayer;
     import com.stintern.anipang.maingamescene.layer.MissionFailureLayer;
     import com.stintern.anipang.maingamescene.layer.PanelLayer;
+    import com.stintern.anipang.scenemanager.SceneManager;
     import com.stintern.anipang.utils.Resources;
     
     import starling.core.Starling;
@@ -22,14 +22,14 @@ package com.stintern.anipang.maingamescene.block
         private static var _instance:BlockManager;
         private static var _creatingSingleton:Boolean = false;
         
-        private var _blockPool:BlockPool;                               // 제거된 블럭들을 저장하는 풀
-        private var _blockLocater:BlockLocater;                     // 블럭을 배치알고리즘
         private var _blockArray:Vector.<Vector.<Block>>;    // 생성된 블럭들이 저장되어 있는 벡터
         
         private var _blockRemover:BlockRemover;              // 블럭삭제 알고리즘에 의해 삭제할 블럭들을 없앰
         private var _connectedBlockFinder:ConnectedBlockFinder;
+		
+		private var _blockCreator:BlockCreator;
         
-        private var _blockPainter:BlockPainter;                     // 블럭들을 그리는 객체
+        private var _blockPainter:BlockPainter;             // 블럭들을 그리는 객체
         private var _isBlockExchaning:Boolean = false;      // 블럭을 교환하고 있을 때 다른 블럭을 교환할 수 없게 하기 위해
         
         private var _missionChecker:MissionChecker;
@@ -65,11 +65,8 @@ package com.stintern.anipang.maingamescene.block
          */
         public function init(layer:Sprite):void
         {
-            // 제거한 블럭을 저장할 풀 생성
-            _blockPool = new BlockPool();
-            
-            // 블럭 배치 알고리즘 생성기 
-            _blockLocater = new BlockLocater();
+			// 블럭 생성기
+			_blockCreator = new BlockCreator();
             
             // 생성한 블럭들을 저장할 벡터 생성
             _blockArray = new Vector.<Vector.<Block>>();
@@ -79,11 +76,12 @@ package com.stintern.anipang.maingamescene.block
             layer.addChild(_blockPainter);
             
             // 삭제 알고리즘의 결과값을 통해 블럭을 삭제
-            _blockRemover = new BlockRemover(_blockArray, _blockPool);
+            _blockRemover = new BlockRemover(_blockArray, _blockCreator.blockPool);
             
             //  블럭을 옮기면 연결될 블럭을 찾는 객체 생성 
             _connectedBlockFinder = new ConnectedBlockFinder(callbackConnectedBlock);
             
+			// 현재 스테이지의 미션을 체크하는 객체
             _missionChecker = new MissionChecker();
 			
 			_requiredStepBlocks = true;
@@ -120,7 +118,7 @@ package com.stintern.anipang.maingamescene.block
                 var result:Array = _connectedBlockFinder.process();
                 if( result == null )
                 {
-                   	GameBoard.instance.recreateBoard(_blockArray, _blockLocater, _blockPainter);     
+                   	GameBoard.instance.recreateBoard(_blockArray, _blockCreator, _blockPainter);     
                 }
             }
         }
@@ -179,49 +177,41 @@ package com.stintern.anipang.maingamescene.block
 		 */
 		private function checkDiagonal(row:uint, col:uint, isLeft:Boolean):Boolean
 		{
-			var boardArray:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
 			if( isLeft )
 			{
 				if( col-1 < 0 )
 					return false;
 				
-				// 대각선에 다른 블럭이 있을 경우 옮기지 않음
-				if( boardArray[row+1][col-1] != GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED  ||
-                    boardArray[row+1][col-1] == GameBoard.TYPE_OF_CELL_ICE_AND_NEED_TO_BE_FILLED )
-					return false;
-				
-				// 왼쪽에 보드 정보를 확인하고 블럭을 옮겨야 하면 옮김
-				switch( boardArray[row][col-1] )
-				{
-					case GameBoard.TYPE_OF_CELL_EMPTY:
-					case GameBoard.TYPE_OF_CELL_BOX:
-						return true;
-					
-					default:
-						return false;
-				}
-					
+				return checkAt(row+1, col-1);
 			}
 			else
 			{
 				if( col+1 > GameBoard.instance.colCount - 1 )
 					return false;
 				
-				if( boardArray[row+1][col+1] != GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED || 
-                    boardArray[row+1][col+1] != GameBoard.TYPE_OF_CELL_ICE_AND_NEED_TO_BE_FILLED )
-					return false;
-				
-				switch( boardArray[row][col+1] )
-				{
-					case GameBoard.TYPE_OF_CELL_EMPTY:
-					case GameBoard.TYPE_OF_CELL_BOX:
-						return true;
-						
-					default:
-						return false;
-				}	
+				return checkAt(row+1, col+1);
 			}
-			return true;
+		}
+		
+		private function checkAt(i, j):Boolean
+		{
+			var boardArray:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
+			
+			// 대각선에 다른 블럭이 있을 경우 옮기지 않음
+			if( boardArray[i][j] != GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED  ||
+				boardArray[i][j] == GameBoard.TYPE_OF_CELL_ICE_AND_NEED_TO_BE_FILLED )
+				return false;
+			
+			// 왼쪽에 보드 정보를 확인하고 블럭을 옮겨야 하면 옮김
+			switch( boardArray[i-1][j] )
+			{
+				case GameBoard.TYPE_OF_CELL_EMPTY:
+				case GameBoard.TYPE_OF_CELL_BOX:
+					return true;
+					
+				default:
+					return false;
+			}
 		}
 		
         /**
@@ -238,7 +228,7 @@ package com.stintern.anipang.maingamescene.block
 				if( boardArray[0][i] == GameBoard.TYPE_OF_CELL_NEED_TO_BE_FILLED || 
                     boardArray[0][i] == GameBoard.TYPE_OF_CELL_ICE_AND_NEED_TO_BE_FILLED )
 				{
-					var block:Block = createBlock( uint(Math.random() * Resources.BLOCK_TYPE_COUNT) + Resources.BLOCK_TYPE_START);	
+					var block:Block = _blockCreator.createBlock( uint(Math.random() * Resources.BLOCK_TYPE_COUNT) + Resources.BLOCK_TYPE_START, _blockPainter, moveCallback);	
 					block.row = 0;
 					block.col = i;
 					
@@ -296,89 +286,9 @@ package com.stintern.anipang.maingamescene.block
          */
         public function createBlocks():void
         {
-            var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray; 
-            var rowCount:uint = GameBoard.instance.rowCount;
-            var colCount:uint = GameBoard.instance.colCount;
-            
-			_blockArray.length = rowCount;
-            for(var i:uint = 0; i<rowCount; ++i)
-            {
-				_blockArray[i] = new Vector.<Block>();
-				_blockArray[i].length = colCount
-                for(var j:uint = 0; j<colCount; ++j)
-                {
-                    // 보드 정보를 보고 블럭의 타입을 받아옴
-                    var type:uint = getTypeOfBlock(board, i, j);
-                    
-                    var block:Block = createBlock(type);	//보드가 빈공간이면  null을 반환
-                    if(block != null)	
-                    {
-						block.row = i;
-						block.col = j;
-                        
-                        // 블럭 이미지 위치를 설정
-                        _blockPainter.setImagePosition(block.image, i, j);
-                    }
-                    
-					_blockArray[i][j] = block;
-                }
-            }
+			_blockCreator.createBlocks(_blockPainter, moveCallback);
         }
-        
-        private function getTypeOfBlock(board:Vector.<Vector.<uint>>, row:uint, col:uint):uint
-        {
-            var blockType:uint;
-            switch(board[row][col])
-            {
-                case GameBoard.TYPE_OF_CELL_EMPTY:
-                    return GameBoard.TYPE_OF_CELL_EMPTY;
-                    
-                case GameBoard.TYPE_OF_CELL_ANIMAL:
-                case GameBoard.TYPE_OF_CELL_ICE:
-                    return _blockLocater.makeNewType(BlockManager.instance.blockArray, row, col);
-                    
-                default:
-                    return board[row][col];
-            }
-            
-            return blockType;
-        }
-        
-        /**
-         * 새로운 블럭을 생성합니다.  
-         * @param type 생성할 블럭의 타입
-         * @param autoRegister 블럭 매니저에 등록하여 바로 화면에 출력할 지 여부
-         * @return 생성한 블럭
-         */
-        public function createBlock(type:uint, autoRegister:Boolean = true):Block
-        {
-            //투명 블럭등 동물 블럭이 아닌 경우
-            if( type > Resources.BLOCK_TYPE_SPECIAL_BLOCK_END )
-                return null;
-            
-            // 풀에 블럭이 있으면 새로 만들지 않음.
-            var block:Block = _blockPool.getBlock(type);
-            if( block != null )
-            {
-                return block;
-            }
-            
-            block  = new Block();
-            block.init(type, _blockPainter.getTextureByType(type), moveCallback);
-            
-            if( autoRegister)
-            {
-                registerBlock(block);
-            }
-            
-            return block;
-        }
-		
-        public function registerBlock(block:Block):void
-        {
-            _blockPainter.addBlock(block.image);
-        }
-       
+		       
         public function moveCallback(row1:int, col1:int, row2:int, col2:int):void
         {
             if( !nextPosAvailable(row2, col2) || _isBlockExchaning )
@@ -644,41 +554,6 @@ package com.stintern.anipang.maingamescene.block
         public function set changePangClicked(isClicked:Boolean):void
         {
             _changePangClicked = isClicked;
-        }
-
-        //DEBUGGING
-        public function debugging(block:Block=null):void
-        {
-            var board:Vector.<Vector.<uint>> = GameBoard.instance.boardArray; 
-			
-			var rowCount:uint = GameBoard.instance.rowCount;
-			var colCount:uint = GameBoard.instance.colCount;
-            
-            trace("");
-            trace("board");
-            for(var i:uint = 0; i<rowCount; ++i)
-            {
-                var str:String = "";
-                for(var j:uint = 0; j<colCount; ++j)
-                {
-                    str += board[i][j].toString() + ", ";
-                }
-                trace( str );
-            }
-            trace("block");
-            for(i = 0; i<rowCount; ++i)
-            {
-                str = "";
-                for(j = 0; j<colCount; ++j)
-                {
-                    if(_blockArray[i][j] == null )
-                        str += "0, ";
-                    else
-                        str += _blockArray[i][j].type.toString() + ", ";
-                }
-                trace( str );
-            }
-            
         }
 
     }

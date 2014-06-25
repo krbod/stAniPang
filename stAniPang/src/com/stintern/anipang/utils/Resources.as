@@ -57,6 +57,8 @@ package com.stintern.anipang.utils
         /** Main Game Layer Sheet */
         public static var PATH_DIRECTORY_BLOCK:String = "blocks/";
         public static var ATALS_NAME_BLOCK:String = "block_sprite_sheet";
+		public static var PATH_BACKGROUND_ON_MAIN_GAME:String = "panel/background.png";
+		public static var PATH_BACKGROUND_ON_MAGIN_GAME_TEXTURE_NAME:String = "background";
 		
         /** Game Panel Sprite Sheet */
         public static var PATH_DIRECTORY_PANEL:String = "panel/";

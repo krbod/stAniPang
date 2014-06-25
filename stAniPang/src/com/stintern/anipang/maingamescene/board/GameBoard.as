@@ -1,13 +1,14 @@
 package com.stintern.anipang.maingamescene.board
 {
-    import com.stintern.anipang.scenemanager.SceneManager;
     import com.stintern.anipang.maingamescene.LevelManager;
     import com.stintern.anipang.maingamescene.StageInfo;
     import com.stintern.anipang.maingamescene.block.Block;
+    import com.stintern.anipang.maingamescene.block.BlockCreator;
     import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.block.BlockPainter;
     import com.stintern.anipang.maingamescene.block.algorithm.BlockLocater;
     import com.stintern.anipang.maingamescene.layer.PanelLayer;
+    import com.stintern.anipang.scenemanager.SceneManager;
     import com.stintern.anipang.utils.Resources;
     
     import flash.utils.Dictionary;
@@ -78,14 +79,14 @@ package com.stintern.anipang.maingamescene.board
         /**
          * 보드에 더이상 연결될 블럭이 없을 경우에 블럭을 재배열합니다. 
          */
-        public function recreateBoard(blockArray:Vector.<Vector.<Block>>, blockLocater:BlockLocater, blockPainter:BlockPainter):void
+        public function recreateBoard(blockArray:Vector.<Vector.<Block>>, blockCreator:BlockCreator, blockPainter:BlockPainter):void
         {
             // 보드를 재배열한 후에 특수블럭은 그대로 남아 있어야 되기 때문에
             //기존에 있던 블록중에 특수 블럭의 타입을 저장
             var dictionary:Dictionary = storeSpecialBlocks(blockArray);
             
             // 풀에 저장한 블록들을 바탕으로 보드를 재배열
-            relocateBoard(dictionary, blockArray, blockLocater, blockPainter);
+            relocateBoard(dictionary, blockArray, blockCreator, blockPainter);
             dictionary = null;
         }
         
@@ -117,7 +118,7 @@ package com.stintern.anipang.maingamescene.board
             return dic;
         }
         
-        private function relocateBoard(dic:Dictionary, blockArray:Vector.<Vector.<Block>>, blockLocater:BlockLocater, blockPainter:BlockPainter):void
+        private function relocateBoard(dic:Dictionary, blockArray:Vector.<Vector.<Block>>, blockCreator:BlockCreator, blockPainter:BlockPainter):void
         {
 			var rowCount:uint = GameBoard.instance.rowCount;
 			var colCount:uint = GameBoard.instance.colCount;
@@ -130,7 +131,7 @@ package com.stintern.anipang.maingamescene.board
                         continue;
                     
                     // 새로운 타입을 생성
-                    var type:uint = blockLocater.makeNewType(blockArray, i, j);
+                    var type:uint = blockCreator.makeNewType(blockArray, i, j);
                     
                     // 저장해놓은 특수블럭과 같은 타입이면 특수블럭으로 생성
                     if( dic[type*10] != null && dic[type*10] > 0 )
