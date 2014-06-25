@@ -1,0 +1,8 @@
+<TextureAtlas imagePath="missionfailure.png">
+  <SubTexture name="bkg" x="2" y="2" width="598" height="826" left="103.8965568491454" top="314.62269061496374" registrationX="64" registrationY="201.85" pivotX="-0.04116611704355108" pivotY="1.0876760781028056" frameWidth="720" frameHeight="1280" kind="-1"/>
+  <SubTexture name="againButton_clicked" x="2" y="829" width="344" height="112" left="290.2610056973" top="1386.023646960866" registrationX="178.8" registrationY="889.1" pivotX="-0.20005734316952584" pivotY="3.8870327576347017" frameWidth="720" frameHeight="1280" kind="-1"/>
+  <SubTexture name="againButton" x="601" y="2" width="344" height="112" left="290.2610056973" top="1386.023646960866" registrationX="178.8" registrationY="889.1" pivotX="-0.20005734316952584" pivotY="3.8870327576347017" frameWidth="720" frameHeight="1280" kind="-1"/>
+  <SubTexture name="closeButton_clicked" x="348" y="829" width="72" height="84" left="956.8223532325985" top="303.08548590460333" registrationX="589.45" registrationY="194.4" pivotX="-3.1606198742402998" pivotY="1.8358659263995056" frameWidth="720" frameHeight="1280" kind="-1"/>
+  <SubTexture name="closeButton" x="2" y="942" width="70" height="82" left="958.7704136735199" top="304.9563839657428" registrationX="590.7" registrationY="195.7" pivotX="-3.2859476282976674" pivotY="1.8672944814851966" frameWidth="720" frameHeight="1280" kind="-1"/>
+  <SubTexture name="label_missionfailure" x="0" y="0" width="0" height="0" left="436.3655387664107" top="1210.1592292137505" registrationX="267.65" registrationY="775" pivotX="0.6160288853797139" pivotY="10.627416575525443" frameWidth="720" frameHeight="1280" fontFamily="Times New Roman" fontColor="3355443" fontSize="60" text="" kind="3"/>
+</TextureAtlas>

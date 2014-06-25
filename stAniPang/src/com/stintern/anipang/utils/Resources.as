@@ -34,13 +34,16 @@ package com.stintern.anipang.utils
         
         /** Directory Path */
         public static var PATH_LEVEL_XML:String = "res/dat/stage/";
+
 		
         
-        
-        /** Block Sprite Sheet */
-        public static var PATH_DIRECTORY_BLOCK:String = "blocks/";
-        public static var ATALS_NAME_BLOCK:String = "block_sprite_sheet";
-        
+        /** Start Scene */
+        public static var PATH_DIRECTORY_START_SCENE:String = "login/";
+        public static var PATH_IMAGE_START_SCENE_BACKGROUND_TEXTURE_NAME:String = "background";
+        public static var PATH_IMAGE_FACEBOOK_LOGIN_TEXTURE_NAME:String = "facebook_login";
+        public static var PATH_IMAGE_FACEBOOK_LOGIN_CLICKED_TEXTURE_NAME:String = "facebook_login_clicked";
+
+              
         
         /** Stage Info Sprite Sheet */
         public static var PATH_DIRECTORY_STAGE_INFO:String = "stageinfo/";
@@ -51,6 +54,9 @@ package com.stintern.anipang.utils
 		public static var LABEL_MISSION:String = "label_mission";
         
 		
+        /** Main Game Layer Sheet */
+        public static var PATH_DIRECTORY_BLOCK:String = "blocks/";
+        public static var ATALS_NAME_BLOCK:String = "block_sprite_sheet";
 		
         /** Game Panel Sprite Sheet */
         public static var PATH_DIRECTORY_PANEL:String = "panel/";
@@ -80,22 +86,27 @@ package com.stintern.anipang.utils
 		public static var PATH_IMAGE_MISSION_CLEAR_SPRITE_SHEET:String = "missionclear/missionclear.png";
 		public static var PATH_XML_MISSION_CLEAR_SPRITE_SHEET:String = "missionclear/missionclear.xml";
 		
-		public static var PATH_IMAGE_MISSION_CLEAR_TEXTURE_NAME:String = "missionclear";		
-		
-		public static var PATH_IMAGE_MISSION_FAILED:String = "res/img/missionclear/missionFailed.png";
-		public static var PATH_IMAGE_MISSION_FAILED_TEXTURE_NAME:String = "missionFailed";
-		
-        
-        
-        
-        /** Start Scene */
-        public static var PATH_DIRECTORY_START_SCENE:String = "login/";
-        public static var PATH_IMAGE_START_SCENE_BACKGROUND_TEXTURE_NAME:String = "background";
-        public static var PATH_IMAGE_FACEBOOK_LOGIN_TEXTURE_NAME:String = "facebook_login";
-        public static var PATH_IMAGE_FACEBOOK_LOGIN_CLICKED_TEXTURE_NAME:String = "facebook_login_clicked";
+		public static var PATH_IMAGE_MISSION_CLEAR_TEXTURE_NAME:String = "missionclear";	
+        public static var IMAGE_NAME_NEXT_STAGE_BUTTON:String = "nextButton";
+        public static var IMAGE_NAME_CLOSE_BUTTON:String = "closeButton";
+        public static var IMAGE_NAME_SHARE_BUTTON:String = "shareButton";
 
+				
         
+        /** Mission Failure */
+        public static var PATH_IMAGE_MISSION_FAILURE_SPTIRE_SHEET:String = "missionfailure/missionfailure.png";
+        public static var PATH_XML_MISSION_FAILURE_SPTIRE_SHEET:String = "missionfailure/missionfailure.xml";
+
+        public static var PATH_IMAGE_MISSION_FAILURE_TEXTURE_NAME:String = "missionfailure";        
+
+        public static var LABEL_MISSION_FAILURE:String = "label_missionfailure";
+
+        public static var IMAGE_NAME_CLOSE_BUTTON_ON_MISSION_FAILURE:String = "closeButton";
+        public static var IMAGE_NAME_AGAIN_BUTTON:String = "againButton";
         
+        public static var MISSION_FAiLURE_STRING_TYPE_ICE:String = "모든 얼음을 제거하진 못했어요";
+        public static var MISSION_FAiLURE_STRING_TYPE_SCORE:String = "점수를 넘기지 못했어요";
+
         
         /** XML */
         

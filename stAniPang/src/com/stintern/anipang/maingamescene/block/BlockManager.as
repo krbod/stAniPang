@@ -8,10 +8,9 @@ package com.stintern.anipang.maingamescene.block
     import com.stintern.anipang.maingamescene.block.algorithm.RemoveAlgoResult;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.maingamescene.layer.MissionClearLayer;
+    import com.stintern.anipang.maingamescene.layer.MissionFailureLayer;
     import com.stintern.anipang.maingamescene.layer.PanelLayer;
     import com.stintern.anipang.utils.Resources;
-    
-    import flash.events.FullScreenEvent;
     
     import starling.core.Starling;
     import starling.display.Image;
@@ -558,7 +557,7 @@ package com.stintern.anipang.maingamescene.block
 					return true;
                 
                 case MissionChecker.MISSION_RESULT_FAILURE:
-					(Starling.current.root as SceneManager).currentScene.addChild( new MissionClearLayer() );
+					(Starling.current.root as SceneManager).currentScene.addChild( new MissionFailureLayer() );
 					_requiredStepBlocks = false;
                     return false;
                 

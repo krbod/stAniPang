@@ -1,4 +1,6 @@
 <levelInfo>
+	<row>8</row>
+	<col>8</col>
 	<board>
 		100, 100, 0, 0, 0, 0, 100, 100,
 			100, 0, 0, 0, 0, 0, 0, 100,
@@ -10,7 +12,7 @@
 			100, 0, 0, 0, 0, 0, 0, 100,
 	</board>
 	<move_limit>
-		20
+		1
 	</move_limit>
 	<misson type="score">
 		4500
