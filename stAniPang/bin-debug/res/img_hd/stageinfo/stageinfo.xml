@@ -1,0 +1,10 @@
+<TextureAtlas imagePath="stageInfo_HD.png">
+  <SubTexture name="bkg" x="2" y="2" width="968" height="1292" left="64.6" top="303.8" registrationX="64.7" registrationY="303.8" pivotX="0.00010330578512397576" pivotY="1" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="startButton_clicked" x="2" y="1296" width="562" height="196" left="265.2" top="1367.6" registrationX="265.2" registrationY="1367.65" pivotX="0" pivotY="0.9997448979591828" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="startButton" x="2" y="1494" width="562" height="196" left="252.4" top="1367.6" registrationX="252.45" registrationY="1367.65" pivotX="0.00008896797153021877" pivotY="0.9997448979591828" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="star_1" x="566" y="1296" width="168" height="196" left="265.2" top="613.2" registrationX="265.2" registrationY="613.25" pivotX="0" pivotY="0.9997448979591839" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="star_2" x="2" y="1692" width="196" height="218" left="443.4" top="567" registrationX="443.4" registrationY="567.15" pivotX="0" pivotY="0.9993087557603688" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="star_3" x="200" y="1692" width="174" height="202" left="641.8" top="607.2" registrationX="641.95" registrationY="607.25" pivotX="0.000867052023121913" pivotY="0.999752475247525" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="closeButton_clicked" x="736" y="1296" width="116" height="130" left="916.6" top="303.8" registrationX="916.7" registrationY="303.8" pivotX="0.0008620689655174383" pivotY="1" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="closeButton" x="854" y="1296" width="112" height="126" left="918.6" top="303.2" registrationX="918.7" registrationY="303.25" pivotX="0.0008928571428573468" pivotY="0.9996031746031745" frameWidth="1080" frameHeight="1920" kind="-1"/>
+</TextureAtlas>

@@ -34,7 +34,7 @@ package com.stintern.anipang
                 new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight), 
                 ScaleMode.SHOW_ALL, iOS);
             
-            var scaleFactor:int = viewPort.width < 900 ? 1 : 2;
+            var scaleFactor:int = viewPort.width < 900 ? 1 : 2;		// 900 = (720(SD) + 1080(HD)) / 2
             
             AssetLoader.instance.init(scaleFactor);
             Resources.setScaleFactor(scaleFactor);

@@ -302,5 +302,6 @@
 
 <extensions>
         <extensionID>com.stintern.anipang.ane.facebook</extensionID>
+    <extensionID>com.stintern.ane.BackButtonANE</extensionID>
     </extensions>
 </application>

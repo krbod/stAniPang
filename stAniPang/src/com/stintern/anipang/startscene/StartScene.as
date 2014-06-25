@@ -3,6 +3,7 @@ package com.stintern.anipang.startscene
     import com.dynamicflash.util.Base64;
     import com.greensock.events.LoaderEvent;
     import com.greensock.loading.LoaderMax;
+    import com.stintern.ane.BackButtonANE;
     import com.stintern.ane.FacebookANE;
     import com.stintern.ane.events.ANEResultEvent;
     import com.stintern.anipang.SceneManager;
@@ -41,6 +42,7 @@ package com.stintern.anipang.startscene
         private var _loginImageClicked:Image;
         
         private var _facebookANE:FacebookANE;
+		private var _backButtonANE:BackButtonANE;
         
         public function StartScene()
         {
@@ -73,7 +75,8 @@ package com.stintern.anipang.startscene
             // 배경화면 및 버튼 초기화
             initComponents();
             
-            NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown, false, 0, true);
+			_backButtonANE = new BackButtonANE();
+            NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
         }
     
         private function onKeyDown(event:KeyboardEvent):void
@@ -82,7 +85,8 @@ package com.stintern.anipang.startscene
             {
                 event.preventDefault();
                 event.stopImmediatePropagation();
-                
+				
+				_backButtonANE.callEndDialog();
             }
         }
         
