@@ -34,15 +34,19 @@ package com.stintern.anipang
                 new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight), 
                 ScaleMode.SHOW_ALL, iOS);
             
-            var scaleFactor:int = viewPort.width < 900 ? 1 : 2; // midway between 320 and 640
+            var scaleFactor:int = viewPort.width < 900 ? 1 : 2;
             
             AssetLoader.instance.init(scaleFactor);
             Resources.setScaleFactor(scaleFactor);
            
             mStarling = new Starling(SceneManager, stage, viewPort);
+			
+			//mStarling = new Starling(SceneManager, stage, new Rectangle(0, 0, 768, 1024));
             
             mStarling.antiAliasing = 1;
             mStarling.showStats = true;
+			
+			//mStarling.viewPort = new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight);
             
             mStarling.start();
         }

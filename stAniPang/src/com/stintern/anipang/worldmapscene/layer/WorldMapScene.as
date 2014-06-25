@@ -16,8 +16,6 @@ package com.stintern.anipang.worldmapscene.layer
 		public function WorldMapScene()
 		{
 			this.name = Resources.SCENE_WORLD_MAP;
-
-            init();
 		}
 		
 		public override function dispose():void
@@ -28,7 +26,7 @@ package com.stintern.anipang.worldmapscene.layer
             }
 		}
 		
-		private function init():void
+		public function init(onInited:Function = null):void
 		{
 			// 월드맵에 대한 정보를 로드
 			_worldMapInfo = new WorldmapInfo();
@@ -49,8 +47,9 @@ package com.stintern.anipang.worldmapscene.layer
 				var lastStageOrder:uint = uint(lastStagePath.slice(lastStagePath.lastIndexOf("_")+1, lastStagePath.lastIndexOf(".")));
 				_worldMapLayer = new WorldMapLayer(
 					paths, 				// 월드맵을 구성할 미리로드한 이미지
-					_worldMapInfo.getWorldmapOrder( UserInfo.instance.currentStage),  // 현재 화면에 출력할 월드맵 이미지 번호
-					lastStageOrder		// 마지막 스테이지의 이미지 번호
+					_worldMapInfo,		  // 현재 화면에 출력할 월드맵 이미지 번호
+					lastStageOrder,		// 마지막 스테이지의 이미지 번호
+					onInited
 				);
 				addChild(_worldMapLayer);
 			}

@@ -25,8 +25,6 @@ package com.stintern.anipang.maingamescene.layer
             BlockManager.instance.init(this);
             
             loadStage();
-            
-            //this.clipRect = new Rectangle();
         }
         
         /**

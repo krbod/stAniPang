@@ -217,6 +217,12 @@ package com.stintern.anipang.utils
         {
             return _textureAtlasDictionary[atlasName].getTexture(textureName);
         }
+		
+		public function getTexturePosition(atlasPath:String, name:String):Point
+		{
+			return new Point( _registrationPointDictionary[atlasPath][name].x,
+								_registrationPointDictionary[atlasPath][name].y);
+		}
         
     }
 }

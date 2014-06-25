@@ -1,0 +1,8 @@
+<TextureAtlas imagePath="missionclear.png">
+  <SubTexture name="bkg" x="2" y="2" width="968" height="1288" left="54.4" top="281" registrationX="54.5" registrationY="281" pivotX="0.00010330578512396842" pivotY="1" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="closeButton" x="816" y="1291" width="116" height="114" left="907.4" top="281" registrationX="907.5" registrationY="281.05" pivotX="0.000869565217391502" pivotY="0.9995575221238937" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="shareButton_clicked" x="409" y="1291" width="406" height="160" left="104.8" top="1372.8" registrationX="104.85" registrationY="1372.95" pivotX="0.00012345679012344977" pivotY="0.9990624999999994" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="shareButton" x="2" y="1291" width="406" height="160" left="104.8" top="1372.8" registrationX="104.85" registrationY="1372.95" pivotX="0.00012345679012344977" pivotY="0.9990624999999994" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="instance8" x="2" y="1453" width="404" height="160" left="530" top="1372.8" registrationX="530.05" registrationY="1372.95" pivotX="0.00012406947890807575" pivotY="0.9990624999999994" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="nextButton" x="2" y="1615" width="404" height="160" left="530" top="1372.8" registrationX="530.05" registrationY="1372.95" pivotX="0.00012406947890807575" pivotY="0.9990624999999994" frameWidth="1080" frameHeight="1920" kind="-1"/>
+</TextureAtlas>

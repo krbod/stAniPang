@@ -553,12 +553,12 @@ package com.stintern.anipang.maingamescene.block
             switch( _missionChecker.check() )
             {
                 case MissionChecker.MISSION_RESULT_SUCCESS:
-					(Starling.current.root as SceneManager).currentScene.addChild( new MissionClearLayer(true) );
+					(Starling.current.root as SceneManager).currentScene.addChild( new MissionClearLayer() );
 					_requiredStepBlocks = false;
 					return true;
                 
                 case MissionChecker.MISSION_RESULT_FAILURE:
-					(Starling.current.root as SceneManager).currentScene.addChild( new MissionClearLayer(false) );
+					(Starling.current.root as SceneManager).currentScene.addChild( new MissionClearLayer() );
 					_requiredStepBlocks = false;
                     return false;
                 

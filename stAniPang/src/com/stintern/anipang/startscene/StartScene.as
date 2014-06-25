@@ -58,6 +58,9 @@ package com.stintern.anipang.startscene
             AssetLoader.instance.removeTexture(Resources.PATH_IMAGE_START_SCENE_BACKGROUND_TEXTURE_NAME);
             AssetLoader.instance.removeTexture(Resources.PATH_IMAGE_FACEBOOK_LOGIN_TEXTURE_NAME);
             AssetLoader.instance.removeTexture(Resources.PATH_IMAGE_FACEBOOK_LOGIN_CLICKED_TEXTURE_NAME);
+			
+			_facebookANE.removeEventListener(ANEResultEvent.EVENT_USER_IMAGE, onUserImageLoaded);
+			_facebookANE.removeEventListener(ANEResultEvent.EVENT_USER_NAME, onUserNameLoaded);
         }
         
         private function init():void
@@ -113,7 +116,13 @@ package com.stintern.anipang.startscene
             UserInfo.instance.userImage = Image.fromBitmap(userImage);
             
             // 월드맵 씬으로 전환
-            (Starling.current.root as SceneManager).replaceScene(new WorldMapScene());
+			var worldMapScene:WorldMapScene = new WorldMapScene();
+			worldMapScene.init(onInited);
+			
+			function onInited():void
+			{
+				(Starling.current.root as SceneManager).replaceScene(worldMapScene);
+			}
         }
         
         private function onUserNameLoaded(event:ANEResultEvent):void

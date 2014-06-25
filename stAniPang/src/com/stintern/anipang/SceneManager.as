@@ -1,6 +1,7 @@
 package com.stintern.anipang
 {
 	import com.stintern.anipang.startscene.StartScene;
+	import com.stintern.anipang.worldmapscene.layer.WorldMapScene;
 	
 	import starling.display.Sprite;
 	
@@ -10,7 +11,7 @@ package com.stintern.anipang
 		
 		public function SceneManager()
 		{
-			init(new StartScene);
+			init(new StartScene());
 		}
 		
 		public function init(firstScene:Sprite):void

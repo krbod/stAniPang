@@ -57,7 +57,7 @@ package com.stintern.anipang.worldmapscene.layer
             _container = new Sprite();
             addChild(_container);
             
-            AssetLoader.instance.loadDirectory(onComplete, null, Resources.PATH_DIRECTORY_STAGE_INFO);
+            AssetLoader.instance.loadDirectory(onComplete, null, Resources.getAsset(Resources.PATH_DIRECTORY_STAGE_INFO) );
             
             function onComplete():void
             {
@@ -67,8 +67,8 @@ package com.stintern.anipang.worldmapscene.layer
                 LevelManager.instance.loadStageInfo(stageLevel);
                 
                 var paths:Array = new Array(
-                        Resources.PATH_STAGE_INFO_SPRITE_SHEET, 
-                        Resources.PATH_XML_STAGE_INFO_SHEET);
+						Resources.getAsset(Resources.PATH_STAGE_INFO_SPRITE_SHEET), 
+						Resources.getAsset(Resources.PATH_XML_STAGE_INFO_SHEET));
                 
                 UILoader.instance.loadUISheet(onLoadUI, null, paths);
             }
@@ -78,13 +78,7 @@ package com.stintern.anipang.worldmapscene.layer
         {
             // 스테이지 정보 배경 세팅
             var texture:Texture = UILoader.instance.getTexture(Resources.ATALS_NAME_STAGE_INFO, Resources.STAGE_INFO_BACKGROUND_NAME);
-            UILoader.instance.loadAll(
-                Resources.ATALS_NAME_STAGE_INFO, 
-                _container, 
-                onTouch, 
-                Starling.current.stage.stageWidth * 0.5 - texture.width * 0.5, 
-                Starling.current.stage.stageHeight * 0.5 - texture.height * 0.5
-            );
+            UILoader.instance.loadAll( Resources.ATALS_NAME_STAGE_INFO, _container, onTouch, 0, 0 );
             
             // 스테이지 정보 세팅
             var stageNo:uint = LevelManager.instance.currentStageLevel;
@@ -96,7 +90,7 @@ package com.stintern.anipang.worldmapscene.layer
             setStageLabel(stageNo, Starling.current.stage.stageWidth * 0.5 - texture.width * 0.5, Starling.current.stage.stageHeight * 0.5 - texture.height * 0.65);
             
             // 미션세팅
-            setMissionLabel(stageNo, Starling.current.stage.stageWidth * 0.5 - texture.width * 0.5, Starling.current.stage.stageHeight * 0.5 - texture.height * 0.05);
+            setMissionLabel(stageNo, Starling.current.stage.stageWidth * 0.5, Starling.current.stage.stageHeight * 0.5 + texture.height * 0.25);
         }
         
         /**
@@ -126,11 +120,14 @@ package com.stintern.anipang.worldmapscene.layer
         {
             _font = new _HUHappyFont;
             
-            var textField:TextField = new TextField(200, 100, "Stage " + stageNo, _font.fontName, 30, 0xFFFFFF);
+            var textField:TextField = new TextField(0, 0, "Stage " + stageNo, _font.fontName, 30, 0xFFFFFF);
             textField.fontSize = 45;
             textField.hAlign = HAlign.CENTER;
             textField.x = x;
             textField.y = y;
+			
+			textField.width = textField.textBounds.width;
+			textField.height = textField.textBounds.height;
             
             _container.addChild(textField);
         }
@@ -152,9 +149,13 @@ package com.stintern.anipang.worldmapscene.layer
                     break;
             }
             
-            var textField:TextField = new TextField(300, 200, missionString, _font.fontName, 30, 0x000000);
+            var textField:TextField = new TextField(0, 0, missionString, _font.fontName, 30, 0x000000);
             textField.fontSize =25;
             textField.hAlign = HAlign.LEFT;
+			
+			textField.width = textField.textBounds.width;
+			textField.height = textField.textBounds.height;
+			
             textField.x = x;
             textField.y = y;
             

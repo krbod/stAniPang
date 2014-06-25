@@ -18,7 +18,7 @@ package com.stintern.anipang.maingamescene.layer
             addEventListener(Event.ADDED_TO_STAGE, init);
         }
         
-        private function init( event:Event ):void
+        public function init( event:Event ):void
         {
             removeEventListener(Event.ADDED_TO_STAGE, init);
 			

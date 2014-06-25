@@ -49,27 +49,33 @@ package com.stintern.anipang.utils
         
         
         /** Stage Info Sprite Sheet */
-        public static var PATH_DIRECTORY_STAGE_INFO:String = "res/img/stageInfo/";
-        public static var ATALS_NAME_STAGE_INFO:String = "stageInfo";
-        public static var PATH_STAGE_INFO_SPRITE_SHEET:String = "res/img/stageInfo/stageInfo.png";
-        public static var PATH_XML_STAGE_INFO_SHEET:String = "res/img/stageInfo/stageInfo.xml";
+        public static var PATH_DIRECTORY_STAGE_INFO:String = "stageinfo/";
+        public static var ATALS_NAME_STAGE_INFO:String = "stageinfo";
+        public static var PATH_STAGE_INFO_SPRITE_SHEET:String = "stageinfo/stageinfo.png";
+        public static var PATH_XML_STAGE_INFO_SHEET:String = "stageinfo/stageinfo.xml";
         
         
         /** Game Panel Sprite Sheet */
-        public static var PATH_DIRECTORY_PANEL:String = "res/img/panel/";
+        public static var PATH_DIRECTORY_PANEL:String = "panel/";
         public static var ATALS_NAME_PANEL:String = "panel";
-        public static var PATH_PANEL_SPRITE_SHEET:String = "res/img/panel/panel.png";
-        public static var PATH_XML_PANEL_SHEET:String = "res/img/panel/panel.xml";
+        public static var PATH_PANEL_SPRITE_SHEET:String = "panel/panel.png";
+        public static var PATH_XML_PANEL_SHEET:String = "panel/panel.xml";
 		
 		/** World map */
 		public static var PATH_IMAGE_WORLD_MAP_1:String = "res/img/worldmaps/worldmap_1.png";
 		public static var PATH_XML_WORLD_MAP_1:String = "res/img/worldmaps/worldmap_1.xml";
+		public static var IMAGE_USER_PICTURE_BOUND:String = "res/img/worldmaps/picture_bound.png";
+		public static var IMAGE_USER_PICTURE_BOUND_TEXTURE_NAME:String = "picture_bound";
+		public static var IMAGE_FACEBOOK_INVITE:String = "res/img/worldmaps/invite.png";
+		public static var IMAGE_FACEBOOK_INVITE_TEXTURE_NAME:String = "invite";
 		
 		public static var WORLD_MAP_NAME:String = "worldmap_";
 		
 		
 		/** Mission Clear */
-		public static var PATH_IMAGE_MISSION_CLEAR:String = "res/img/missionclear/missionclear.png";
+		public static var PATH_IMAGE_MISSION_CLEAR_SPRITE_SHEET:String = "missionclear/missionclear.png";
+		public static var PATH_XML_MISSION_CLEAR_SPRITE_SHEET:String = "missionclear/missionclear.xml";
+		
 		public static var PATH_IMAGE_MISSION_CLEAR_TEXTURE_NAME:String = "missionclear";		
 		
 		public static var PATH_IMAGE_MISSION_FAILED:String = "res/img/missionclear/missionFailed.png";
@@ -116,7 +122,7 @@ package com.stintern.anipang.utils
         
 		
 		// User Information
-		public static var XML_USER_INFO:String = "res/dat/userinfo.xml";
+		public static var XML_USER_INFO:String = "res/dat/userinfo/userInfo.xml";
 		
 		// World map information
 		public static var XML_WORLD_MAP_INFO:String = "res/img/worldmaps/worldmapInfo.xml";
@@ -266,8 +272,8 @@ package com.stintern.anipang.utils
         public static var GAME_PANEL_CLICK_PANG_BUTTON:String = "clickpang";
         public static var GAME_PANEL_GOGGLE_PANG_BUTTON:String = "gogglepang";
         public static var GAME_PANEL_CHANGE_PANG_BUTTON:String = "changepang";
-        public static var GAME_PANEL_PAUSE_BUTTON:String = "closeButton";
-        public static var GAME_PANEL_PAUSE_BUTTON_CLICKED:String = "closeButton_clicked";
+        public static var GAME_PANEL_PAUSE_BUTTON:String = "pauseButton";
+        public static var GAME_PANEL_PAUSE_BUTTON_CLICKED:String = "pauseButton_clicked";
 		
             
         /** Game Enviroment */

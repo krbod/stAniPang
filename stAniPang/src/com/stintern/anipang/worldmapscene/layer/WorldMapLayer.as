@@ -1,13 +1,22 @@
 package com.stintern.anipang.worldmapscene.layer
 {
+	import com.stintern.ane.FacebookANE;
 	import com.stintern.anipang.userinfo.UserInfo;
+	import com.stintern.anipang.utils.AssetLoader;
 	import com.stintern.anipang.utils.Resources;
 	import com.stintern.anipang.utils.UILoader;
 	import com.stintern.anipang.worldmapscene.TouchManager;
+	import com.stintern.anipang.worldmapscene.WorldmapInfo;
+	
+	import flash.geom.Point;
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	
 	public class WorldMapLayer extends Sprite
 	{
@@ -19,14 +28,21 @@ package com.stintern.anipang.worldmapscene.layer
 		private var _startPoint:int;
 		private var _endPoint:int;
 		
-		public function WorldMapLayer(preloadImagePaths:Array, currentStageOrder:uint, lastStageOrder:uint )
+		private var _worldMapInfo:WorldmapInfo;
+		private var _userImage:Image;
+		
+		private var _inviteButton:Image;
+		
+		public function WorldMapLayer(preloadImagePaths:Array, worldMapInfo:WorldmapInfo, lastStageOrder:uint, onInited:Function = null )
 		{
 			this.name = Resources.LAYER_WORLD_MAP;
 			
-			init(preloadImagePaths, currentStageOrder, lastStageOrder);
+			_worldMapInfo = worldMapInfo;
+			
+			init(preloadImagePaths, _worldMapInfo.getWorldmapOrder( UserInfo.instance.currentStage), lastStageOrder, onInited);
 		}
 		
-		private function init(preloadImagePaths:Array, currentStageOrder:uint, lastStageOrder:uint):void
+		private function init(preloadImagePaths:Array, currentStageOrder:uint, lastStageOrder:uint, onInited:Function = null):void
 		{
 			_worldContainer = new Sprite();
 			addChild(_worldContainer);
@@ -46,6 +62,11 @@ package com.stintern.anipang.worldmapscene.layer
 			
 			// 클리어한 스테이지는 회색 스테이지 버튼을 Invisible
 			initStageButton();
+			
+			initConnectingHeart();
+			
+			// 사용자의 이미지를 출력
+			displayUserImage(onInited);
 		}
 		
 		/**
@@ -134,5 +155,97 @@ package com.stintern.anipang.worldmapscene.layer
 			}
 		}
 		
+		private function initConnectingHeart():void
+		{
+			var currentStage:uint = UserInfo.instance.currentStage;
+			var lastStage:uint = _worldMapInfo.lastStage;
+			for(var i:uint=currentStage; i<lastStage; ++i)
+			{
+				for(var j:uint=1; ; ++j)
+				{
+					var image:DisplayObject = getChildByName(_worldContainer, "connecting_heart_" + i + "_" + j );
+					if( image == null )
+						break;
+					
+					image.visible = false;
+				}
+			}
+		}
+		
+		private function displayUserImage(onInited:Function = null):void
+		{
+			if( UserInfo.instance.userImage == null )
+				return;
+			
+			var currentStage:uint = UserInfo.instance.currentStage;
+			var order:uint = _worldMapInfo.getWorldmapOrder(currentStage);
+			
+			var pos:Point = UILoader.instance.getTexturePosition("worldmap_" + order, "Button_" + currentStage);
+			_userImage = UserInfo.instance.userImage;
+			
+			AssetLoader.instance.loadFile(Resources.IMAGE_USER_PICTURE_BOUND, onComplete);
+			
+			function onComplete():void
+			{
+				var pictureBound:Image = new Image( AssetLoader.instance.loadTexture(Resources.IMAGE_USER_PICTURE_BOUND_TEXTURE_NAME) );
+				pictureBound.x = pos.x + pictureBound.width * 1.5;
+				pictureBound.y = pos.y;
+				
+				pictureBound.pivotX = pictureBound.texture.width * 0.5;
+				
+				_userImage.x = pictureBound.x
+				_userImage.y = pictureBound.y + pictureBound.height * 0.15;
+				
+				_userImage.width = pictureBound.width * 0.7;
+				_userImage.height = pictureBound.height * 0.7;
+				
+				_userImage.pivotX = _userImage.texture.width * 0.5;
+				
+				_worldContainer.addChild(pictureBound);
+				_worldContainer.addChild(_userImage);
+				
+				pos = null;
+				
+				// 페이스북 초대 버튼 초기화
+				displayInviteButton(onInited);
+			}
+		}
+		
+		private function displayInviteButton(onInited:Function = null):void
+		{
+			AssetLoader.instance.loadFile(Resources.IMAGE_FACEBOOK_INVITE, onComplete);
+			
+			function onComplete():void
+			{
+				var invite:Image = new Image( AssetLoader.instance.loadTexture(Resources.IMAGE_FACEBOOK_INVITE_TEXTURE_NAME) );
+				invite.pivotX = invite.texture.width;
+				
+				invite.x = Starling.current.stage.stageWidth - 10;
+				invite.y = 10;
+				
+				invite.addEventListener(TouchEvent.TOUCH, onInviteTouched)
+				
+				addChild(invite);
+				
+				if( onInited != null )
+					onInited();
+			}
+		}
+		
+		private function onInviteTouched(event:TouchEvent):void
+		{
+			var touch:Touch = event.getTouch(event.target as DisplayObject);
+			if(touch)
+			{
+				switch(touch.phase)
+				{
+					case TouchPhase.ENDED :
+						var facebookANE:FacebookANE = new FacebookANE();
+						facebookANE.inviteFriends();
+						break;
+				}
+			}
+		}
+			
 	}
 }

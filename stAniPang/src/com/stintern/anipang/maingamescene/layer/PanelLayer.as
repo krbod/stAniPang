@@ -57,7 +57,7 @@ package com.stintern.anipang.maingamescene.layer
             _container = new Sprite();
             addChild(_container);
             
-            AssetLoader.instance.loadDirectory(onComplete, null, Resources.PATH_DIRECTORY_PANEL);
+            AssetLoader.instance.loadDirectory(onComplete, null, Resources.getAsset(Resources.PATH_DIRECTORY_PANEL));
             function onComplete():void
             {
                 // 현재 스테이지 레벨을 읽음
@@ -66,8 +66,8 @@ package com.stintern.anipang.maingamescene.layer
                 LevelManager.instance.loadStageInfo(stageLevel);
                 
                 var paths:Array = new Array(
-                    Resources.PATH_PANEL_SPRITE_SHEET, 
-                    Resources.PATH_XML_PANEL_SHEET);
+                    Resources.getAsset(Resources.PATH_PANEL_SPRITE_SHEET), 
+					Resources.getAsset(Resources.PATH_XML_PANEL_SHEET));
                 
                 UILoader.instance.loadUISheet(onLoadUI, null, paths);
             }

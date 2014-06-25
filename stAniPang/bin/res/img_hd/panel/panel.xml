@@ -1,0 +1,9 @@
+<TextureAtlas imagePath="panel_HD.png">
+  <SubTexture name="mission" x="2" y="263" width="838" height="182" left="41.2" top="36" registrationX="41.25" registrationY="36" pivotX="0.00005973715651134666" pivotY="1" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="pauseButton_clicked" x="841" y="263" width="160" height="160" left="900.4" top="46.8" registrationX="900.5" registrationY="46.95" pivotX="0.0006250000000001417" pivotY="0.9990625000000002" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="pauseButton" x="2" y="447" width="160" height="160" left="900.4" top="46.8" registrationX="900.5" registrationY="46.95" pivotX="0.0006250000000001417" pivotY="0.9990625000000002" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="itembar" x="2" y="2" width="1014" height="260" left="28.8" top="1625.6" registrationX="28.9" registrationY="1625.75" pivotX="0.00009861932938855805" pivotY="0.9994208494208491" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="clickpang" x="2" y="839" width="108" height="114" left="578.4" top="1734.2" registrationX="578.5" registrationY="1734.25" pivotX="0.0009259259259261364" pivotY="0.9995575221238943" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="gogglepang" x="2" y="724" width="112" height="114" left="734.4" top="1734.2" registrationX="734.5" registrationY="1734.2" pivotX="0.0009009009009011057" pivotY="1" frameWidth="1080" frameHeight="1920" kind="-1"/>
+  <SubTexture name="changepang" x="2" y="609" width="114" height="114" left="888.4" top="1736.8" registrationX="888.45" registrationY="1736.8" pivotX="0.0004424778761067983" pivotY="1" frameWidth="1080" frameHeight="1920" kind="-1"/>
+</TextureAtlas>
