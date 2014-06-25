@@ -39,7 +39,6 @@ package com.stintern.anipang.utils
 		
 		public function init(scaleFactor:int):void
 		{
-            //_assetManager = new AssetManager(scaleFactor);
             _assetManager = new AssetManager();
             _scaleFactor = scaleFactor;
 		}

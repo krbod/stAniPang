@@ -5,10 +5,9 @@ package com.stintern.anipang.maingamescene.layer
     import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.AssetLoader;
+    import com.stintern.anipang.utils.GameFont;
     import com.stintern.anipang.utils.Resources;
     import com.stintern.anipang.utils.UILoader;
-    
-    import flash.text.Font;
     
     import starling.core.Starling;
     import starling.display.DisplayObject;
@@ -24,13 +23,6 @@ package com.stintern.anipang.maingamescene.layer
     
     public class PanelLayer extends Sprite
     {
-        [Embed(source = "../../HUHappy.ttf", fontName = "HUHappy",
-			        mimeType = "application/x-font", fontWeight="Bold",
-			        fontStyle="Bold", advancedAntiAliasing = "true",
-			        embedAsCFF="false")]
-        private static const _HUHappyFont:Class;
-        private static var _font:Font;
-        
         private var _isTouched:Boolean;         
         private var _clickedButton:String = "";
         
@@ -38,22 +30,22 @@ package com.stintern.anipang.maingamescene.layer
 		private var _currentScore:uint;
 		private var _missionLeft:int;
 		
-		private var _tfdLeftSteps:TextField;
+		private var _tfdLeftStep:TextField;
 		private var _tfdCurrentScore:TextField;
 		private var _tfdMission:TextField;
         private var _tfdStageLabel:TextField;
         
+		private var _onInitedCallback:Function;
+		
         public function PanelLayer()
         {
             this.name = Resources.LAYER_PANEL;
-            
-            addEventListener(Event.ADDED_TO_STAGE, init);
         }
         
-        private function init( event:Event ):void
+        public function init(onInited:Function):void
         {
-            removeEventListener(Event.ADDED_TO_STAGE, init);
-            
+			_onInitedCallback = onInited;
+			
             _container = new Sprite();
             addChild(_container);
             
@@ -89,91 +81,82 @@ package com.stintern.anipang.maingamescene.layer
             
             // 하단에 현재 스테이지 표시
             initStageLabel();
+			
+			_onInitedCallback();
         }
         
 		private function initLeftStepCount():void
 		{
-			_font = new _HUHappyFont;
-			
-			var texture:Texture = UILoader.instance.getTexture(Resources.ATALS_NAME_PANEL, Resources.GAME_PANEL_MISSION);
 			var leftStep:uint = LevelManager.instance.stageInfo.moveLimit;
 			
-			_tfdLeftSteps = new TextField(0, 0, leftStep.toString(), _font.fontName, 30, 0x000000);
-			_tfdLeftSteps.fontSize = 45;
-			_tfdLeftSteps.hAlign = HAlign.CENTER;
-			_tfdLeftSteps.x = Starling.current.stage.stageWidth * 0.5 - texture.width * 0.66;
-			_tfdLeftSteps.y = Starling.current.stage.stageHeight * 0.04;
+			_tfdLeftStep = _container.getChildByName(Resources.LABEL_LEFT_STEP) as TextField;
+			_tfdLeftStep.text = leftStep.toString();
 			
-			_container.addChild(_tfdLeftSteps);
+			_tfdLeftStep.fontSize = Starling.current.viewPort.height * 0.03;
+			_tfdLeftStep.width = _tfdLeftStep.textBounds.width + 10;
+			_tfdLeftStep.height = _tfdLeftStep.textBounds.height + 10;
 		}
 		
 		public function updateLeftStep(leftStep:int):void
 		{
-			_tfdLeftSteps.text = leftStep.toString();
+			_tfdLeftStep.text = leftStep.toString();
 		}
 			
 		
 		private function initCurrentScore():void
 		{
-			_tfdCurrentScore = new TextField(130, 50, "0", _font.fontName, 30, 0x000000);
-			_tfdCurrentScore.fontSize = 45;
-			_tfdCurrentScore.hAlign = HAlign.LEFT;
-			_tfdCurrentScore.x = Starling.current.stage.stageWidth * 0.25;
-			_tfdCurrentScore.y = Starling.current.stage.stageHeight * 0.07;
-            
-			_container.addChild(_tfdCurrentScore);
+			_tfdCurrentScore = _container.getChildByName(Resources.LABEL_SCORE) as TextField;
+			_tfdCurrentScore.text = "0";
+			_tfdCurrentScore.fontSize = Starling.current.viewPort.height * 0.03;
+			_tfdCurrentScore.width = _tfdCurrentScore.textBounds.width + 100;
+			_tfdCurrentScore.height = _tfdCurrentScore.textBounds.height + 10;
 		}
 		
 		public function updateCurrentScore():void
 		{
 			_currentScore += 200;
 			_tfdCurrentScore.text = _currentScore.toString();
+			
+			_tfdCurrentScore.width = _tfdCurrentScore.textBounds.width + 100;
+			_tfdCurrentScore.height = _tfdCurrentScore.textBounds.height + 10;
 		}
 		
 		private function initMissionInfo():void
 		{
-			initMissionTfd();
-			
 			var missionType:String = LevelManager.instance.stageInfo.missionType;
 			var mission:uint = LevelManager.instance.stageInfo.mission;
 			
 			switch(missionType)
 			{
 				case Resources.MISSION_TYPE_SCORE:
+					
+					_tfdMission = _container.getChildByName(Resources.LABEL_MISSION_STRING) as TextField;
+					_container.getChildByName(Resources.LABEL_MISSION_BLOCK).visible = false;
+					
 					_tfdMission.text = Resources.MISSION_SCORE_HEAD + mission.toString() + Resources.MISSION_SCORE_TAIL;
-					_tfdMission.fontSize = 20;
-					_tfdMission.x = Starling.current.stage.stageWidth * 0.5;
-					_tfdMission.y = Starling.current.stage.stageHeight * 0.07;
+					_tfdMission.fontSize = Starling.current.viewPort.height * 0.015;
 					break;
 				
 				case Resources.MISSION_TYPE_ICE:
-					var texture:Texture = BlockManager.instance.blockPainter.getTextureByType(GameBoard.TYPE_OF_CELL_ICE);
-					var image:Image = new Image(texture);
-					image.x = Starling.current.stage.stageWidth * 0.54;
-					image.y = Starling.current.stage.stageHeight * 0.04;
-					_container.addChild(image);
+					_tfdMission = _container.getChildByName(Resources.LABEL_MISSION_BLOCK) as TextField;
+					_container.getChildByName(Resources.LABEL_MISSION_STRING).visible = false;
 					
 					_tfdMission.text = "x" + mission.toString();
-					_tfdMission.fontSize = 55;
-                    
-					_tfdMission.x = Starling.current.stage.stageWidth * 0.65;
-					_tfdMission.y = Starling.current.stage.stageHeight * 0.05;
+					_tfdMission.fontSize = Starling.current.viewPort.height * 0.02;
 					
 					_missionLeft = mission;
 					
+					var texture:Texture = BlockManager.instance.blockPainter.getTextureByType(GameBoard.TYPE_OF_CELL_ICE);
+					var image:Image = new Image(texture);
+					image.x = _tfdMission.x - image.texture.width - 10
+					image.y = _tfdMission.y - image.texture.height * 0.3;
+					_container.addChild(image);
+					
 					break;
 			}
-            
-            _tfdMission.width = _tfdMission.textBounds.width + 10;
-            _tfdMission.height = _tfdMission.textBounds.height + 10;
-		}
-		
-		private function initMissionTfd():void
-		{
-			_tfdMission = new TextField(0, 0, "", _font.fontName, 30, 0x000000);
-			_tfdMission.hAlign = HAlign.LEFT;
 			
-			_container.addChild(_tfdMission);
+			_tfdMission.width = _tfdMission.textBounds.width + 10;
+			_tfdMission.height = _tfdMission.textBounds.height + 10;
 		}
 		
 		public function updateLeftIce():void
@@ -185,12 +168,12 @@ package com.stintern.anipang.maingamescene.layer
         private function initStageLabel():void
         {
             var currentStage:uint = LevelManager.instance.currentStageLevel;
+			
+			_tfdStageLabel = _container.getChildByName(Resources.LABEL_STAGE_LEVEL_ON_PANEL) as TextField;
                 
-            _tfdStageLabel = new TextField(0, 0, "Stage " + currentStage, _font.fontName, 45, 0x000000);
-            _tfdStageLabel.hAlign = HAlign.LEFT;
-            _tfdStageLabel.x = Starling.current.stage.stageWidth * 0.23;
-            _tfdStageLabel.y = Starling.current.stage.stageHeight * 0.9;
-            
+			_tfdStageLabel.text += currentStage.toString();
+			_tfdStageLabel.fontSize = Starling.current.viewPort.height * 0.04;
+			
             _tfdStageLabel.width = _tfdStageLabel.textBounds.width + 10;
             _tfdStageLabel.height = _tfdStageLabel.textBounds.height + 10;
             

@@ -11,7 +11,10 @@ package com.stintern.anipang
 		
 		public function SceneManager()
 		{
-			init(new StartScene());
+			var worldMapScene:WorldMapScene = new WorldMapScene();
+			worldMapScene.init();
+			
+			init(worldMapScene);
 		}
 		
 		public function init(firstScene:Sprite):void

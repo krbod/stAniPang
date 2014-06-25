@@ -54,6 +54,9 @@ package com.stintern.anipang.worldmapscene
 						else
 						{
 							var stageName:String = ((event.target as DisplayObject).name ); 
+							if( stageName == "bkg" )
+								return;
+							
 							var stage:uint = uint(stageName.slice(stageName.lastIndexOf("_")+1, stageName.length));
 
 							LevelManager.instance.currentStageLevel = stage;

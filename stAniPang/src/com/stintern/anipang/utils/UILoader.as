@@ -13,11 +13,14 @@ package com.stintern.anipang.utils
     import flash.geom.Rectangle;
     import flash.utils.Dictionary;
     
+    import starling.core.Starling;
     import starling.display.Image;
     import starling.display.Sprite;
     import starling.events.TouchEvent;
+    import starling.text.TextField;
     import starling.textures.Texture;
     import starling.textures.TextureAtlas;
+    import starling.utils.HAlign;
 
     public class UILoader
     {
@@ -64,10 +67,12 @@ package com.stintern.anipang.utils
 				// 스테이지 레이블은 TextField 를 사용
 				if( namelist[i].toString().slice(0, 5)  == "label" )
 				{
-					continue;
+					container.addChild( createTextField(atlasFileName, namelist[i], namelist[i].toString()) );
 				}
-				
-				container.addChild( loadImage(atlasFileName, namelist[i], onTouch) );
+				else
+				{
+					container.addChild( loadImage(atlasFileName, namelist[i], onTouch) );
+				}
 			}
 			
 			container.x += x;
@@ -196,10 +201,13 @@ package com.stintern.anipang.utils
 			var image:Image = new Image(texture);
 			image.name = name;
 			
-			image.x = _registrationPointDictionary[atlasPath][name].x;
-			image.y = _registrationPointDictionary[atlasPath][name].y;
+			image.x = Starling.current.viewPort.width * _registrationPointDictionary[atlasPath][name].x / (AssetLoader.instance.scaleFactor == 1 ? 720 : 1080);
+			image.y = Starling.current.viewPort.height * _registrationPointDictionary[atlasPath][name].y / (AssetLoader.instance.scaleFactor == 1 ? 1280 : 1920);
+				
+			//image.x = _registrationPointDictionary[atlasPath][name].x;
+			//image.y = _registrationPointDictionary[atlasPath][name].y;
 			
-			if( onClick != null /*&& name.slice(name.lastIndexOf("_")+1, name.length) != "clicked" */)
+			if( onClick != null && name.slice(name.lastIndexOf("_")+1, name.length) != "clicked" )
 			{
 				image.addEventListener(TouchEvent.TOUCH, onClick);
 			}
@@ -207,6 +215,24 @@ package com.stintern.anipang.utils
 			return image;
         }
 		
+		public function createTextField(atalsPath:String, name:String, contents:String):TextField
+		{
+			var textField:TextField = new TextField(300, 200, contents.slice(contents.indexOf("_")+1, contents.length), GameFont.font.fontName);
+			textField.fontSize = Starling.current.viewPort.height * 0.05;
+			textField.hAlign = HAlign.LEFT;
+			
+			textField.x = Starling.current.viewPort.width * _registrationPointDictionary[atalsPath][name].x / (AssetLoader.instance.scaleFactor == 1 ? 720 : 1080);
+			textField.y = Starling.current.viewPort.height * _registrationPointDictionary[atalsPath][name].y / (AssetLoader.instance.scaleFactor == 1 ? 1280 : 1920);
+			
+			textField.width = textField.textBounds.width + 10;
+			textField.height = textField.textBounds.height + 10;
+			
+			textField.touchable = false;
+			
+			textField.name = name;
+			
+			return textField;
+		}
 		
 		private function getFileName(path:String):String
 		{

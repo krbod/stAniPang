@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:a467d9e28517842c27b1f0113790da2f:06b0e0e039cc21aa6aa6a0386ad88839:e5a5d63c362be7b8c162e2cfd81b63fd$ -->
+<TextureAtlas imagePath="block_sprite_sheet_HD.png">
+    <SubTexture name="ani" x="882" y="222" width="108" height="108"/>
+    <SubTexture name="ani_LR_arrow" x="772" y="332" width="108" height="108"/>
+    <SubTexture name="ani_TB_arrow" x="772" y="222" width="108" height="108"/>
+    <SubTexture name="ani_heart" x="882" y="112" width="108" height="108"/>
+    <SubTexture name="ari" x="772" y="112" width="108" height="108"/>
+    <SubTexture name="ari_LR_arrow" x="662" y="332" width="108" height="108"/>
+    <SubTexture name="ari_TB_arrow" x="662" y="222" width="108" height="108"/>
+    <SubTexture name="ari_heart" x="662" y="112" width="108" height="108"/>
+    <SubTexture name="blue" x="882" y="2" width="108" height="108"/>
+    <SubTexture name="blue_LR_arrow" x="772" y="2" width="108" height="108"/>
+    <SubTexture name="blue_TB_arrow" x="662" y="2" width="108" height="108"/>
+    <SubTexture name="blue_heart" x="552" y="332" width="108" height="108"/>
+    <SubTexture name="box" x="552" y="222" width="108" height="108"/>
+    <SubTexture name="box_cross" x="552" y="112" width="108" height="108"/>
+    <SubTexture name="bubble" x="552" y="2" width="108" height="108"/>
+    <SubTexture name="heart" x="442" y="332" width="108" height="108"/>
+    <SubTexture name="ice" x="442" y="222" width="108" height="108"/>
+    <SubTexture name="lucy" x="442" y="112" width="108" height="108"/>
+    <SubTexture name="lucy_LR_arrow" x="442" y="2" width="108" height="108"/>
+    <SubTexture name="lucy_TB_arrow" x="332" y="332" width="108" height="108"/>
+    <SubTexture name="lucy_heart" x="332" y="222" width="108" height="108"/>
+    <SubTexture name="micky" x="332" y="112" width="108" height="108"/>
+    <SubTexture name="micky_LR_arrow" x="332" y="2" width="108" height="108"/>
+    <SubTexture name="micky_TB_arrow" x="222" y="332" width="108" height="108"/>
+    <SubTexture name="micky_heart" x="222" y="222" width="108" height="108"/>
+    <SubTexture name="mongyi" x="222" y="112" width="108" height="108"/>
+    <SubTexture name="mongyi_LR_arrow" x="222" y="2" width="108" height="108"/>
+    <SubTexture name="mongyi_TB_arrow" x="112" y="332" width="108" height="108"/>
+    <SubTexture name="mongyi_heart" x="112" y="222" width="108" height="108"/>
+    <SubTexture name="pang" x="112" y="112" width="108" height="108"/>
+    <SubTexture name="pinky" x="112" y="2" width="108" height="108"/>
+    <SubTexture name="pinky_LR_arrow" x="2" y="332" width="108" height="108"/>
+    <SubTexture name="pinky_TB_arrow" x="2" y="222" width="108" height="108"/>
+    <SubTexture name="pinky_heart" x="2" y="112" width="108" height="108"/>
+    <SubTexture name="star" x="2" y="2" width="108" height="108"/>
+</TextureAtlas>

@@ -175,7 +175,12 @@ package com.stintern.anipang.worldmapscene.layer
 		private function displayUserImage(onInited:Function = null):void
 		{
 			if( UserInfo.instance.userImage == null )
+			{
+				if( onInited != null )
+					onInited();
+				
 				return;
+			}
 			
 			var currentStage:uint = UserInfo.instance.currentStage;
 			var order:uint = _worldMapInfo.getWorldmapOrder(currentStage);
@@ -183,7 +188,7 @@ package com.stintern.anipang.worldmapscene.layer
 			var pos:Point = UILoader.instance.getTexturePosition("worldmap_" + order, "Button_" + currentStage);
 			_userImage = UserInfo.instance.userImage;
 			
-			AssetLoader.instance.loadFile(Resources.IMAGE_USER_PICTURE_BOUND, onComplete);
+			AssetLoader.instance.loadFile(Resources.getAsset(Resources.IMAGE_USER_PICTURE_BOUND), onComplete);
 			
 			function onComplete():void
 			{
@@ -213,7 +218,7 @@ package com.stintern.anipang.worldmapscene.layer
 		
 		private function displayInviteButton(onInited:Function = null):void
 		{
-			AssetLoader.instance.loadFile(Resources.IMAGE_FACEBOOK_INVITE, onComplete);
+			AssetLoader.instance.loadFile(Resources.getAsset(Resources.IMAGE_FACEBOOK_INVITE), onComplete);
 			
 			function onComplete():void
 			{

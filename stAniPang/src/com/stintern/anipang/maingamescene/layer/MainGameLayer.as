@@ -13,24 +13,20 @@ package com.stintern.anipang.maingamescene.layer
         public function MainGameLayer()
         {
             this.name = Resources.LAYER_MAIN_GAME;
-            
-            addEventListener(Event.ADDED_TO_STAGE, init);
         }
         
-        private function init( event:Event ):void
+        public function init(onInited:Function = null):void
         {
-            removeEventListener(Event.ADDED_TO_STAGE, init);
-            
             // 블럭들을 출력할 수 있도록 초기화
             BlockManager.instance.init(this);
             
-            loadStage();
+            loadStage(onInited);
         }
         
         /**
          * 새로운 스테이지를 불러와 레이어에 출력합니다. 
          */
-        public function loadStage():void
+        public function loadStage(onInited:Function=null):void
         {
             // 스테이지 레벨에 맞도록 게임 보드를 초기화
             GameBoard.instance.initBoard();
@@ -48,6 +44,9 @@ package com.stintern.anipang.maingamescene.layer
             b.image.x = 50;
             b.image.y = 50;
             b.image.name = "DEBUGGING";
+			
+			if( onInited != null )
+				onInited();
         }
         
         public function resetStage():void

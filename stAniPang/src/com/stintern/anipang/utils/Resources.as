@@ -34,18 +34,12 @@ package com.stintern.anipang.utils
         
         /** Directory Path */
         public static var PATH_LEVEL_XML:String = "res/dat/stage/";
-		public static var PATH_DIRECTORY_WORLD_MAP:String = "res/img/worldmaps/";
 		
         
-		/** Resource Name */
-        public static var WORLD_MAP_1_SPRITE_SHEET:String = "worldmap_1";;
-		
         
         /** Block Sprite Sheet */
-        public static var PATH_DIRECTORY_BLOCK:String = "res/img/blocks/";
+        public static var PATH_DIRECTORY_BLOCK:String = "blocks/";
         public static var ATALS_NAME_BLOCK:String = "block_sprite_sheet";
-        public static var PATH_IMAGE_BLOCK_SPRITE_SHEET:String = "res/img/blocks/block_sprite_sheet";
-        public static var PATH_XML_BLOCK_SPRITE_SHEET:String = "res/img/blocks/block_sprite_sheet.xml";
         
         
         /** Stage Info Sprite Sheet */
@@ -53,20 +47,30 @@ package com.stintern.anipang.utils
         public static var ATALS_NAME_STAGE_INFO:String = "stageinfo";
         public static var PATH_STAGE_INFO_SPRITE_SHEET:String = "stageinfo/stageinfo.png";
         public static var PATH_XML_STAGE_INFO_SHEET:String = "stageinfo/stageinfo.xml";
+        public static var LABEL_STAGE_LEVEL:String = "label_stage";
+		public static var LABEL_MISSION:String = "label_mission";
         
-        
+		
+		
         /** Game Panel Sprite Sheet */
         public static var PATH_DIRECTORY_PANEL:String = "panel/";
         public static var ATALS_NAME_PANEL:String = "panel";
         public static var PATH_PANEL_SPRITE_SHEET:String = "panel/panel.png";
         public static var PATH_XML_PANEL_SHEET:String = "panel/panel.xml";
 		
+		public static var LABEL_STAGE_LEVEL_ON_PANEL:String = "label_stage";
+		public static var LABEL_LEFT_STEP:String = "label_leftstep";
+		public static var LABEL_SCORE:String = "label_score";
+		public static var LABEL_MISSION_BLOCK:String = "label_missionblock";
+		public static var LABEL_MISSION_STRING:String = "label_missionstring";
+		
+		
+		
 		/** World map */
-		public static var PATH_IMAGE_WORLD_MAP_1:String = "res/img/worldmaps/worldmap_1.png";
-		public static var PATH_XML_WORLD_MAP_1:String = "res/img/worldmaps/worldmap_1.xml";
-		public static var IMAGE_USER_PICTURE_BOUND:String = "res/img/worldmaps/picture_bound.png";
+		public static var PATH_DIRECTORY_WORLD_MAP:String = "worldmaps/";
+		public static var IMAGE_USER_PICTURE_BOUND:String = "worldmaps/picture_bound.png";
 		public static var IMAGE_USER_PICTURE_BOUND_TEXTURE_NAME:String = "picture_bound";
-		public static var IMAGE_FACEBOOK_INVITE:String = "res/img/worldmaps/invite.png";
+		public static var IMAGE_FACEBOOK_INVITE:String = "worldmaps/invite.png";
 		public static var IMAGE_FACEBOOK_INVITE_TEXTURE_NAME:String = "invite";
 		
 		public static var WORLD_MAP_NAME:String = "worldmap_";
@@ -81,12 +85,6 @@ package com.stintern.anipang.utils
 		public static var PATH_IMAGE_MISSION_FAILED:String = "res/img/missionclear/missionFailed.png";
 		public static var PATH_IMAGE_MISSION_FAILED_TEXTURE_NAME:String = "missionFailed";
 		
-
-        
-        
-        
-        
-        
         
         
         
@@ -96,14 +94,6 @@ package com.stintern.anipang.utils
         public static var PATH_IMAGE_FACEBOOK_LOGIN_TEXTURE_NAME:String = "facebook_login";
         public static var PATH_IMAGE_FACEBOOK_LOGIN_CLICKED_TEXTURE_NAME:String = "facebook_login_clicked";
 
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         
@@ -125,7 +115,7 @@ package com.stintern.anipang.utils
 		public static var XML_USER_INFO:String = "res/dat/userinfo/userInfo.xml";
 		
 		// World map information
-		public static var XML_WORLD_MAP_INFO:String = "res/img/worldmaps/worldmapInfo.xml";
+		public static var XML_WORLD_MAP_INFO:String = "res/dat/worldmap/worldmapInfo.xml";
         
         
         /** Stage Mission */

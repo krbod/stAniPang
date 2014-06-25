@@ -1,5 +1,7 @@
 package com.stintern.anipang.worldmapscene.layer
 {
+    import com.greensock.TweenLite;
+    import com.greensock.easing.Back;
     import com.stintern.anipang.SceneManager;
     import com.stintern.anipang.maingamescene.LevelManager;
     import com.stintern.anipang.maingamescene.layer.MainGameScene;
@@ -7,8 +9,6 @@ package com.stintern.anipang.worldmapscene.layer
     import com.stintern.anipang.utils.AssetLoader;
     import com.stintern.anipang.utils.Resources;
     import com.stintern.anipang.utils.UILoader;
-    
-    import flash.text.Font;
     
     import starling.core.Starling;
     import starling.display.DisplayObject;
@@ -18,17 +18,9 @@ package com.stintern.anipang.worldmapscene.layer
     import starling.events.TouchPhase;
     import starling.text.TextField;
     import starling.textures.Texture;
-    import starling.utils.HAlign;
     
     public class StageInfoLayer extends Sprite
     {
-        [Embed(source = "../../HUHappy.ttf", fontName = "HUHappy",
-			        mimeType = "application/x-font", fontWeight="Bold",
-			        fontStyle="Bold", advancedAntiAliasing = "true",
-			        embedAsCFF="false")]
-        private static const _HUHappyFont:Class;
-        private static var _font:Font;
-        
         private var _isTouched:Boolean;         
         private var _clickedButton:DisplayObject;
         
@@ -48,7 +40,6 @@ package com.stintern.anipang.worldmapscene.layer
                 _container.getChildAt(i).dispose();
             }
             
-            _font = null;
             _clickedButton = null;
         }
         
@@ -87,10 +78,13 @@ package com.stintern.anipang.worldmapscene.layer
             setStar(stageNo);
                         
             // 스테이지 레이블 세팅
-            setStageLabel(stageNo, Starling.current.stage.stageWidth * 0.5 - texture.width * 0.5, Starling.current.stage.stageHeight * 0.5 - texture.height * 0.65);
+            setStageLabel(stageNo, Starling.current.stage.stageWidth * 0.5, Starling.current.stage.stageHeight * 0.5 - texture.height * 0.45);
             
             // 미션세팅
             setMissionLabel(stageNo, Starling.current.stage.stageWidth * 0.5, Starling.current.stage.stageHeight * 0.5 + texture.height * 0.25);
+			
+			// 스프라이트 컨테이너 애니메이션
+			animateSprite();
         }
         
         /**
@@ -118,18 +112,10 @@ package com.stintern.anipang.worldmapscene.layer
          */
         private function setStageLabel(stageNo:uint, x:Number, y:Number):void
         {
-            _font = new _HUHappyFont;
-            
-            var textField:TextField = new TextField(0, 0, "Stage " + stageNo, _font.fontName, 30, 0xFFFFFF);
-            textField.fontSize = 45;
-            textField.hAlign = HAlign.CENTER;
-            textField.x = x;
-            textField.y = y;
-			
-			textField.width = textField.textBounds.width;
-			textField.height = textField.textBounds.height;
-            
-            _container.addChild(textField);
+			var textField:TextField = _container.getChildByName(Resources.LABEL_STAGE_LEVEL) as TextField;
+			textField.text += stageNo.toString();
+			textField.width = textField.textBounds.width + 100;
+			textField.height = textField.textBounds.height + 10;
         }
         
         /**
@@ -148,19 +134,28 @@ package com.stintern.anipang.worldmapscene.layer
                     missionString = Resources.MISSION_ICE;
                     break;
             }
-            
-            var textField:TextField = new TextField(0, 0, missionString, _font.fontName, 30, 0x000000);
-            textField.fontSize =25;
-            textField.hAlign = HAlign.LEFT;
 			
-			textField.width = textField.textBounds.width;
-			textField.height = textField.textBounds.height;
+			var textField:TextField = _container.getChildByName(Resources.LABEL_MISSION) as TextField;
+			textField.text = missionString;
 			
-            textField.x = x;
-            textField.y = y;
-            
-            _container.addChild(textField);
+            textField.fontSize = Starling.current.viewPort.height * 0.02;
+			textField.width = textField.textBounds.width + 10;
+			textField.height = textField.textBounds.height + 10;
         }
+		
+		private function animateSprite():void
+		{
+			_container.scaleX = 0.01;
+			_container.scaleY = 0.01;
+			
+			_container.x = Starling.current.viewPort.width * 0.5;
+			_container.y = Starling.current.viewPort.height * 0.5;
+			
+			_container.pivotX = Starling.current.viewPort.width * 0.5;
+			_container.pivotY = Starling.current.viewPort.height * 0.5;
+			
+			TweenLite.to(_container, 0.5, {scaleX:1.0, scaleY:1.0, ease:Back.easeOut});
+		}
         
         public function onTouch( event:TouchEvent ):void
         {
@@ -189,14 +184,20 @@ package com.stintern.anipang.worldmapscene.layer
                     case TouchPhase.ENDED :
                         _isTouched = false;
                         
-                        if( (event.target as DisplayObject).name == _clickedButton.name )
+                        if( _clickedButton != null && (event.target as DisplayObject).name == _clickedButton.name )
                         {
                             _clickedButton.visible = true;
                             
                             switch( _clickedButton.name )
                             {
                                 case Resources.STAGE_INFO_START_BUTTON:
-                                    (Starling.current.root as SceneManager).replaceScene( new MainGameScene );
+									var mainGameScene:MainGameScene = new MainGameScene();
+									mainGameScene.init( onMainGameSceneInited );
+									
+									function onMainGameSceneInited():void
+									{
+										(Starling.current.root as SceneManager).replaceScene( mainGameScene );
+									}
                                     break;
                                 
                                 case Resources.STAGE_INFO_CLOSE_BUTTON:
@@ -206,11 +207,10 @@ package com.stintern.anipang.worldmapscene.layer
                                     break;
                             }
                         }
-                        
-                                                
                         break;
-                }
-            }
+					
+                }	// end of switch
+            } // end of if(touch)
         }
         
     }

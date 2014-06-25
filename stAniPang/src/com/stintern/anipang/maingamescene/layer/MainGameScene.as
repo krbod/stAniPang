@@ -4,34 +4,43 @@ package com.stintern.anipang.maingamescene.layer
     import com.stintern.anipang.utils.Resources;
     
     import starling.display.Sprite;
-    import starling.events.Event;
     
     public class MainGameScene extends Sprite
     {
-        private var _componentLayer:PanelLayer;
+        private var _panelLayer:PanelLayer;
         private var _mainGameLayer:MainGameLayer;
         
         public function MainGameScene()
         {
             this.name = Resources.SCENE_MAIN_GAME;
-            
-            addEventListener(Event.ADDED_TO_STAGE, init);
         }
         
-        public function init( event:Event ):void
+        public function init(onInited:Function = null):void
         {
-            removeEventListener(Event.ADDED_TO_STAGE, init);
-			
-			AssetLoader.instance.loadDirectory(onComplete, null, Resources.PATH_DIRECTORY_BLOCK, Resources.PATH_DIRECTORY_WORLD_MAP);
+			AssetLoader.instance.loadDirectory(onComplete, null, Resources.getAsset(Resources.PATH_DIRECTORY_BLOCK));
           
             function onComplete():void
             {
-                _componentLayer = new PanelLayer();
+                _panelLayer = new PanelLayer();
+				_panelLayer.init(onInit);
+				
                 _mainGameLayer = new MainGameLayer();
+				_mainGameLayer.init(onInit);
                 
-                addChild( _mainGameLayer );
-                addChild( _componentLayer );
             }
+			
+			var initedLayerCount:uint = 0;
+			function onInit():void
+			{
+				++initedLayerCount;
+				if( initedLayerCount == 2)
+				{
+					addChild( _mainGameLayer );
+					addChild( _panelLayer );
+					
+					onInited();
+				}
+			}
         }
     }
 }

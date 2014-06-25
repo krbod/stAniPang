@@ -66,9 +66,9 @@ package com.stintern.anipang.worldmapscene
 		public function getPathByOrder(order:uint, isPNG:Boolean):String
 		{
 			if( isPNG )
-				return Resources.PATH_DIRECTORY_WORLD_MAP + Resources.WORLD_MAP_NAME + order + ".png";
+				return Resources.getAsset(Resources.PATH_DIRECTORY_WORLD_MAP) + Resources.WORLD_MAP_NAME + order + ".png";
 			else
-				return Resources.PATH_DIRECTORY_WORLD_MAP + Resources.WORLD_MAP_NAME + order + ".xml";
+				return Resources.getAsset(Resources.PATH_DIRECTORY_WORLD_MAP) + Resources.WORLD_MAP_NAME + order + ".xml";
 		}
 		
 		public function get lastStage():uint
