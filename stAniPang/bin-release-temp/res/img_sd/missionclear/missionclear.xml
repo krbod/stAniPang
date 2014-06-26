@@ -1,0 +1,8 @@
+<TextureAtlas imagePath="missionclear_SD.png">
+  <SubTexture name="bkg" x="2" y="2" width="600" height="800" left="94.8" top="268.8" registrationX="94.95" registrationY="268.95" pivotX="0.0002500000000000095" pivotY="0.9998124999999999" frameWidth="768" frameHeight="1280" kind="-1"/>
+  <SubTexture name="shareButton_clicked" x="2" y="804" width="252" height="100" left="126.2" top="945.8" registrationX="126.3" registrationY="945.8" pivotX="0.0003968253968253743" pivotY="1" frameWidth="768" frameHeight="1280" kind="-1"/>
+  <SubTexture name="shareButton" x="2" y="906" width="252" height="100" left="126.2" top="945.8" registrationX="126.3" registrationY="945.8" pivotX="0.0003968253968253743" pivotY="1" frameWidth="768" frameHeight="1280" kind="-1"/>
+  <SubTexture name="nextButton_clicked" x="256" y="804" width="252" height="100" left="391" top="945.8" registrationX="391" registrationY="945.8" pivotX="0" pivotY="1" frameWidth="768" frameHeight="1280" kind="-1"/>
+  <SubTexture name="nextButton" x="256" y="906" width="252" height="100" left="391" top="945.8" registrationX="391" registrationY="945.8" pivotX="0" pivotY="1" frameWidth="768" frameHeight="1280" kind="-1"/>
+  <SubTexture name="closeButton" x="509" y="804" width="72" height="72" left="623.8" top="268.8" registrationX="623.95" registrationY="268.95" pivotX="0.002112676056339309" pivotY="0.9978873239436623" frameWidth="768" frameHeight="1280" kind="-1"/>
+</TextureAtlas>

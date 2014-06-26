@@ -1,22 +1,20 @@
 package com.stintern.anipang.scenemanager
 {
 	import com.stintern.anipang.startscene.StartScene;
-	import com.stintern.anipang.worldmapscene.layer.WorldMapScene;
 	
 	import starling.display.Sprite;
 	
+	/**
+	 * 씬들을 관리하며 화면을 전환하거나 이전으로 돌아가도록 합니다. 
+	 */
 	public class SceneManager extends Sprite
 	{
 		private var _sceneArray:Vector.<Sprite>;
 		
 		public function SceneManager()
 		{
-			var worldMapScene:WorldMapScene = new WorldMapScene();
-			worldMapScene.init();
-			
-			init(worldMapScene);
-			
-			//init(new StartScene);
+			// StartScene 으로 초기화
+			init(new StartScene);
 		}
 		
 		public function init(firstScene:Sprite):void

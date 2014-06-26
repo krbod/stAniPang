@@ -1,7 +1,7 @@
 package com.stintern.anipang.maingamescene.layer
 {
 	import com.stintern.anipang.scenemanager.SceneManager;
-	import com.stintern.anipang.maingamescene.LevelManager;
+	import com.stintern.anipang.maingamescene.stage.CurrentStage;
 	import com.stintern.anipang.utils.Resources;
 	import com.stintern.anipang.utils.UILoader;
 	import com.stintern.anipang.worldmapscene.layer.StageInfoLayer;
@@ -61,7 +61,7 @@ package com.stintern.anipang.maingamescene.layer
 		{
 			var textField:TextField = _container.getChildByName(Resources.LABEL_MISSION_FAILURE) as TextField;
 			
-			switch(LevelManager.instance.stageInfo.missionType)
+			switch(CurrentStage.instance.stageInfo.missionType)
 			{
 			case Resources.MISSION_TYPE_ICE:
 				textField.text = Resources.MISSION_FAiLURE_STRING_TYPE_ICE;

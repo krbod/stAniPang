@@ -2,12 +2,17 @@ package com.stintern.anipang.maingamescene
 {
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.Resources;
+    import com.stintern.anipang.maingamescene.stage.CurrentStage;
+    import com.stintern.anipang.maingamescene.stage.StageInfo;
 
+	/**
+	 * 현재 스테이지의 미션을 클리어 했는 지 확인을 하는 클래스 
+	 */
     public class MissionChecker
     {
         private var _currentScore:uint;
         private var _leftStepCount:uint;     // 앞으로 블럭을 옮길 수 있는 횟수
-        private var _stepLimit:uint;            // 현재 스테이지에서 블럭을 옮길 수 있는 횟수
+        private var _stepLimit:uint;        // 현재 스테이지에서 블럭을 옮길 수 있는 횟수
         
         private var _missionType:String;    // 현재 스테이지의 미션 타입
         private var _missionGoal:uint;      // 미션 목표
@@ -24,7 +29,7 @@ package com.stintern.anipang.maingamescene
         
         private function init():void
         {
-            var stageInfo:StageInfo = LevelManager.instance.stageInfo;
+            var stageInfo:StageInfo = CurrentStage.instance.stageInfo;
             _stepLimit = stageInfo.moveLimit;
 			_leftStepCount = _stepLimit;
             

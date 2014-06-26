@@ -1,7 +1,7 @@
 package com.stintern.anipang.maingamescene.block
 {
     import com.greensock.TweenLite;
-    import com.stintern.anipang.maingamescene.LevelManager;
+    import com.stintern.anipang.maingamescene.stage.CurrentStage;
     import com.stintern.anipang.maingamescene.MissionChecker;
     import com.stintern.anipang.maingamescene.block.algorithm.ConnectedBlockFinder;
     import com.stintern.anipang.maingamescene.block.algorithm.RemoveAlgoResult;
@@ -99,8 +99,8 @@ package com.stintern.anipang.maingamescene.block
             // 다음 블럭의 위치를 확인하고 옮겨야 하면 블럭 정보를 변경
             moveBlocks();
 			
-			// 1행에 있던 블럭들이 내려간 자리로 새로운 블럭을 생성
-			fillWithNewBlocks();
+			// 블럭들이 내려간 자리로 새로운 블럭을 생성
+			createNewBlocks();
             			
             // 변경된 블럭의 정보를 바탕으로 블럭을 새로 그림
             _blockPainter.drawBlocks(_blockArray);
@@ -219,7 +219,7 @@ package com.stintern.anipang.maingamescene.block
          * 블럭이 낙하함으로 인해 첫 행이 비워졌을 때 
          * 새로운 블럭을 생성합니다. 
          */
-		private function fillWithNewBlocks():void
+		private function createNewBlocks():void
 		{
 			var boardArray:Vector.<Vector.<uint>> = GameBoard.instance.boardArray;
 			var colCount:uint = boardArray[0].length;
@@ -333,6 +333,9 @@ package com.stintern.anipang.maingamescene.block
          */
         public function exchangeBlock(lhs:Block, rhs:Block, isReturn:Boolean, onComplete:Function=null):void
         {
+			if( lhs == null || rhs == null )
+				return;
+			
             var image1:Image = lhs.image;
             var image2:Image = rhs.image;
             
@@ -466,7 +469,7 @@ package com.stintern.anipang.maingamescene.block
             switch( _missionChecker.check() )
             {
                 case MissionChecker.MISSION_RESULT_SUCCESS:
-					UserInfo.instance.updateUserInfo(LevelManager.instance.currentStageLevel, _missionChecker.currentScore);
+					UserInfo.instance.updateUserInfo(CurrentStage.instance.currentStageLevel, _missionChecker.currentScore);
 					
 					(Starling.current.root as SceneManager).currentScene.addChild( new MissionClearLayer() );
 					_requiredStepBlocks = false;

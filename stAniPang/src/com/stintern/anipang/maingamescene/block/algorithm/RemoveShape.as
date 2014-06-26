@@ -30,8 +30,11 @@ package com.stintern.anipang.maingamescene.block.algorithm
         public static var MRR:uint = 18;
         public static var TMB:uint = 19;
         public static var LMR:uint = 20;
+		
+		public static var SHAPE_START:uint = 0;
+		public static var SHAPE_END:uint = 20;
         
-        public static var SHAPE_COUNT:uint = 21;
+        public static var SHAPE_COUNT:uint = SHAPE_END - SHAPE_START + 1;
         
         // Special Blocks
         public static var EXCHANGE_ARROWS:uint = 30;
@@ -43,6 +46,7 @@ package com.stintern.anipang.maingamescene.block.algorithm
         public static var EXCHNAGE_GHOST_HEART:uint = 35;
         public static var EXCHANGE_GHOSTS:uint = 36; 
         
+		// Points
         public static var T2:Point = new Point(-2, 0);
         public static var T:Point = new Point(-1, 0);
         public static var B2:Point = new Point(2, 0);
@@ -57,31 +61,31 @@ package com.stintern.anipang.maingamescene.block.algorithm
         {
             switch(type)
             {
-                case 0:                 return new Array(T2, T, M, B, B2);
-                case 1:                 return new Array(L2, L, M, R, R2);
+                case TTMBB:                 return new Array(T2, T, M, B, B2);
+                case LLMRR:                 return new Array(L2, L, M, R, R2);
                     
-                case 2:                 return new Array(L2, L, M, T, T2);
-                case 3:                 return new Array(L2, L, M, B, B2);
-                case 4:                 return new Array(R2, R, M, B, B2);
-                case 5:                 return new Array(T2, T, M, R, R2);
-                case 6:                 return new Array(L, T, M, R, B);
+                case LLMTT:                 return new Array(L2, L, M, T, T2);
+                case LLMBB:                 return new Array(L2, L, M, B, B2);
+                case RRMBB:                 return new Array(R2, R, M, B, B2);
+                case TTMRR:                 return new Array(T2, T, M, R, R2);
+                case LTMRB:                 return new Array(L, T, M, R, B);
                     
-                case 7:                 return new Array(L2, L, M, T, B);
-                case 8:                 return new Array(T2, T, M, L, R);
-                case 9:                 return new Array(T, B, M, R, R2);
-                case 10:               return new Array(L, R, M, B, B2);
+                case LLTMB:                 return new Array(L2, L, M, T, B);
+                case TTLMR:                 return new Array(T2, T, M, L, R);
+                case RRTMB:                 return new Array(T, B, M, R, R2);
+                case LMRBB:               	return new Array(L, R, M, B, B2);
                     
-                case 11:               return new Array(T2, T, M, B);
-                case 12:               return new Array(T, M, B, B2);
-                case 13:               return new Array(L2, L, M, R);
-                case 14:               return new Array(L, M, R, R2);
+                case TTMB:               	return new Array(T2, T, M, B);
+                case TMBB:               	return new Array(T, M, B, B2);
+                case LLMR:               	return new Array(L2, L, M, R);
+                case LMRR:               	return new Array(L, M, R, R2);
                     
-                case 15:               return new Array(T2, T, M);
-                case 16:               return new Array(L2, L, M);
-                case 17:               return new Array(M, B, B2);
-                case 18:               return new Array(M, R, R2);
-                case 19:               return new Array(T, M, B);
-                case 20:               return new Array(L, M, R);
+                case TTM:               return new Array(T2, T, M);
+                case LLM:               return new Array(L2, L, M);
+                case MBB:               return new Array(M, B, B2);
+                case MRR:               return new Array(M, R, R2);
+                case TMB:               return new Array(T, M, B);
+                case LMR:               return new Array(L, M, R);
                     
                 default:
                     return null;

@@ -2,7 +2,7 @@ package com.stintern.anipang.worldmapscene.layer
 {
     import com.greensock.TweenLite;
     import com.greensock.easing.Back;
-    import com.stintern.anipang.maingamescene.LevelManager;
+    import com.stintern.anipang.maingamescene.stage.CurrentStage;
     import com.stintern.anipang.maingamescene.layer.MainGameScene;
     import com.stintern.anipang.scenemanager.SceneManager;
     import com.stintern.anipang.userinfo.UserInfo;
@@ -54,9 +54,9 @@ package com.stintern.anipang.worldmapscene.layer
             function onComplete():void
             {
                 // 현재 스테이지 레벨을 읽음
-                var stageLevel:uint = LevelManager.instance.currentStageLevel;
+                var stageLevel:uint = CurrentStage.instance.currentStageLevel;
                 
-                LevelManager.instance.loadStageInfo(stageLevel);
+                CurrentStage.instance.loadStageInfo(stageLevel);
                 
                 var paths:Array = new Array(
 						Resources.getAsset(Resources.PATH_STAGE_INFO_SPRITE_SHEET), 
@@ -73,7 +73,7 @@ package com.stintern.anipang.worldmapscene.layer
             UILoader.instance.loadAll( Resources.ATALS_NAME_STAGE_INFO, _container, onTouch, 0, 0 );
             
             // 스테이지 정보 세팅
-            var stageNo:uint = LevelManager.instance.currentStageLevel;
+            var stageNo:uint = CurrentStage.instance.currentStageLevel;
             
             // 별 세팅
             setStar(stageNo);
@@ -125,10 +125,10 @@ package com.stintern.anipang.worldmapscene.layer
         private function setMissionLabel(stageNo:uint, x:Number, y:Number):void
         {
             var missionString:String;
-            switch( LevelManager.instance.stageInfo.missionType )
+            switch( CurrentStage.instance.stageInfo.missionType )
             {
                 case Resources.MISSION_TYPE_SCORE:
-                    missionString = Resources.MISSION_SCORE_HEAD + LevelManager.instance.stageInfo.mission + Resources.MISSION_SCORE_TAIL;
+                    missionString = Resources.MISSION_SCORE_HEAD + CurrentStage.instance.stageInfo.mission + Resources.MISSION_SCORE_TAIL;
                     break;
                 
                 case Resources.MISSION_TYPE_ICE:

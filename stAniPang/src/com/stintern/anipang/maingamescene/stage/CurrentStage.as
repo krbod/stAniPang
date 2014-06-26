@@ -1,54 +1,50 @@
-package com.stintern.anipang.maingamescene
+package com.stintern.anipang.maingamescene.stage
 {
     import com.stintern.anipang.utils.AssetLoader;
-    import com.stintern.anipang.utils.LevelLoader;
     import com.stintern.anipang.utils.Resources;
 
-    public class LevelManager
+	/**
+	 * 현재 스테이지에 대한 정보를 포함하는 클래스 
+	 */
+    public class CurrentStage
     {
         // 싱글톤 관련
-        private static var _instance:LevelManager;
+        private static var _instance:CurrentStage;
         private static var _creatingSingleton:Boolean = false;
         
         private var _currentStageLevel:uint;
-        private var _levelLoader:LevelLoader = null;
+        private var _stageLoader:StageLoader = null;	//XML 로부터 현재 스테이지 정보를 읽는 객체
         
         private var _stageInfo:StageInfo;
         
-        public function LevelManager()
+        public function CurrentStage()
         {
             if (!_creatingSingleton){
                 throw new Error("[LevelManager] 싱글톤 클래스 - new 연산자를 통해 생성 불가");
             }
         }
         
-        public static function get instance():LevelManager
+        public static function get instance():CurrentStage
         {
             if (!_instance){
                 _creatingSingleton = true;
-                _instance = new LevelManager();
+                _instance = new CurrentStage();
                 _creatingSingleton = false;
             }
             return _instance;
         }
-                
-        
-        public function getCurrentLevel():uint
-        {
-            return 1;   //TEST
-        }
         
         public function loadStageInfo(level:uint):void
         {
-            if( _levelLoader == null )
+            if( _stageLoader == null )
             {
-                _levelLoader = new LevelLoader();
+                _stageLoader = new StageLoader();
             }
             
             _currentStageLevel = level;
             
             var filePath:String = Resources.PATH_LEVEL_XML + level.toString() + ".xml";
-            _stageInfo =  _levelLoader.getStageInfo( AssetLoader.instance.loadXMLDirectly(filePath) );
+            _stageInfo =  _stageLoader.getStageInfo( AssetLoader.instance.loadXMLDirectly(filePath) );
         }
         
         public function get currentStageLevel():uint

@@ -1,0 +1,18 @@
+<levelInfo>
+	<row>6</row>
+	<col>6</col>
+	<board>
+			0, 0, 0, 0, 0, 0,
+			0, 200, 200, 200, 200, 0, 
+			0, 200, 200, 200, 200, 0, 
+			0, 200, 200, 200, 200, 0, 
+			0, 200, 200, 200, 200, 0, 
+			0, 0, 0, 0, 0, 0,
+	</board>
+	<move_limit>
+		14
+	</move_limit>
+	<misson type="ice">
+		16
+	</misson>
+</levelInfo>

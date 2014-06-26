@@ -16,7 +16,8 @@ package com.stintern.anipang.maingamescene.layer
 	
 	public class MissionClearLayer extends Sprite
 	{
-
+		private var _alreadyShareButtonTouched:Boolean;
+		private var _alreadyNextButtonTouched:Boolean;
 		private var _container:Sprite;
 			
 		public function MissionClearLayer()
@@ -70,11 +71,19 @@ package com.stintern.anipang.maingamescene.layer
 							(event.target as Image).name == Resources.IMAGE_NAME_CLOSE_BUTTON
 						)
 						{
-							loadWorldMap();
+							if( !_alreadyNextButtonTouched )
+							{
+								_alreadyNextButtonTouched = true;
+								loadWorldMap();
+							}
 						}
 						else if( (event.target as Image).name == Resources.IMAGE_NAME_SHARE_BUTTON )
 						{
-							share();
+							if( !_alreadyShareButtonTouched )
+							{
+								_alreadyShareButtonTouched = true;
+								share();
+							}
 						}
 						break;
 				}

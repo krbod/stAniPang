@@ -1,10 +1,10 @@
-package com.stintern.anipang.utils
+package com.stintern.anipang.maingamescene.stage
 {
-    import com.stintern.anipang.maingamescene.StageInfo;
+    import com.stintern.anipang.utils.Resources;
 
-    public class LevelLoader
+    public class StageLoader
     {
-        public function LevelLoader()
+        public function StageLoader()
         {
         }
         

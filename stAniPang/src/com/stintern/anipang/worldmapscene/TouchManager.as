@@ -1,7 +1,8 @@
 package com.stintern.anipang.worldmapscene
 {
-	import com.stintern.anipang.maingamescene.LevelManager;
+	import com.stintern.anipang.maingamescene.stage.CurrentStage;
 	import com.stintern.anipang.scenemanager.SceneManager;
+	import com.stintern.anipang.userinfo.UserInfo;
 	import com.stintern.anipang.utils.Resources;
 	import com.stintern.anipang.worldmapscene.layer.StageInfoLayer;
 	import com.stintern.anipang.worldmapscene.layer.WorldMapLayer;
@@ -69,7 +70,11 @@ package com.stintern.anipang.worldmapscene
 							
 							var stage:uint = uint(stageName.slice(stageName.lastIndexOf("_")+1, stageName.length));
 
-							LevelManager.instance.currentStageLevel = stage;
+							// 클리어 하지 않은 스테이지를 클릭한 경우.
+							if( UserInfo.instance.currentStage < stage )
+								return;
+							
+							CurrentStage.instance.currentStageLevel = stage;
 							
 							var stageInfoLayer:StageInfoLayer= new StageInfoLayer();
                             stageInfoLayer.name = Resources.LAYER_STAGE_INFO;

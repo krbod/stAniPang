@@ -1,7 +1,7 @@
 package com.stintern.anipang.maingamescene.layer
 {
     import com.greensock.TweenLite;
-    import com.stintern.anipang.maingamescene.LevelManager;
+    import com.stintern.anipang.maingamescene.stage.CurrentStage;
     import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.AssetLoader;
@@ -50,9 +50,9 @@ package com.stintern.anipang.maingamescene.layer
             function onComplete():void
             {
                 // 현재 스테이지 레벨을 읽음
-                var stageLevel:uint = LevelManager.instance.currentStageLevel;
+                var stageLevel:uint = CurrentStage.instance.currentStageLevel;
                 
-                LevelManager.instance.loadStageInfo(stageLevel);
+                CurrentStage.instance.loadStageInfo(stageLevel);
                 
                 var paths:Array = new Array(
                     Resources.getAsset(Resources.PATH_PANEL_SPRITE_SHEET), 
@@ -98,7 +98,7 @@ package com.stintern.anipang.maingamescene.layer
         
 		private function initLeftStepCount():void
 		{
-			var leftStep:uint = LevelManager.instance.stageInfo.moveLimit;
+			var leftStep:uint = CurrentStage.instance.stageInfo.moveLimit;
 			
 			_tfdLeftStep = _container.getChildByName(Resources.LABEL_LEFT_STEP) as TextField;
 			_tfdLeftStep.text = leftStep.toString();
@@ -134,8 +134,8 @@ package com.stintern.anipang.maingamescene.layer
 		
 		private function initMissionInfo():void
 		{
-			var missionType:String = LevelManager.instance.stageInfo.missionType;
-			var mission:uint = LevelManager.instance.stageInfo.mission;
+			var missionType:String = CurrentStage.instance.stageInfo.missionType;
+			var mission:uint = CurrentStage.instance.stageInfo.mission;
 			
 			switch(missionType)
 			{
@@ -178,7 +178,7 @@ package com.stintern.anipang.maingamescene.layer
         
         private function initStageLabel():void
         {
-            var currentStage:uint = LevelManager.instance.currentStageLevel;
+            var currentStage:uint = CurrentStage.instance.currentStageLevel;
 			
 			_tfdStageLabel = _container.getChildByName(Resources.LABEL_STAGE_LEVEL_ON_PANEL) as TextField;
                 

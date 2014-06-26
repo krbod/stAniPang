@@ -1,8 +1,12 @@
-package com.stintern.anipang.maingamescene
+package com.stintern.anipang.maingamescene.stage
 {
+	/**
+	 * 스테이지의 정보를 포함합니다. 
+	 */
     public class StageInfo
     {
         private var _boardArray:Vector.<Vector.<uint>> = null;
+		
         private var _moveLimit:uint;
         private var _missionType:String;
         private var _mission:uint;

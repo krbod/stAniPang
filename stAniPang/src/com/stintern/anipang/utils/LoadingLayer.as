@@ -13,8 +13,8 @@ package com.stintern.anipang.utils
 		private var _loadingImage:Image;
 		private var _requiredStop:Boolean;
 		
-		public function LoadingLayer()
 		{
+		public function LoadingLayer()
 		}
 		public override function dispose():void
 		{

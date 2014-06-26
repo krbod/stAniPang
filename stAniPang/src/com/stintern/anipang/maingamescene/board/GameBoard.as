@@ -1,7 +1,7 @@
 package com.stintern.anipang.maingamescene.board
 {
-    import com.stintern.anipang.maingamescene.LevelManager;
-    import com.stintern.anipang.maingamescene.StageInfo;
+    import com.stintern.anipang.maingamescene.stage.CurrentStage;
+    import com.stintern.anipang.maingamescene.stage.StageInfo;
     import com.stintern.anipang.maingamescene.block.Block;
     import com.stintern.anipang.maingamescene.block.BlockCreator;
     import com.stintern.anipang.maingamescene.block.BlockManager;
@@ -63,7 +63,7 @@ package com.stintern.anipang.maingamescene.board
         public function initBoard():void
         {
             // 레벨에 맞는 보드 정보를 불러옵니다.
-            _stageInfo = LevelManager.instance.stageInfo;
+            _stageInfo = CurrentStage.instance.stageInfo;
             
             // 보드 이미지 정보를 저장(얼음, 박스 .. )
             _boardImage = new Vector.<Vector.<Image>>();
