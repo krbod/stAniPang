@@ -2,11 +2,12 @@ package com.stintern.anipang.worldmapscene.layer
 {
     import com.greensock.TweenLite;
     import com.greensock.easing.Back;
-    import com.stintern.anipang.scenemanager.SceneManager;
     import com.stintern.anipang.maingamescene.LevelManager;
     import com.stintern.anipang.maingamescene.layer.MainGameScene;
+    import com.stintern.anipang.scenemanager.SceneManager;
     import com.stintern.anipang.userinfo.UserInfo;
     import com.stintern.anipang.utils.AssetLoader;
+    import com.stintern.anipang.utils.GrayscaleFilter;
     import com.stintern.anipang.utils.Resources;
     import com.stintern.anipang.utils.UILoader;
     
@@ -220,6 +221,8 @@ package com.stintern.anipang.worldmapscene.layer
 		{
 			this.dispose();
 			(Starling.current.root as SceneManager).currentScene.removeChild(this);	
+			
+			((Starling.current.root as SceneManager).currentScene.getChildByName(Resources.LAYER_WORLD_MAP) as WorldMapLayer).setGrayFilter(false);
 		}
         
     }

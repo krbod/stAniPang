@@ -3,6 +3,7 @@ package com.stintern.anipang.worldmapscene.layer
 	import com.stintern.ane.FacebookANE;
 	import com.stintern.anipang.userinfo.UserInfo;
 	import com.stintern.anipang.utils.AssetLoader;
+	import com.stintern.anipang.utils.GrayscaleFilter;
 	import com.stintern.anipang.utils.Resources;
 	import com.stintern.anipang.utils.UILoader;
 	import com.stintern.anipang.worldmapscene.TouchManager;
@@ -33,6 +34,7 @@ package com.stintern.anipang.worldmapscene.layer
 		private var _userImage:Image;
 		
 		private var _inviteButton:Image;
+		private var _filter:GrayscaleFilter;
 		
 		public function WorldMapLayer(preloadImagePaths:Array, worldMapInfo:WorldmapInfo, lastStageOrder:uint, onInited:Function = null )
 		{
@@ -41,6 +43,24 @@ package com.stintern.anipang.worldmapscene.layer
 			_worldMapInfo = worldMapInfo;
 			
 			init(preloadImagePaths, _worldMapInfo.getWorldmapOrder( UserInfo.instance.currentStage), lastStageOrder, onInited);
+		}
+		
+		public override function dispose():void
+		{
+			if( _filter != null )
+			{
+				_filter.dispose();
+				_filter = null;
+			}
+				
+			_worldContainer.dispose();
+			_worldContainer = null;
+				
+			_container.dispose();
+			_container = null;
+			
+			_touchManager.dispose();
+			_touchManager = null;
 		}
 		
 		private function init(preloadImagePaths:Array, currentStageOrder:uint, lastStageOrder:uint, onInited:Function = null):void
@@ -68,6 +88,9 @@ package com.stintern.anipang.worldmapscene.layer
 			
 			// 사용자의 이미지를 출력
 			displayUserImage(onInited);
+			
+			// 회색 필터 설정
+			_filter = new GrayscaleFilter();
 		}
 		
 		/**
@@ -355,6 +378,18 @@ package com.stintern.anipang.worldmapscene.layer
 						facebookANE.inviteFriends();
 						break;
 				}
+			}
+		}
+		
+		public function setGrayFilter(on:Boolean):void
+		{
+			if( on )
+			{
+				_worldContainer.filter = _filter;
+			}
+			else
+			{
+				_worldContainer.filter = null;
 			}
 		}
 			

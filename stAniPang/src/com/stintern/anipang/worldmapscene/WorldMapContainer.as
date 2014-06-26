@@ -13,6 +13,17 @@ package com.stintern.anipang.worldmapscene
 			_vec = new Vector.<Sprite>();
 		}
 		
+		public function dispose():void
+		{
+			while(_vec.length)
+			{
+				_vec[0].dispose();
+				_vec.shift();
+			}
+			
+			_vec = null;
+		}
+		
 		public function pushBack(sprite:Sprite):void
 		{
 			if( _vec.length == _size )

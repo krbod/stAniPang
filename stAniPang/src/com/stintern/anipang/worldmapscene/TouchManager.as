@@ -1,9 +1,10 @@
 package com.stintern.anipang.worldmapscene
 {
-	import com.stintern.anipang.scenemanager.SceneManager;
 	import com.stintern.anipang.maingamescene.LevelManager;
+	import com.stintern.anipang.scenemanager.SceneManager;
 	import com.stintern.anipang.utils.Resources;
 	import com.stintern.anipang.worldmapscene.layer.StageInfoLayer;
+	import com.stintern.anipang.worldmapscene.layer.WorldMapLayer;
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -22,6 +23,12 @@ package com.stintern.anipang.worldmapscene
 			_isTouched = false;
 			
 			_touchMoveCallback = touchMoveCallback;
+		}
+		
+		public function dispose():void
+		{
+			if( !_touchMoveCallback )
+				_touchMoveCallback = null;
 		}
 		
 		public function onTouch( event:TouchEvent ):void
@@ -56,6 +63,10 @@ package com.stintern.anipang.worldmapscene
 							if( stageName == "bkg" )
 								return;
 							
+							// 이미 스테이지 정보 레이어가 띄워져 있는 경우 다시 띄우지 않음
+							if( (Starling.current.root as SceneManager).currentScene.getChildByName(Resources.LAYER_STAGE_INFO) != null )
+								return;
+							
 							var stage:uint = uint(stageName.slice(stageName.lastIndexOf("_")+1, stageName.length));
 
 							LevelManager.instance.currentStageLevel = stage;
@@ -63,6 +74,8 @@ package com.stintern.anipang.worldmapscene
 							var stageInfoLayer:StageInfoLayer= new StageInfoLayer();
                             stageInfoLayer.name = Resources.LAYER_STAGE_INFO;
                             (Starling.current.root as SceneManager).currentScene.addChild(stageInfoLayer);
+							
+							((Starling.current.root as SceneManager).currentScene.getChildByName(Resources.LAYER_WORLD_MAP) as WorldMapLayer).setGrayFilter(true);
 						}
 						
 						break;
