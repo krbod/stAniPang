@@ -27,28 +27,21 @@ package com.stintern.anipang
             var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
             Starling.handleLostContext = !iOS;  
             
-            var stageWidth:int  = 720;
-            var stageHeight:int = 1280;
-            
             var viewPort:Rectangle = RectangleUtil.fit(
-                new Rectangle(0, 0, stageWidth, stageHeight), 
+                new Rectangle(0, 0, Resources.IMAGE_WIDTH_SD, Resources.IMAGE_HEIGHT_SD), 
                 new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight), 
                 ScaleMode.SHOW_ALL, iOS);
             
-            var scaleFactor:int = viewPort.width < 900 ? 1 : 2;		// 900 = (720(SD) + 1080(HD)) / 2
+            var scaleFactor:int = viewPort.width < (Resources.IMAGE_WIDTH_SD + Resources.IMAGE_HEIGHT_SD)*0.5 ? 1 : 2;		// X = (720(SD) + 1080(HD)) / 2
             
             AssetLoader.instance.init(scaleFactor);
             Resources.setScaleFactor(scaleFactor);
            
             mStarling = new Starling(SceneManager, stage, viewPort);
 			
-			//mStarling = new Starling(SceneManager, stage, new Rectangle(0, 0, 768, 1024));
-            
             mStarling.antiAliasing = 1;
             mStarling.showStats = true;
 			
-			//mStarling.viewPort = new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight);
-            
             mStarling.start();
         }
     }

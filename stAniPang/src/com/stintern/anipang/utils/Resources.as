@@ -289,8 +289,8 @@ package com.stintern.anipang.utils
         public static var BOARD_ROW_COUNT:uint = 8;
         public static var BOARD_COL_COUNT:uint = 8;
         
-        public static var SCREEN_WIDTH:uint = 768;
-        public static var SCREEN_HEIGHT:uint = 1024; 
+        public static var IMAGE_WIDTH_SD:uint = 720;
+        public static var IMAGE_HEIGHT_SD:uint = 1280; 
 		
 		public static var PADDING_TOP:uint = 200;
         
