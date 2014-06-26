@@ -5,7 +5,6 @@ package com.stintern.anipang.maingamescene.layer
     import com.stintern.anipang.maingamescene.block.BlockManager;
     import com.stintern.anipang.maingamescene.board.GameBoard;
     import com.stintern.anipang.utils.AssetLoader;
-    import com.stintern.anipang.utils.GameFont;
     import com.stintern.anipang.utils.Resources;
     import com.stintern.anipang.utils.UILoader;
     
@@ -13,13 +12,11 @@ package com.stintern.anipang.maingamescene.layer
     import starling.display.DisplayObject;
     import starling.display.Image;
     import starling.display.Sprite;
-    import starling.events.Event;
     import starling.events.Touch;
     import starling.events.TouchEvent;
     import starling.events.TouchPhase;
     import starling.text.TextField;
     import starling.textures.Texture;
-    import starling.utils.HAlign;
     
     public class PanelLayer extends Sprite
     {
@@ -67,6 +64,9 @@ package com.stintern.anipang.maingamescene.layer
         
         private function onLoadUI():void
         {
+			// 배경을 출력
+			setBackground();
+			
             // 스테이지 정보 배경 세팅
             UILoader.instance.loadAll(Resources.ATALS_NAME_PANEL, _container, onTouch, 0, 0);
             
@@ -84,6 +84,17 @@ package com.stintern.anipang.maingamescene.layer
 			
 			_onInitedCallback();
         }
+		
+		
+		private function setBackground():void
+		{
+			var _bkgImage:Image = new Image( AssetLoader.instance.loadTexture(Resources.PATH_BACKGROUND_ON_MAGIN_GAME_TEXTURE_NAME) );
+			
+			_bkgImage.width = Starling.current.viewPort.width;
+			_bkgImage.height = Starling.current.viewPort.height;
+			
+			_container.addChild(_bkgImage);
+		}
         
 		private function initLeftStepCount():void
 		{

@@ -7,7 +7,6 @@ package com.stintern.anipang.maingamescene.layer
     
     public class MainGameScene extends Sprite
     {
-		private var _bkgLayer:BkgLayer;
         private var _panelLayer:PanelLayer;
         private var _mainGameLayer:MainGameLayer;
         
@@ -22,16 +21,11 @@ package com.stintern.anipang.maingamescene.layer
         public function init(onInited:Function = null):void
         {
 			_onInitedCallback = onInited;
+			
 			AssetLoader.instance.loadDirectory(onComplete, null, Resources.getAsset(Resources.PATH_DIRECTORY_BLOCK));
-          
-            function onComplete():void
-            {
-				_bkgLayer = new BkgLayer();
-				_bkgLayer.init(onBkgLayerInited);
-            }
         }
 		
-		private function onBkgLayerInited():void
+		private function onComplete():void
 		{
 			_panelLayer = new PanelLayer();
 			_panelLayer.init(onInit);
@@ -42,11 +36,10 @@ package com.stintern.anipang.maingamescene.layer
 			function onInit():void
 			{
 				++_initedLayerCount;
-				if( _initedLayerCount == 2)
+				if( _initedLayerCount == 1)
 				{
-					addChild(_bkgLayer);
-					addChild( _mainGameLayer );
 					addChild( _panelLayer );
+					addChild( _mainGameLayer );
 					
 					_onInitedCallback();
 				}

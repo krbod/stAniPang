@@ -1,8 +1,6 @@
 package com.stintern.anipang.startscene
 {
     import com.dynamicflash.util.Base64;
-    import com.greensock.events.LoaderEvent;
-    import com.greensock.loading.LoaderMax;
     import com.stintern.ane.BackButtonANE;
     import com.stintern.ane.FacebookANE;
     import com.stintern.ane.events.ANEResultEvent;
@@ -19,12 +17,7 @@ package com.stintern.anipang.startscene
     import flash.display.Loader;
     import flash.display.LoaderInfo;
     import flash.events.Event;
-    import flash.events.IOErrorEvent;
     import flash.events.KeyboardEvent;
-    import flash.events.ProgressEvent;
-    import flash.filesystem.File;
-    import flash.filesystem.FileMode;
-    import flash.filesystem.FileStream;
     import flash.ui.Keyboard;
     import flash.utils.ByteArray;
     
@@ -82,6 +75,9 @@ package com.stintern.anipang.startscene
             NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
         }
     
+		/**
+		 * 뒤로가기 버튼을 누르면 ANE 를 통해서 종료 다이얼로그를 띄웁니다. 
+		 */
         private function onKeyDown(event:KeyboardEvent):void
         {
             if( event.keyCode == Keyboard.BACK )
@@ -93,6 +89,9 @@ package com.stintern.anipang.startscene
             }
         }
         
+		/**
+		 * Facebook ANE 를 통해서 사용자의 사진을 받아왔을 때 불려지는 콜백함수 
+		 */
         private function onUserImageLoaded(event:ANEResultEvent):void
         {
             var decodedArray:ByteArray = Base64.decodeToByteArray(event.aneResult);
@@ -104,6 +103,7 @@ package com.stintern.anipang.startscene
         
         /**
          * 이미지 byte array 를 읽은 후 불려지는 함수입니다. 
+		 * 이미지를 Starling Image 객체로 변환 후 월드맵으로 이동합니다.
          */
         private function onComplete(event:Event):void
         {
@@ -133,6 +133,9 @@ package com.stintern.anipang.startscene
 			}
         }
         
+		/**
+		 * ANE 를 통해서 사용자의 이름을 받아올 때 불려지는 콜백함수입니다. 
+		 */
         private function onUserNameLoaded(event:ANEResultEvent):void
         {
             UserInfo.instance.userName = event.aneResult;
@@ -191,6 +194,7 @@ package com.stintern.anipang.startscene
 							// 로딩 화면을 활성화
 							_loadingSprite = new LoadingLayer();
 							_loadingSprite.init(onInited);
+							
 							function onInited():void
 							{
 								addChild(_loadingSprite);
@@ -198,8 +202,6 @@ package com.stintern.anipang.startscene
 								
 								_facebookANE.getUserInfo();
 							}
-							
-							
                         }
                         
                         _loginImageClicked.visible = false;
@@ -209,20 +211,5 @@ package com.stintern.anipang.startscene
         }
         
         
-        private function progressHandler(event:LoaderEvent):void 
-        {
-        }
-        
-        private function completeHandler(event:LoaderEvent):void 
-        {
-                var texture:Texture = Texture.fromBitmap(LoaderMax.getLoader(Resources.PATH_IMAGE_START_SCENE_BACKGROUND_TEXTURE_NAME).rawContent as Bitmap);
-                trace(texture.width);
-        }
-        
-        private function errorHandler(event:LoaderEvent):void 
-        {
-            trace("error occured with " + event.target + ": " + event.text);
-        }
-
     }
 }
