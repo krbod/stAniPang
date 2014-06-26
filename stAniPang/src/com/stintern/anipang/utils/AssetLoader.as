@@ -130,11 +130,11 @@ package com.stintern.anipang.utils
          */
         private function findFile(path:String):File
         {
+			file = File.applicationStorageDirectory.resolvePath(path);
+			if( file.exists )
+				return file;
+			
             var file:File = File.applicationDirectory.resolvePath(path);
-            if( file.exists )
-                return file;
-            
-            file = File.applicationStorageDirectory.resolvePath(path);
             if( file.exists )
                 return file;
             

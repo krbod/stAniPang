@@ -104,6 +104,10 @@ package com.stintern.anipang.maingamescene
 			_currentScore += 200;
 		}
         
+		public function get currentScore():uint
+		{
+			return _currentScore;
+		}
         public function set currentScore(score:uint):void
         {
             _currentScore = score;

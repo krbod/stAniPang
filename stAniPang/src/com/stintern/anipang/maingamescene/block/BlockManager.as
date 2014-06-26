@@ -1,8 +1,8 @@
 package com.stintern.anipang.maingamescene.block
 {
     import com.greensock.TweenLite;
+    import com.stintern.anipang.maingamescene.LevelManager;
     import com.stintern.anipang.maingamescene.MissionChecker;
-    import com.stintern.anipang.maingamescene.block.algorithm.BlockLocater;
     import com.stintern.anipang.maingamescene.block.algorithm.ConnectedBlockFinder;
     import com.stintern.anipang.maingamescene.block.algorithm.RemoveAlgoResult;
     import com.stintern.anipang.maingamescene.board.GameBoard;
@@ -10,6 +10,7 @@ package com.stintern.anipang.maingamescene.block
     import com.stintern.anipang.maingamescene.layer.MissionFailureLayer;
     import com.stintern.anipang.maingamescene.layer.PanelLayer;
     import com.stintern.anipang.scenemanager.SceneManager;
+    import com.stintern.anipang.userinfo.UserInfo;
     import com.stintern.anipang.utils.Resources;
     
     import starling.core.Starling;
@@ -462,6 +463,8 @@ package com.stintern.anipang.maingamescene.block
             switch( _missionChecker.check() )
             {
                 case MissionChecker.MISSION_RESULT_SUCCESS:
+					UserInfo.instance.updateUserInfo(LevelManager.instance.currentStageLevel, _missionChecker.currentScore);
+					
 					(Starling.current.root as SceneManager).currentScene.addChild( new MissionClearLayer() );
 					_requiredStepBlocks = false;
 					return true;

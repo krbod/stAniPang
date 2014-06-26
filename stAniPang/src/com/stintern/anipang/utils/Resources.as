@@ -131,6 +131,13 @@ package com.stintern.anipang.utils
 		
 		// User Information
 		public static var XML_USER_INFO:String = "res/dat/userinfo/userInfo.xml";
+		public static var XML_USER_INFO_TEST:String = "res/dat/userinfo/userInfo_test.xml";
+
+        public static var XML_NODE_CURRENT_STAGE:String = "currentStage";
+        public static var XML_NODE_STAGE_CLEAR_INFO:String = "stageClearInfo";
+        public static var XML_NODE_STAGE:String = "stage";
+        public static var XML_ATTRIBUTE_LEVEL:String = "level";
+
 		
 		// World map information
 		public static var XML_WORLD_MAP_INFO:String = "res/dat/worldmap/worldmapInfo.xml";

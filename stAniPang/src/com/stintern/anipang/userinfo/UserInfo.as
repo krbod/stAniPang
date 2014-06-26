@@ -1,5 +1,12 @@
 package com.stintern.anipang.userinfo
 {
+    import com.stintern.anipang.utils.Resources;
+    
+    import flash.filesystem.File;
+    import flash.filesystem.FileMode;
+    import flash.filesystem.FileStream;
+    import flash.utils.ByteArray;
+    
     import starling.display.Image;
 
 	public class UserInfo
@@ -15,6 +22,8 @@ package com.stintern.anipang.userinfo
         
         private var _userImage:Image;
         private var _userName:String;
+		
+		private var _userInfoXML:XML;
 		    
 		public function UserInfo()
 		{
@@ -41,13 +50,71 @@ package com.stintern.anipang.userinfo
 		
 		public function loadUserInfo(xml:XML):void
 		{
-			_currentStage = xml.child("currentStage")[0];
-			var stageList:XMLList= xml.child("stageClearInfo").child("stage");
+			_userInfoXML = xml;
 			
-			for(var i:uint=0; i<_currentStage-1; ++i)
+			_currentStage = xml.child(Resources.XML_NODE_CURRENT_STAGE)[0];
+			var stageList:XMLList= xml.child(Resources.XML_NODE_STAGE_CLEAR_INFO).child(Resources.XML_NODE_STAGE);
+			
+			for(var i:uint=0; i<=_currentStage-1; ++i)
 			{
 				_stageScore.push(stageList[i].score);
 				_stageStarCount.push(stageList[i].star);
+			}
+		}
+		
+		public function updateUserInfo(stageLevel:uint, score:uint):void
+		{
+			if( _currentStage > stageLevel )
+				return;
+			
+			_userInfoXML.child(Resources.XML_NODE_CURRENT_STAGE)[0] = stageLevel + 1;
+			
+			_userInfoXML.currentStage = stageLevel + 1;
+			var xmlList:XMLList = _userInfoXML.child(Resources.XML_NODE_STAGE_CLEAR_INFO)[0].child(Resources.XML_NODE_STAGE);
+			xmlList[stageLevel-1].star = 2;		// TEST
+			xmlList[stageLevel-1].score = score;
+			
+			var xml:XML = <stage />;
+			xml.@[Resources.XML_ATTRIBUTE_LEVEL] = stageLevel + 1;
+			xml.star = 0;	
+			xml.score = 0;
+			
+			_userInfoXML.child(Resources.XML_NODE_STAGE_CLEAR_INFO).appendChild(xml);
+			exportXML(_userInfoXML);
+		}
+		
+		public function exportXML(xml:XML):Boolean
+		{
+			var ba:ByteArray = new ByteArray();
+			
+			try
+			{
+				ba.writeUTFBytes(xml);
+				
+				trace(File.applicationStorageDirectory.resolvePath(Resources.XML_USER_INFO).nativePath);
+				
+				var file:File = new File(File.applicationStorageDirectory.resolvePath(Resources.XML_USER_INFO).nativePath);
+				var fileStream:FileStream = new FileStream();
+				
+				fileStream.open(file, FileMode.WRITE);
+				fileStream.writeUTFBytes(ba.toString());
+				fileStream.close();
+				
+				ba.clear();
+				ba = null;
+				fileStream = null;
+				
+				return true;
+			}
+			catch(e:Error)
+			{
+				trace(e);
+				throw new Error(e);
+				
+				ba = null;
+				fileStream = null;
+				
+				return false;
 			}
 		}
 		
