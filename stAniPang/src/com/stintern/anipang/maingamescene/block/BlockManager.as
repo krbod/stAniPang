@@ -448,6 +448,9 @@ package com.stintern.anipang.maingamescene.block
                 var colCount:uint = _blockArray[i].length;
                 for(var j:uint=0; j<colCount; ++j)
                 {
+					if( _blockArray[i][j] == null )
+						continue;
+					
                     if( _blockArray[i][j].type == type)
                     {
                         result.push( _blockArray[i][j]);
